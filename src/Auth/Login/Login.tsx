@@ -3,14 +3,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import { CardBody, Button, Card, Col, Row, Input, InputGroup, Alert, Nav, NavItem, NavLink, TabContent, TabPane } from 'reactstrap';
 import { auth } from '../../Firebase/firebase';
 import classnames from "classnames";
-
+import axios from 'axios';
 import firebaselogo from '../../assets/images/png/4.png';
 import reactlogo from '../../assets/images/png/5.png';
 
 const Login = () => {
 
 
-    const [Tab1, setTab1] = useState("1");
+    const [Tab1, setTab1] = useState("2");
     const style1 = (tab: any) => {
         if (Tab1 !== tab) {
             setTab1(tab);
@@ -22,21 +22,46 @@ const Login = () => {
 
     const [loading, setLoader] = useState(false);
     const [err, setError] = useState("");
-    const [data, setData] = useState({
-        "email": "adminreact@gmail.com",
-        "password": "1234567890",
-    })
-    const { email, password } = data;
-    const changeHandler = (e: any) => {
-        setData({ ...data, [e.target.name]: e.target.value })
-        setError("");
-    }
-    const Login = (e: any) => {
-        setLoader(true)
-        e.preventDefault();
-        auth.signInWithEmailAndPassword(email, password).then(
-            user => { console.log(user); RouteChange(); setLoader(false) }).catch(err => { console.log(err); setError(err.message); setLoader(false) })
-    }
+
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    
+    const changeHandler = (e) => {
+      if (e.target.name === "email") {
+        setEmail(e.target.value);
+      } else if (e.target.name === "password") {
+        setPassword(e.target.value);
+      }
+      setError("");
+    };
+
+    const Login = async (e) => {
+        e.preventDefault(); // Move this line to the beginning if you want to prevent the default form submission
+        try {
+            const resp = await axios.post("http://127.0.0.1:8000/api/login/", { email, password });
+    
+            if (resp.status === 200) {
+                // Handle the response data here
+                console.log("Response Data:", resp.data);
+    
+                localStorage.setItem("username", resp.data.data.name);
+                localStorage.setItem("rol", resp.data.data.rol);
+                localStorage.setItem("token", resp.data.data.token);
+                localStorage.setItem("permissions", resp.data.data.permissions);
+
+                setLoader(true);
+                RouteChange();
+                setLoader(false);
+            } else {
+                // Handle non-200 status codes or other conditions
+                setError("Error al iniciar sesión. Verifica tus credenciales o intenta de nuevo.");
+            }
+        } catch (error) {
+            console.error("Error al enviar la solicitud:", error);
+            setError("Error al iniciar sesión. Verifica tus credenciales o intenta de nuevo.");
+            setLoader(false);
+        }
+    };
 
     let navigate = useNavigate();
     const RouteChange = () => {
@@ -144,16 +169,36 @@ const Login = () => {
                                                         <hr className="divider my-6" />
                                                         <InputGroup className="input-group mb-3">
                                                             <span className="input-group-addon"><svg className="svg-icon" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><path d="M0 0h24v24H0V0z" fill="none" /><path d="M12 16c-2.69 0-5.77 1.28-6 2h12c-.2-.71-3.3-2-6-2z" opacity=".3" /><circle cx="12" cy="8" opacity=".3" r="2" /><path d="M12 14c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4zm-6 4c.22-.72 3.31-2 6-2 2.7 0 5.8 1.29 6 2H6zm6-6c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0-6c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2z" /></svg></span>
-                                                            <Input type="text" className="form-control" placeholder="adminreact@gmail.com" />
+                                                            
+                                                            <Input
+        type="text"
+        className="form-control"
+        placeholder="correo"
+        name="email"  // Add this line to link the input field to the state variable
+        value={email} // Set the value of the input field to the state variable
+        onChange={changeHandler} // Add this line to handle changes in the input field
+    />
                                                         </InputGroup>
                                                         <InputGroup className="input-group mb-4">
                                                             <span className="input-group-addon"><svg className="svg-icon" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24"><g fill="none"><path d="M0 0h24v24H0V0z" /><path d="M0 0h24v24H0V0z" opacity=".87" /></g><path d="M6 20h12V10H6v10zm6-7c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2z" opacity=".3" /><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM9 6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9V6zm9 14H6V10h12v10zm-6-3c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2z" /></svg></span>
-                                                            <Input type="password" className="form-control" placeholder="Password" />
+                                                            <Input
+        type="password"
+        className="form-control"
+        placeholder="contraseña"
+        name="password"  // Add this line to link the input field to the state variable
+        value={password} // Set the value of the input field to the state variable
+        onChange={changeHandler} // Add this line to handle changes in the input field
+    />
                                                         </InputGroup>
                                                         <Row>
                                                             <Col className="col-12">
-                                                                <Link to={`${import.meta.env.BASE_URL}dashboard/dashboard01`} role="button" className="btn btn-lg btn-primary btn-block"><i className="fe fe-arrow-right"></i> Login</Link>
+                                                                    <Button color="" role="button" className="btn btn-lg btn-primary btn-block" onClick={Login}><i className="fe fe-arrow-right"></i> Login
+                                                                        {loading ? <span role="status" aria-hidden="true" className="spinner-border spinner-border-sm ms-2"></span> : ""}
+                                                                    </Button>
                                                             </Col>
+                                                            {/* <Col className="col-12">
+                                                                <Link to={`${import.meta.env.BASE_URL}dashboard/dashboard01`} role="button" className="btn btn-lg btn-primary btn-block"><i className="fe fe-arrow-right"></i> Login</Link>
+                                                            </Col> */}
                                                             <Col className="col-12">
                                                                 <Link to={`${import.meta.env.BASE_URL}account/forgetpassword/forgetpassword01`} className="btn btn-link box-shadow-0 px-0">Forgot password?</Link>
                                                             </Col>

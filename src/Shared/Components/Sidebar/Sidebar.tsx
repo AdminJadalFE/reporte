@@ -23,9 +23,20 @@ import EditProfileService from "../../Prism/editprofile";
 let history:string[] = [];
 
 const Sidebar = () => {
+  const storedUsername = localStorage.getItem("username");
+  const storedRol = localStorage.getItem("rol");
+
+  const storedPermissionsString = localStorage.getItem("permissions");
+  const storedPermissions = storedPermissionsString ? storedPermissionsString.split(',') : [];
+  let PermisoAccount = "";
+  if (storedPermissions.includes("users.view")) {
+    PermisoAccount = "Account";
+  }
+
   let location = useLocation();
   const [menuitems, setMenuitems] = useState(MENUITEMS);
   const [outPut, setoutPut] = useState(EditProfileService.returnId());
+
   // initial loading
   useEffect(() => {
 
@@ -103,6 +114,12 @@ const Sidebar = () => {
                 return submenu;
               })
             }
+            
+            if (items.title == 'Pages') {
+              items.title = 'Pages'; 
+            }
+
+
             return items;
           })
         }
@@ -253,21 +270,22 @@ const Sidebar = () => {
                   <img alt="user-img" className="avatar avatar-xl brround mb-1" src={faces6} />
                 </div>
                 <div className="user-info text-center">
-                  <h5 className=" mb-1 font-weight-bold">{outPut.firstName == undefined ? "John" : outPut.firstName} {outPut.lastName == undefined ? "Thomson" : outPut.lastName}</h5>
-                  <span className="text-muted app-sidebar__user-name text-sm">{outPut.role == undefined ? "App Developer" : outPut.role}</span>
+                  <h5 className=" mb-1 font-weight-bold">{storedUsername}</h5>
+                  <span className="text-muted app-sidebar__user-name text-sm">{storedRol}</span>
                 </div>
               </div>
             </div>
             <div className="slide-left disabled" id="slide-left"><svg xmlns="http://www.w3.org/2000/svg" fill="#7b8191" width="24" height="24" viewBox="0 0 24 24"><path d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z" /></svg></div>
 
-            <ul className="side-menu open">
-              {menuitems.map((Item, itemi) => (
-                <Fragment key={itemi + Math.random() * 100}>
-                  {Item.Items?.map((menuItem, i) => (
+          <ul className="side-menu open">
+            {menuitems.map((Item, itemi) => (
+              <Fragment key={itemi + Math.random() * 100}>
+                {Item.Items?.map((menuItem, i) => (
+                  ( menuItem.title !== "Dashboards" && menuItem.title !== PermisoAccount ) || (
+                    (
                     <li className={`slide ${menuItem.selected ? "is-expanded" : ""}  ${menuItem.active ? "is-expanded" : ""}`} key={i}>
                       {menuItem.type === "link" ? (
-                        <NavLink to={menuItem.path + "/"} className={`side-menu__item ${menuItem.selected ? " active" : ""}`}
-                        >
+                        <NavLink to={menuItem.path + "/"} className={`side-menu__item ${menuItem.selected ? " active" : ""}`}>
                           {menuItem.icon}
                           <span className="side-menu__label">
                             {menuItem.title}
@@ -303,110 +321,107 @@ const Sidebar = () => {
                               ? { display: "block" }
                               : { display: "none" }
                           }>
-                          {menuItem.children.map((childrenItem, index) => {
-                            return (
-                              <li key={index} className={`sub-slide ${childrenItem.selected ? "is-expanded" : ""} ${childrenItem.active ? "is-expanded" : ""}`}>
-                                {childrenItem.type === "sub" ? (
-                                  <a href="javascript"
-                                    className={`slide-item ${childrenItem.selected ? "active is-expanded" : ""}`}
-                                    onClick={(event) => { event.preventDefault(); toggleSidemenu(childrenItem); }}
-                                  >
-                                    {childrenItem.title}{childrenItem.active}
-
-                                    <i className="sub-angle fe fe-chevron-right"></i>
-                                  </a>
-                                ) : (
-                                  ""
-                                )}
-                                {childrenItem.type === "link" ? (
-                                  
-                                    <NavLink
-                                      to={childrenItem.path + "/"}
-                                      className="slide-item"
-                                    >
-                                      {childrenItem.title}{childrenItem.active}
-                                    </NavLink>
-                                  
-                                ) : (
-                                  ""
-                                )}
-                                {childrenItem.children ? (
-                                  <ul className={`sub-slide-menu ${childrenItem.selected ? "open" : ""}`}
-                                    style={
-                                      childrenItem.active
-                                        ? { display: "block" }
-                                        : { display: "none" }
-                                    }>
-                                    {childrenItem.children.map(
-                                      (childrenSubItem, key) => (
-                                        <li key={key}>
-                                          {childrenSubItem.type === "link" ? (
+                          {menuItem.children.map((childrenItem, index) => (
+                            <li key={index} className={`sub-slide ${childrenItem.selected ? "is-expanded" : ""} ${childrenItem.active ? "is-expanded" : ""}`}>
+                              {childrenItem.type === "sub" ? (
+                                <a href="javascript"
+                                  className={`slide-item ${childrenItem.selected ? "active is-expanded" : ""}`}
+                                  onClick={(event) => { event.preventDefault(); toggleSidemenu(childrenItem); }}
+                                >
+                                  {childrenItem.title}{childrenItem.active}
+                                  <i className="sub-angle fe fe-chevron-right"></i>
+                                </a>
+                              ) : (
+                                ""
+                              )}
+                              {childrenItem.type === "link" ? (
+                                <NavLink
+                                  to={childrenItem.path + "/"}
+                                  className="slide-item"
+                                >
+                                  {childrenItem.title}{childrenItem.active}
+                                </NavLink>
+                              ) : (
+                                ""
+                              )}
+                              {childrenItem.children ? (
+                                <ul className={`sub-slide-menu ${childrenItem.selected ? "open" : ""}`}
+                                  style={
+                                    childrenItem.active
+                                      ? { display: "block" }
+                                      : { display: "none" }
+                                  }>
+                                  {childrenItem.children.map(
+                                    (childrenSubItem, key) => (
+                                      <li key={key}>
+                                        {childrenSubItem.type === "link" ? (
+                                          <NavLink
+                                            to={childrenSubItem.path + "/"}
+                                            className="sub-slide-item"
+                                          >
+                                            {childrenSubItem.title}{childrenSubItem.active}
+                                          </NavLink>
+                                        ) : (
+                                          ""
+                                        )}
+                                        {childrenSubItem.type === "sub" ? (
+                                          <li className={`sub-slide2 ${childrenSubItem.selected ? "is-expanded" : ""} ${childrenSubItem.active ? "is-expanded" : ""}`}>
                                             <NavLink
-                                              to={childrenSubItem.path + "/"}
+                                              to="#"
                                               className="sub-slide-item"
+                                              onClick={(event) => {
+                                                event.preventDefault();
+                                                toggleSidemenu(childrenSubItem)
+                                              }}
                                             >
                                               {childrenSubItem.title}{childrenSubItem.active}
+                                              <i className="sub-angle2 fe fe-chevron-down"></i>
                                             </NavLink>
-                                          ) : (
-                                            ""
-                                          )}
-                                          {childrenSubItem.type === "sub" ? (
-                                            <li className={`sub-slide2 ${childrenSubItem.selected ? "is-expanded" : ""} ${childrenSubItem.active ? "is-expanded" : ""}`}>
-                                              <NavLink
-                                                to="#"
-                                                className="sub-slide-item"
-                                                onClick={(event) => {
-                                                  event.preventDefault();
-                                                  toggleSidemenu(childrenSubItem)
-                                                }}
-                                              >
-
-                                                {childrenSubItem.title}{childrenSubItem.active}
-
-                                                <i className="sub-angle2 fe fe-chevron-down"></i>
-                                              </NavLink>
-                                              {childrenItem.children?.map(
-                                                (childrenSubItemsub, key) => (
-                                                  <ul key={key} className={`sub-slide-menu1 ${childrenSubItemsub.selected ? "open" : ""}`}
-                                                    style={
-                                                      childrenSubItemsub.active
-                                                        ? { display: "block" }
-                                                        : { display: "none" }
-                                                    }
-                                                  >
-                                                    {childrenItem.children?.map(
-                                                      (childrenSubItemsubs, key) => (
-                                                        <li key={key}>
-                                                          <NavLink className="sub-slide-item2" to="#">{childrenSubItemsubs.title}{childrenSubItemsubs.active}</NavLink>
-                                                        </li>
-                                                      )
-                                                    )}
-                                                  </ul>
-                                                )
-                                              )}
-                                            </li>
-                                          ) : (
-                                            ""
-                                          )}
-                                        </li>
-                                      )
-                                    )}
-                                  </ul>
-                                ) : (
-                                  ""
-                                )}
-                              </li>
-                            );
-                          })}
+                                            {childrenSubItem.children?.map(
+                                              (childrenSubItemsub, key) => (
+                                                <ul key={key} className={`sub-slide-menu1 ${childrenSubItemsub.selected ? "open" : ""}`}
+                                                  style={
+                                                    childrenSubItemsub.active
+                                                      ? { display: "block" }
+                                                      : { display: "none" }
+                                                  }
+                                                >
+                                                  {childrenSubItem.children?.map(
+                                                    (childrenSubItemsubs, key) => (
+                                                      <li key={key}>
+                                                        <NavLink className="sub-slide-item2" to="#">{childrenSubItemsubs.title}{childrenSubItemsubs.active}</NavLink>
+                                                      </li>
+                                                    )
+                                                  )}
+                                                </ul>
+                                              )
+                                            )}
+                                          </li>
+                                        ) : (
+                                          ""
+                                        )}
+                                      </li>
+                                    )
+                                  )}
+                                </ul>
+                              ) : (
+                                ""
+                              )}
+                            </li>
+                          ))}
                         </ul>
                       ) : (
                         ""
                       )}
                     </li>
-                  ))}
-                </Fragment>
-              ))}
-            </ul>
+                  )
+                )
+                ))}
+              </Fragment>
+            ))}
+          </ul>
+
+
             <div className="app-sidebar-help">
               <UncontrolledDropdown className="dropdown text-center">
                 <div className="help d-flex">

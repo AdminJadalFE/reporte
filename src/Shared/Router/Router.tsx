@@ -128,6 +128,7 @@ const Error403 = lazy(() => import("../../components/ErrorPages/Error403/Error40
 const Error404 = lazy(() => import("../../components/ErrorPages/Error404/Error404"));
 const Error500 = lazy(() => import("../../components/ErrorPages/Error500/Error500"));
 const Error503 = lazy(() => import("../../components/ErrorPages/Error503/Error503"));
+const User = lazy(() => import("../../components/Account/User/User"));
 const ComingSoon = lazy(() => import("../../components/Account/ComingSoon/ComingSoon"));
 const UnderConstruction = lazy(() => import("../../components/Account/UnderConstruction/UnderConstruction"));
 const Login01 = lazy(() => import("../../components/Account/Login/Login01/Login01"));
@@ -371,6 +372,10 @@ export const Routing = () => {
           <Route path={`${import.meta.env.BASE_URL}errorpages/error500`} element={<Error500 />} />
           <Route path={`${import.meta.env.BASE_URL}errorpages/error503`} element={<Error503 />} />
           <Route path={`${import.meta.env.BASE_URL}account/comingsoon`} element={<ComingSoon />} />
+          <Route
+            path={`${import.meta.env.BASE_URL}account/user`}
+            element={<User />}
+          />
           <Route
             path={`${import.meta.env.BASE_URL}account/underconstruction`}
             element={<UnderConstruction />}

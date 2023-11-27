@@ -5,10 +5,10 @@ import SimpleBar from 'simplebar-react';
 
 
 const Custompagesswitcher = () => {
-    useEffect(() => {
-        Switcherdata2.localStorageBackUp();
-        setFocusAfterClose(true)
-    });
+    // useEffect(() => {
+    //     Switcherdata2.localStorageBackUp();
+    //     setFocusAfterClose(true)
+    // });
     function changePrimaryColor(value:string) {
         
         var userColor:string = value

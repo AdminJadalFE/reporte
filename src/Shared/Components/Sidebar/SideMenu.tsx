@@ -31,35 +31,7 @@ export const MENUITEMS: menu[] = [
             active: false,
             selected: false,
             title: "Dashboard 01",
-          },
-          {
-            path: `${import.meta.env.BASE_URL}dashboard/dashboard02`,
-            type: "link",
-            active: false,
-            selected: false,
-            title: "Dashboard 02",
-          },
-          {
-            path: `${import.meta.env.BASE_URL}dashboard/dashboard03`,
-            type: "link",
-            active: false,
-            selected: false,
-            title: "Dashboard 03",
-          },
-          {
-            path: `${import.meta.env.BASE_URL}dashboard/dashboard04`,
-            type: "link",
-            active: false,
-            selected: false,
-            title: "Dashboard 04",
-          },
-          {
-            path: `${import.meta.env.BASE_URL}dashboard/dashboard05`,
-            type: "link",
-            active: false,
-            selected: false,
-            title: "Dashboard 05",
-          },
+          }
         ],
       },
     ],
@@ -1128,12 +1100,33 @@ export const MENUITEMS: menu[] = [
   {
     Items: [
       {
-        title: "Account",
+        title: "Usuarios",
         icon: <svg className="side-menu__icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>,
         type: "sub",
         selected: false,
         active: false,
         children: [
+          {
+            path: `${import.meta.env.BASE_URL}users/users`,
+            type: "link",
+            active: false,
+            selected: false,
+            title: "Usuarios",
+          },
+          {
+            path: `${import.meta.env.BASE_URL}users/roles`,
+            type: "link",
+            active: false,
+            selected: false,
+            title: "Roles",
+          },
+          {
+            path: `${import.meta.env.BASE_URL}users/permissions`,
+            type: "link",
+            active: false,
+            selected: false,
+            title: "Permisos",
+          },                    
           {
             type: "sub",
             active: false,

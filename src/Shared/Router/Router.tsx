@@ -23,6 +23,8 @@ const Todolist = lazy(() => import("../../components/Apps/TodoList/Todolist/Todo
 const TodoList03 = lazy(() => import("../../components/Apps/TodoList/TodoList03/TodoList03"));
 const TodoList02 = lazy(() => import("../../components/Apps/TodoList/TodoList02/TodoList02"));
 const Users = lazy(() => import("../../components/Users/Users/Users"));
+const Roles = lazy(() => import("../../components/Users/Roles/Roles"));
+const Permissions = lazy(() => import("../../components/Users/Permissions/Permissions"));
 const UserList01 = lazy(() => import("../../components/Apps/UserList/UserList01/UserList01"));
 const UserList02 = lazy(() => import("../../components/Apps/UserList/UserList02/UserList02"));
 const UserList03 = lazy(() => import("../../components/Apps/UserList/UserList03/UserList03"));
@@ -364,7 +366,13 @@ export const Routing = () => {
           {/* Nuevo componentes */}
           <Route>
             <Route path={`${import.meta.env.BASE_URL}users/users`} element={<Users />} />
-          </Route>   
+          </Route>
+          <Route>
+            <Route path={`${import.meta.env.BASE_URL}users/roles`} element={<Roles />} />
+          </Route>
+          <Route>
+            <Route path={`${import.meta.env.BASE_URL}users/permissions`} element={<Permissions />} />
+          </Route>                          
         </Route>
         <Route path={`${import.meta.env.BASE_URL}`} element={<Custompages />}>
 

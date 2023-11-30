@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { data, menudata } from "../../../Shared/datas/userlist/data";
 import {Row,Col,Card,CardBody,Input,} from "reactstrap";
-import { Modaluser } from "../../../Shared/Prism/Prism";
+// import { Modaluser } from "../../../Shared/Prism/Prism";
+import { Modaluser } from "./Modal/CreateUser";
 import { PageHeaderstyle } from './../../../Shared/Prism/Prism';
 import axios from "axios";
 const UserList02 = () => {
@@ -43,8 +44,7 @@ const UserList02 = () => {
  
   return (
     <div>
-    <PageHeaderstyle title="User List Nuevo"home="Home"Pages="Apps"elements="User List"name="User List 02"/>
-    <h1>ddddddddddddd</h1>
+    <PageHeaderstyle title="Lista de Usuarios"home="Home"Pages="Apps"elements="User List"name="User List 02"/>
       <Row className="flex-lg-nowrap">
         <Col className="col-12">
           <Row className="flex-lg-nowrap">
@@ -89,15 +89,18 @@ const UserList02 = () => {
                             <small className="text-muted">{list.roles.map((role) => role.name).join(', ')}</small>
                           </div>
                           <div className="float-sm-end ms-auto mt-4 mt-sm-0">
-                            <Link to="#" className="btn btn-white btn-sm me-1">
-                              Message
+                            <Link
+                              to="#"
+                              className="btn btn-primary btn-sm m-2"
+                            >
+                              Editar
                             </Link>
                             <Link
                               to="#"
-                              className="btn btn-primary btn-sm"
+                              className="btn btn-danger btn-sm m-2"
                             >
-                              View Profile
-                            </Link>
+                              Eliminar
+                            </Link>                            
                           </div>
                         </div>
                       </Col>

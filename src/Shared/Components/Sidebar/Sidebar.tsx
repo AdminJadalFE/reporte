@@ -281,7 +281,7 @@ const Sidebar = () => {
             {menuitems.map((Item, itemi) => (
               <Fragment key={itemi + Math.random() * 100}>
                 {Item.Items?.map((menuItem, i) => (
-                   ( menuItem.title !== "Dashboards" && menuItem.title !== PermisoAccount ) || (
+                   ( menuItem.title !== "Dashboards" && menuItem.title !== PermisoAccount && menuItem.title !== "Inventario") || (
                     (
                     <li className={`slide ${menuItem.selected ? "is-expanded" : ""}  ${menuItem.active ? "is-expanded" : ""}`} key={i}>
                       {menuItem.type === "link" ? (

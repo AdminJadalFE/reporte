@@ -24,6 +24,9 @@ const TodoList03 = lazy(() => import("../../components/Apps/TodoList/TodoList03/
 const TodoList02 = lazy(() => import("../../components/Apps/TodoList/TodoList02/TodoList02"));
 const Users = lazy(() => import("../../components/Users/Users/Users"));
 const Roles = lazy(() => import("../../components/Users/Roles/Roles"));
+const Products = lazy(() => import("../../components/Inventory/Products/Products"));
+const Promotions = lazy(() => import("../../components/Inventory/Promotions/Promotions"));
+const Services = lazy(() => import("../../components/Inventory/Services/Services"));
 const Permissions = lazy(() => import("../../components/Users/Permissions/Permissions"));
 const UserList01 = lazy(() => import("../../components/Apps/UserList/UserList01/UserList01"));
 const UserList02 = lazy(() => import("../../components/Apps/UserList/UserList02/UserList02"));
@@ -119,7 +122,7 @@ const Wishlist = lazy(() => import("../../components/Pages/E-commerce/Wishlist/W
 const Checkout = lazy(() => import("../../components/Pages/E-commerce/Checkout/Checkout"));
 const ShoppingCart = lazy(() => import("../../components/Pages/E-commerce/ShoppingCart/ShoppingCart"));
 const ProductDetails = lazy(() => import("../../components/Pages/E-commerce/ProductDetails/ProductDetails"));
-const Products = lazy(() => import("../../components/Pages/E-commerce/Products/Products"));
+//const Products = lazy(() => import("../../components/Pages/E-commerce/Products/Products"));
 const Gallery = lazy(() => import("../../components/Pages/Gallery/Gallery"));
 const FAQS = lazy(() => import("../../components/Pages/FAQS/FAQS"));
 const Terms = lazy(() => import("../../components/Pages/Terms/Terms"));
@@ -372,7 +375,18 @@ export const Routing = () => {
           </Route>
           <Route>
             <Route path={`${import.meta.env.BASE_URL}users/permissions`} element={<Permissions />} />
-          </Route>                          
+          </Route>
+
+
+          <Route>
+            <Route path={`${import.meta.env.BASE_URL}users/products`} element={<Products />} />
+          </Route>
+          <Route>
+            <Route path={`${import.meta.env.BASE_URL}users/promotions`} element={<Promotions />} />
+          </Route>
+          <Route>
+            <Route path={`${import.meta.env.BASE_URL}users/services`} element={<Services />} />
+          </Route>                      
         </Route>
         <Route path={`${import.meta.env.BASE_URL}`} element={<Custompages />}>
 

@@ -1141,21 +1141,21 @@ export const MENUITEMS: menu[] = [
         active: false,
         children: [
           {
-            path: `${import.meta.env.BASE_URL}users/users`,
+            path: `${import.meta.env.BASE_URL}users/products`,
             type: "link",
             active: false,
             selected: false,
             title: "Productos",
           },
           {
-            path: `${import.meta.env.BASE_URL}users/roles`,
+            path: `${import.meta.env.BASE_URL}users/promotions`,
             type: "link",
             active: false,
             selected: false,
             title: "Promociones",
           },
           {
-            path: `${import.meta.env.BASE_URL}users/permissions`,
+            path: `${import.meta.env.BASE_URL}users/services`,
             type: "link",
             active: false,
             selected: false,

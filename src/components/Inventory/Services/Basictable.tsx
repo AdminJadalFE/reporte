@@ -8,29 +8,24 @@ import {
 } from "react-table";
 export const COLUMNS:any = [
   {
+    Header: "ID",
+    accessor: "id",
+    className: "w-5 borderrigth",
+  },
+  {
     Header: "Name",
-    accessor: "Name",
+    accessor: "name",
     className: "w-20 borderrigth",
   },
   {
-    Header: "Position",
-    accessor: "Position",
+    Header: "Description",
+    accessor: "description",
     className: "w-25 borderrigth",
   },
   {
-    Header: "Office",
-    accessor: "Office",
-    className: "w-20 borderrigth",
-  },
-  {
-    Header: "Age",
-    accessor: "Age",
+    Header: "Price",
+    accessor: "price",
     className: "w-15 borderrigth",
-  },
-  {
-    Header: "Salary",
-    accessor: "Salary",
-    className: "w-20 borderrigth",
   },
 ];
 export const DATATABLE:any = [
@@ -515,11 +510,11 @@ export const DATATABLE:any = [
     Salary: "$145,000",
   },
 ];
-export const BasicTable = () => {
+export const BasicTable = ({data}: any) => {
   const tableInstance:any = useTable(
     {
       columns: COLUMNS,
-      data: DATATABLE,
+      data: data,
     },
     useGlobalFilter,
     useSortBy,

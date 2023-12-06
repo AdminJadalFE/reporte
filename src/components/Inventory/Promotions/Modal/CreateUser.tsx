@@ -5,6 +5,7 @@ import { Breadcrumb, BreadcrumbItem, Input, Modal, Button, ModalHeader, Label, M
 import { addDays } from 'date-fns';
 import { DateRangePicker } from 'react-date-range';
 import Select from 'react-select';
+import DatePicker from "react-multi-date-picker";
 
 export const PageHeader = (props: any) => {
 
@@ -110,6 +111,8 @@ export function Modaluser(args: any) {
   ];
   const [countryOption, setCountryOption] = useState<any>(null);  
 
+  const [dates, setDates] = useState<any>();
+
   const toggle = () => setModal(!modal);
 
   return (
@@ -181,6 +184,36 @@ export function Modaluser(args: any) {
                         />
                       </div>
                     </Col>                                             
+                  </Row>
+                  <Row>
+                    <div className="wd-200 mg-b-30">
+                    <Label className="col-md-3 form-label">Fecha Final</Label>
+                      <div className="input-group">
+                        <div className="input-group-text">
+                          <div className="">
+                            <svg
+                              className="svg-icon"
+                              xmlns="http://www.w3.org/2000/svg"
+                              height="18"
+                              viewBox="0 0 24 24"
+                              width="18"
+                            >
+                              <path d="M0 0h24v24H0V0z" fill="none" />
+                              <path d="M20 3h-1V1h-2v2H7V1H5v2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 2v3H4V5h16zM4 21V10h16v11H4z" />
+                              <path d="M4 5.01h16V8H4z" opacity=".3" />
+                            </svg>
+                          </div>
+                        </div>
+                        <DatePicker
+                          className="form-control"
+                          placeholder="Date Range"
+                          value={dates}
+                          onChange={setDates}
+                          // multiple
+                          numberOfMonths={1}
+                        />
+                      </div>
+                    </div>
                   </Row>
                   <hr/>
                   <Row>

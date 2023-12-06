@@ -28,6 +28,8 @@ const Products = lazy(() => import("../../components/Inventory/Products/Products
 const Promotions = lazy(() => import("../../components/Inventory/Promotions/Promotions"));
 const Services = lazy(() => import("../../components/Inventory/Services/Services"));
 const Permissions = lazy(() => import("../../components/Users/Permissions/Permissions"));
+const Sales = lazy(() => import("../../components/Sales/Sales"));
+const Purchases = lazy(() => import("../../components/Purchases/Purchases"));
 const UserList01 = lazy(() => import("../../components/Apps/UserList/UserList01/UserList01"));
 const UserList02 = lazy(() => import("../../components/Apps/UserList/UserList02/UserList02"));
 const UserList03 = lazy(() => import("../../components/Apps/UserList/UserList03/UserList03"));
@@ -386,7 +388,15 @@ export const Routing = () => {
           </Route>
           <Route>
             <Route path={`${import.meta.env.BASE_URL}users/services`} element={<Services />} />
-          </Route>                      
+          </Route>
+          
+          <Route>
+            <Route path={`${import.meta.env.BASE_URL}users/sales`} element={<Sales />} />
+          </Route>
+          <Route>
+            <Route path={`${import.meta.env.BASE_URL}users/purchases`} element={<Purchases />} />
+          </Route>      
+
         </Route>
         <Route path={`${import.meta.env.BASE_URL}`} element={<Custompages />}>
 

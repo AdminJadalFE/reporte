@@ -6,6 +6,7 @@ import{Fixedheader} from "./Fixedheader"
 import { ExportCSV } from './Exportcvs';
 import{DataTabless} from "./Deleterows"
 import {Savetable} from "./Addrows"
+import { Modaluser } from "./Modal/CreateUser";
 
 const Services = () => {
   const [services, setServices] = useState([]);
@@ -38,6 +39,7 @@ return (
           <Card>
             <CardHeader>
               <CardTitle>Servicios</CardTitle>
+              <Modaluser/>
             </CardHeader>
             <CardBody>
               <div className="table-responsive">

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Card, CardHeader, CardBody, CardTitle, Col, Row } from "reactstrap";
 import { PageHeaders } from "../../../Shared/Prism/Prism";
 import { BasicTable } from "./Basictable";
+import { Modaluser } from "./Modal/CreateUser";
 
 const Promotions = () => {
   const [products, setProducts] = useState([]);
@@ -34,6 +35,8 @@ const Promotions = () => {
           <Card>
             <CardHeader>
               <CardTitle>Productos</CardTitle>
+              {/* <h3 className="card-title">Roles</h3> */}
+              <Modaluser/>
             </CardHeader>
             <CardBody>
               <div className="table-responsive">

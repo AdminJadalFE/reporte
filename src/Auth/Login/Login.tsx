@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   CardBody,
@@ -20,8 +20,11 @@ import classnames from "classnames";
 import axios from "axios";
 import firebaselogo from "../../assets/images/png/4.png";
 import reactlogo from "../../assets/images/png/5.png";
+import { useDispatch, useSelector } from "react-redux";
+import { loginSuccess } from "../../Redux/Auth/Example/Action";
 
 const Login = () => {
+  const dispatch = useDispatch();  
   const [Tab1, setTab1] = useState("2");
   const style1 = (tab: any) => {
     if (Tab1 !== tab) {
@@ -72,6 +75,8 @@ const Login = () => {
         localStorage.setItem("token", resp.data.data.token);
         localStorage.setItem("permissions", resp.data.data.permissions);
 
+        console.log('resp.data.data',resp.data.data);
+        //console.log('almacenando en redux',dispatch(loginSuccess(resp.data.data)));
         setLoader(true);
         RouteChange();
         setLoader(false);
@@ -95,6 +100,13 @@ const Login = () => {
     let path = `${import.meta.env.BASE_URL}dashboard/dashboard01/`;
     navigate(path);
   };
+
+  const updatedState = useSelector((state) => state); // Mueve esta línea dentro del componente
+
+  useEffect(() => {
+    //console.log('redux data', updatedState);
+    setLoader(false);
+  }, [dispatch, RouteChange, setLoader]);
 
   return (
     <div>

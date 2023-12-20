@@ -1,10 +1,10 @@
 import { Dispatch } from "redux";
 
-export const loginSuccess = (userData: any) => async (dispatch: Dispatch) => {
-  dispatch({
+export const loginSuccess = (userData: any) => {
+  return {
     type: "LOGIN_SUCCESS",
-    payload: userData,
-  });
+    auth: userData,
+  };
 };
 
 export const logout = () => async (dispatch: Dispatch) => {

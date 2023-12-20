@@ -26,8 +26,9 @@ const initialState = {
             name: action.payload?.name || "",
             token: action.payload?.token || "",
             permissions: action.payload?.permissions || [],
+            rol: action.payload?.rol || "",
           },
-          message:"",
+          message: action.payload?.message || "",
         };
       case "LOGOUT":
         return {

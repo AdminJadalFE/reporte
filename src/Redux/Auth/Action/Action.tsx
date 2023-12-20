@@ -3,7 +3,7 @@ import { Dispatch } from "redux";
 export const loginSuccess = (userData: any) => {
   return {
     type: "LOGIN_SUCCESS",
-    auth: userData,
+    payload: userData,
   };
 };
 

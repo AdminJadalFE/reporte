@@ -25,8 +25,8 @@ const initialState = {
             id: action.payload?.id || "",
             name: action.payload?.name || "",
             token: action.payload?.token || "",
-            permissions: action.payload?.permissions || [],
             rol: action.payload?.rol || "",
+            permissions: action.payload?.permissions || [],
           },
           message: action.payload?.message || "",
         };
@@ -38,6 +38,7 @@ const initialState = {
             id: "",
             name: "",
             token: "",
+            rol: "",
             permissions: [],
           },
           message:"",

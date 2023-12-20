@@ -21,7 +21,7 @@ import axios from "axios";
 import firebaselogo from "../../assets/images/png/4.png";
 import reactlogo from "../../assets/images/png/5.png";
 import { useDispatch, useSelector } from "react-redux";
-import { loginSuccess } from "../../Redux/Auth/Example/Action";
+import { loginSuccess } from "../../Redux/Auth/Action/Action";
 
 const Login = () => {
   const dispatch = useDispatch();  
@@ -76,7 +76,7 @@ const Login = () => {
         localStorage.setItem("permissions", resp.data.data.permissions);
 
         console.log('resp.data.data',resp.data.data);
-        //console.log('almacenando en redux',dispatch(loginSuccess(resp.data.data)));
+        console.log('almacenando en redux',dispatch(loginSuccess(resp.data.data)));
         setLoader(true);
         RouteChange();
         setLoader(false);
@@ -104,7 +104,7 @@ const Login = () => {
   const updatedState = useSelector((state) => state); // Mueve esta línea dentro del componente
 
   useEffect(() => {
-    //console.log('redux data', updatedState);
+    console.log('redux data', updatedState);
     setLoader(false);
   }, [dispatch, RouteChange, setLoader]);
 

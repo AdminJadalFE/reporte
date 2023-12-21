@@ -7,7 +7,7 @@ import { DateRangePicker } from 'react-date-range';
 import Select from 'react-select';
 import { useDispatch, useSelector } from "react-redux";
 import { registerUser } from "../../../../Redux/User/Action/Action";
-
+import Swal from "sweetalert2";
 export const PageHeader = (props: any) => {
 
   const [dropdownOpen, setDropdownOpen] = useState<any>(false);
@@ -110,6 +110,29 @@ export function Modaluser(args: any) {
     role: null,
   });
 
+  const [alert, setAlert] = useState("Congratulations!")
+
+  function registroAlert() {
+    Swal.fire({
+      title: "Registrado",
+      icon: "success",
+      allowOutsideClick: false,
+      confirmButtonText: "ok",
+      cancelButtonColor: "#4454c3",
+      text: "Se registro al usuario correctamente.",
+    });
+  }
+
+  const errorAlert = (errorMessage) => {
+    Swal.fire({
+      title: 'Error',
+      text: errorMessage,
+      icon: 'error',
+      confirmButtonText: 'OK',
+      cancelButtonColor: '#4454c3',
+    });
+  };
+  
   const Countryoptions = [
     { value: 'Administrador', label: 'Administrador' },
     { value: 'Usuario', label: 'Usuario' },
@@ -139,12 +162,13 @@ export function Modaluser(args: any) {
 
   const handleSave = () => {
     if (formData.password.length < 8) {
-      alert('La contraseña debe tener al menos 8 caracteres');
+      errorAlert('La contraseña debe tener al menos 8 caracteres');
       return;
     }
     console.log('Enviando datos al backend:', formData);
     dispatch(registerUser(formData));
     toggle();
+    registroAlert();
   };  
 
   return (

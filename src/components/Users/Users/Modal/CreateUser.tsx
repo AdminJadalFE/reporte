@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import 'react-date-range/dist/styles.css'; // main css file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import { Breadcrumb, BreadcrumbItem, Input, Modal, Button, ModalHeader, Label, ModalBody, Form, Row, Col, ModalFooter, Dropdown, DropdownMenu, DropdownItem, UncontrolledDropdown, DropdownToggle } from "reactstrap";
@@ -7,6 +7,7 @@ import { DateRangePicker } from 'react-date-range';
 import Select from 'react-select';
 import { useDispatch, useSelector } from "react-redux";
 import { registerUser } from "../../../../Redux/User/Action/Action";
+import { fetchRoles } from "../../../../Redux/Rol/Action/Action";
 import Swal from "sweetalert2";
 export const PageHeader = (props: any) => {
 
@@ -102,6 +103,8 @@ export const PageHeaderstyle = (props: any) => {
   )
 }
 export function Modaluser(args: any) {
+
+
   const [modal, setModal] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -132,18 +135,25 @@ export function Modaluser(args: any) {
       cancelButtonColor: '#4454c3',
     });
   };
-  
-  const Countryoptions = [
-    { value: 'Administrador', label: 'Administrador' },
-    { value: 'Usuario', label: 'Usuario' },
-    { value: 'Vendedor', label: 'Vendedor' },
-    { value: 'Cajero', label: 'Cajero' },
-  ];
+
   const [countryOption, setCountryOption] = useState<any>(null);
 
   const dispatch = useDispatch();
+  const rolData = useSelector((state) => state.rol.roles);
+  console.log('alldata',rolData);
+
+
+    
+  const Countryoptions = rolData.map((role) => ({
+    value: role.id,
+    label: role.name,
+  }));
 
   const toggle = () => setModal(!modal);
+
+  useEffect(() => {
+    dispatch(fetchRoles());
+  }, [dispatch]);
 
   const handleChange = (e) => {
     setFormData({
@@ -254,7 +264,7 @@ export function Modaluser(args: any) {
                       value={Countryoptions.find((option) => option.value === formData.role)}
                       onChange={handleRoleChange}
                       options={Countryoptions}
-                      placeholder="Admin"
+                      placeholder="admin"
                       classNamePrefix="Search"
                     />
                       <div className="invalid-feedback">

@@ -10,7 +10,7 @@ import Swal from 'sweetalert2';
 
 const UserList02 = () => {
   const dispatch = useDispatch();
-  const allData = useSelector((state) => state.user.users);
+  const userData = useSelector((state) => state.user.users);
 
   useEffect(() => {
     dispatch(fetchUsers());
@@ -32,13 +32,13 @@ const UserList02 = () => {
   const [filteredData, setFilteredData] = useState([]);
 
   const handleSearch = (inputData) => {
-    const filteredUsers = allData.filter((user) =>
+    const filteredUsers = userData.filter((user) =>
       user.name.toLowerCase().includes(inputData.toLowerCase())
     );
     setFilteredData(filteredUsers);
   };
 
-  const displayData = filteredData.length > 0 ? filteredData : allData;
+  const displayData = filteredData.length > 0 ? filteredData : userData;
 
   const handleDelete = (userId) => {
     dispatch(deleteUser(userId)); // Utiliza la acción deleteUser
@@ -74,7 +74,7 @@ const UserList02 = () => {
                     </Col>
                   </Row>
                   <Row>
-                    {allData.map((list, index) => (
+                    {userData.map((list, index) => (
                       <Col xl={6} key={index}>
                         <div className="d-sm-flex align-items-center border p-3 mb-3 br-7">
                           <img

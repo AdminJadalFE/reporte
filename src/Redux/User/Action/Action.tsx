@@ -49,3 +49,17 @@ export const fetchUsers = () => async (dispatch: Dispatch) => {
     }
   };
   
+  export const deleteUser = (userId) => async (dispatch) => {
+    try {
+      const confirmDelete = window.confirm("¿Estás seguro de que quieres eliminar este usuario?");
+      if (confirmDelete) {
+        await axios.delete(`http://127.0.0.1:8000/api/users/${userId}`);
+        dispatch({
+          type: 'DELETE_USER_SUCCESS',
+          payload: userId,
+        });
+      }
+    } catch (error) {
+      console.error('Error al eliminar el usuario:', error);
+    }
+  };

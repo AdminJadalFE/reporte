@@ -4,7 +4,9 @@ import { Row, Col, Card, CardBody, Input } from "reactstrap";
 import { PageHeaderstyle } from "./../../../Shared/Prism/Prism";
 import { Modaluser } from "./Modal/CreateUser";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUsers } from "../../../Redux/User/Action/Action";
+import { fetchUsers,deleteUser } from "../../../Redux/User/Action/Action";
+import axios from 'axios';
+import Swal from 'sweetalert2';
 
 const UserList02 = () => {
   const dispatch = useDispatch();
@@ -13,6 +15,19 @@ const UserList02 = () => {
   useEffect(() => {
     dispatch(fetchUsers());
   }, [dispatch]);
+
+  const [alert, setAlert] = useState("Congratulations!")
+
+  function eliminarAlert() {
+    Swal.fire({
+      title: "Registrado",
+      icon: "success",
+      allowOutsideClick: false,
+      confirmButtonText: "ok",
+      cancelButtonColor: "#4454c3",
+      text: "Se registro al usuario correctamente.",
+    });
+  }
 
   const [filteredData, setFilteredData] = useState([]);
 
@@ -24,6 +39,10 @@ const UserList02 = () => {
   };
 
   const displayData = filteredData.length > 0 ? filteredData : allData;
+
+  const handleDelete = (userId) => {
+    dispatch(deleteUser(userId)); // Utiliza la acción deleteUser
+  };
 
   return (
     <div>
@@ -48,7 +67,7 @@ const UserList02 = () => {
                             type="text"
                             className="form-control"
                             placeholder="Search User"
-                            onChange={(ele) => { myfunction(ele.target.value) }}
+                            onChange={(ele) => handleSearch(ele.target.value)}  // Cambiado de myfunction a handleSearch
                           />
                         </div>
                       </div>
@@ -78,12 +97,12 @@ const UserList02 = () => {
                             >
                               Editar
                             </Link>
-                            <Link
-                              to="#"
+                            <button
                               className="btn btn-danger btn-sm m-2"
+                              onClick={() => handleDelete(list.id)}
                             >
                               Eliminar
-                            </Link>                            
+                            </button>                        
                           </div>
                         </div>
                       </Col>

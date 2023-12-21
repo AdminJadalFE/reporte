@@ -10,11 +10,11 @@ const Roles = () => {
 
   const dispatch = useDispatch();
   const rolData = useSelector((state) => state.rol.roles);
-console.log('rolData',rolData);
+
   useEffect(() => {
     dispatch(fetchRoles());
   }, [dispatch]);
-
+  console.log('rolData',rolData);
   // Sort roles by ID in ascending order
   const sortedRoles = roles.slice().sort((a, b) => a.id - b.id);
 

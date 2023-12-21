@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import 'react-date-range/dist/styles.css'; // main css file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import { Breadcrumb, BreadcrumbItem, Input, Modal, Button, ModalHeader, Label, ModalBody, Form, Row, Col, ModalFooter, Dropdown, DropdownMenu, DropdownItem, UncontrolledDropdown, DropdownToggle } from "reactstrap";
 import { addDays } from 'date-fns';
 import { DateRangePicker } from 'react-date-range';
 import Select from 'react-select';
+import { useDispatch, useSelector } from "react-redux";
+import { createRol } from "../../../../Redux/Rol/Action/Action";
+import Swal from "sweetalert2";
+import { fetchPermissions } from "../../../../Redux/Permission/Action/Action";
 
-export const PageHeader = (props: any) => {
-
+export const PageHeader = (props: any) => {  
   const [dropdownOpen, setDropdownOpen] = useState<any>(false);
 
   const selectopen = () => setDropdownOpen((prevState: any) => !prevState);
@@ -99,18 +102,66 @@ export const PageHeaderstyle = (props: any) => {
     </div>
   )
 }
+
+
 export function Modalrol(args: any) {
   const [modal, setModal] = useState(false);
+  const dispatch = useDispatch();
+  const permissionData = useSelector((state) => state.permission.permissions);
 
-  const Countryoptions = [
-    { value: 'Administrador', label: 'Administrador' },
-    { value: 'Usuario', label: 'Usuario' },
-    { value: 'Vendedor', label: 'Vendedor' },
-    { value: 'Cajero', label: 'Cajero' },
-  ];
-  const [countryOption, setCountryOption] = useState<any>(null);  
+  useEffect(() => {
+    dispatch(fetchPermissions());
+  }, [dispatch]);
+
+  const [formData, setFormData] = useState({
+    name: '',
+    permissions: [],
+  });
 
   const toggle = () => setModal(!modal);
+
+  function registroAlert() {
+    Swal.fire({
+      title: "Registrado",
+      icon: "success",
+      allowOutsideClick: false,
+      confirmButtonText: "ok",
+      cancelButtonColor: "#4454c3",
+      text: "Se registró al usuario correctamente.",
+    });
+  }
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleCheckboxChange = (permission) => {
+    const isChecked = formData.permissions.includes(permission);
+
+    if (isChecked) {
+      // Si ya estaba marcado, quítalo
+      setFormData({
+        ...formData,
+        permissions: formData.permissions.filter((p) => p !== permission),
+      });
+    } else {
+      // Si no estaba marcado, agrégalo
+      setFormData({
+        ...formData,
+        permissions: [...formData.permissions, permission],
+      });
+    }
+  };
+
+  const handleSave = () => {
+    console.log('Enviando datos al backend:', formData);
+    dispatch(createRol(formData));
+    toggle();
+    registroAlert();
+  };
 
   return (
     <div>
@@ -133,7 +184,8 @@ export function Modalrol(args: any) {
                           type="text"
                           name="name"
                           placeholder="rol"
-                          // defaultValue="John Smith"
+                          value={formData.name}
+                          onChange={handleChange}
                         />
                       </div>
                     </Col>
@@ -141,38 +193,30 @@ export function Modalrol(args: any) {
                 </Col>
               </Row>
               <Row>
-                <Col sm={12} className="col-12  mb-3">
+                <Col sm={12} className="col-12 mb-3">
                   <Row>
-                    <Col>
                     <Col xl="4" className="mt-4 mt-xl-0">
-                <div className="mb-3 m-0">
-                  <div className="custom-controls-stacked">
-                    <Label className="custom-control custom-checkbox custom-control-md">
-                      <Input
-                        type="checkbox"
-                        className="custom-control-input"
-                        name="example-checkbox1"
-                        value="option1"
-                        defaultChecked
-                      />
-                      <span className="custom-control-label custom-control-label-md">
-                        Option 1
-                      </span>
-                    </Label>
-                    <Label className="custom-control custom-checkbox custom-control-md">
-                      <Input
-                        type="checkbox"
-                        className="custom-control-input"
-                        name="example-checkbox2"
-                        value="option2"
-                      />
-                      <span className="custom-control-label custom-control-label-md">
-                        Option 2
-                      </span>
-                    </Label>
-                  </div>
-                </div>
-              </Col>
+                      <div className="mb-3 m-0">
+                        <div className="custom-controls-stacked">
+                          {permissionData.map((permission) => (
+                            <Label
+                              key={permission.id}
+                              className="custom-control custom-checkbox custom-control-md"
+                            >
+                              <Input
+                                type="checkbox"
+                                className="custom-control-input"
+                                name={permission.name}
+                                checked={formData.permissions.includes(permission.name)}
+                                onChange={() => handleCheckboxChange(permission.name)}
+                              />
+                              <span className="custom-control-label custom-control-label-md">
+                                {permission.name}
+                              </span>
+                            </Label>
+                          ))}
+                        </div>
+                      </div>
                     </Col>
                   </Row>
                 </Col>
@@ -183,7 +227,7 @@ export function Modalrol(args: any) {
         <ModalFooter>
           <Row>
             <Col className="d-flex justify-content-end">
-              <Button color="" className="btn btn-primary" onClick={toggle}>
+              <Button color="" className="btn btn-primary" onClick={handleSave}>
                 Guardar
               </Button>
             </Col>

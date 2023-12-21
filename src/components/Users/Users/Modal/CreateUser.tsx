@@ -5,6 +5,8 @@ import { Breadcrumb, BreadcrumbItem, Input, Modal, Button, ModalHeader, Label, M
 import { addDays } from 'date-fns';
 import { DateRangePicker } from 'react-date-range';
 import Select from 'react-select';
+import { useDispatch, useSelector } from "react-redux";
+import { registerUser } from "../../../../Redux/User/Action/Action";
 
 export const PageHeader = (props: any) => {
 
@@ -101,6 +103,12 @@ export const PageHeaderstyle = (props: any) => {
 }
 export function Modaluser(args: any) {
   const [modal, setModal] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    role: null,
+  });
 
   const Countryoptions = [
     { value: 'Administrador', label: 'Administrador' },
@@ -108,9 +116,36 @@ export function Modaluser(args: any) {
     { value: 'Vendedor', label: 'Vendedor' },
     { value: 'Cajero', label: 'Cajero' },
   ];
-  const [countryOption, setCountryOption] = useState<any>(null);  
+  const [countryOption, setCountryOption] = useState<any>(null);
+
+  const dispatch = useDispatch();
 
   const toggle = () => setModal(!modal);
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleRoleChange = (selectedOption) => {
+    setCountryOption(selectedOption);
+    setFormData({
+      ...formData,
+      role: selectedOption?.value || null,
+    });
+  };
+
+  const handleSave = () => {
+    if (formData.password.length < 8) {
+      alert('La contraseña debe tener al menos 8 caracteres');
+      return;
+    }
+    console.log('Enviando datos al backend:', formData);
+    dispatch(registerUser(formData));
+    toggle();
+  };  
 
   return (
     <div>
@@ -133,7 +168,8 @@ export function Modaluser(args: any) {
                           type="text"
                           name="name"
                           placeholder="usuario"
-                          // defaultValue="John Smith"
+                          value={formData.name}
+                          onChange={handleChange}
                         />
                       </div>
                     </Col>
@@ -145,7 +181,10 @@ export function Modaluser(args: any) {
                         <Input
                           className="form-control"
                           type="text"
+                          name="email"
                           placeholder="user@example.com"
+                          value={formData.email}
+                          onChange={handleChange}                          
                         />
                       </div>
                     </Col>
@@ -161,7 +200,10 @@ export function Modaluser(args: any) {
                         <Input
                           className="form-control"
                           type="password"
+                          name="password"
                           placeholder="••••••"
+                          value={formData.password}
+                          onChange={handleChange}     
                         />
                       </div>
                     </Col>
@@ -184,14 +226,13 @@ export function Modaluser(args: any) {
                   <Row>
                     <Col md="5" className="mb-3">
                       <Label className="form-label">Rol</Label>
-
                       <Select
-                         defaultValue={countryOption}
-                         onChange={setCountryOption}
-                         options={Countryoptions}
-                        placeholder="Admin"
-                        classNamePrefix="Search"
-                      />
+                      value={Countryoptions.find((option) => option.value === formData.role)}
+                      onChange={handleRoleChange}
+                      options={Countryoptions}
+                      placeholder="Admin"
+                      classNamePrefix="Search"
+                    />
                       <div className="invalid-feedback">
                         Please select a valid country.
                       </div>
@@ -205,7 +246,7 @@ export function Modaluser(args: any) {
         <ModalFooter>
           <Row>
             <Col className="d-flex justify-content-end">
-              <Button color="" className="btn btn-primary" onClick={toggle}>
+              <Button color="" className="btn btn-primary" onClick={handleSave}>
                 Guardar
               </Button>
             </Col>

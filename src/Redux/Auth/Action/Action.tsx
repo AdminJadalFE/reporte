@@ -1,9 +1,9 @@
 import { Dispatch } from "redux";
 
-export const loginSuccess = (userData: any) => {
+export const loginSuccess = (auth: any) => {
   return {
     type: "LOGIN_SUCCESS",
-    payload: userData,
+    payload: auth,
   };
 };
 
@@ -16,13 +16,13 @@ export const logout = () => async (dispatch: Dispatch) => {
 export const initializeState = () => (dispatch: any) => {
     const storedData = {
       isAuthenticated: localStorage.getItem("isAuthenticated") === "true",
-      user: {
-        id: localStorage.getItem("userId") || "",
-        name: localStorage.getItem("userName") || "",
-        token: localStorage.getItem("userToken") || "",
-        permissions: (localStorage.getItem("userPermissions") || "").split(","),
+      auth: {
+        id: localStorage.getItem("authId") || "",
+        name: localStorage.getItem("authName") || "",
+        token: localStorage.getItem("authToken") || "",
+        permissions: (localStorage.getItem("authPermissions") || "").split(","),
       },
-      message: localStorage.getItem("userMessage") || "",
+      message: localStorage.getItem("authMessage") || "",
     };
   
     dispatch({

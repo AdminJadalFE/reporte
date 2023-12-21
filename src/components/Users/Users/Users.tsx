@@ -1,47 +1,30 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { data, menudata } from "../../../Shared/datas/userlist/data";
-import {Row,Col,Card,CardBody,Input,} from "reactstrap";
-// import { Modaluser } from "../../../Shared/Prism/Prism";
+import { Row, Col, Card, CardBody, Input } from "reactstrap";
+import { PageHeaderstyle } from "./../../../Shared/Prism/Prism";
 import { Modaluser } from "./Modal/CreateUser";
-import { PageHeaderstyle } from './../../../Shared/Prism/Prism';
-import axios from "axios";
-const UserList02 = () => {
+import { useDispatch, useSelector } from "react-redux";
+import { fetchUsers } from "../../../Redux/User/Action/Action";
 
-  const [allData, setAllData] = useState([]);
+const UserList02 = () => {
+  const dispatch = useDispatch();
+  const allData = useSelector((state) => state.user.users);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("http://127.0.0.1:8000/api/users/");
-        setAllData(response.data.message);
-        console.log('data',response.data)
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
+    dispatch(fetchUsers());
+  }, [dispatch]);
 
-    fetchData();
-  }, []);
+  const [filteredData, setFilteredData] = useState([]);
 
-  let allElement2 = [];
-
-  let myfunction = (inputData) => {
-    for (let element of allData) {
-      if (element.name[0] === " ") {
-        element.name = element.name.trim();
-      }
-      if (
-        element.name.toLowerCase().includes(inputData.toLowerCase()) &&
-        element.name.toLowerCase().startsWith(inputData.toLowerCase())
-      ) {
-        allElement2.push(element);
-      }
-    }
-    setAllData(allElement2);
+  const handleSearch = (inputData) => {
+    const filteredUsers = allData.filter((user) =>
+      user.name.toLowerCase().includes(inputData.toLowerCase())
+    );
+    setFilteredData(filteredUsers);
   };
 
- 
+  const displayData = filteredData.length > 0 ? filteredData : allData;
+
   return (
     <div>
     <PageHeaderstyle title="Lista de Usuarios"home="Home"Pages="Apps"elements="User List"name="User List 02"/>
@@ -115,9 +98,5 @@ const UserList02 = () => {
     </div>
   );
 };
-
-UserList02.propTypes = {};
-
-UserList02.defaultProps = {};
 
 export default UserList02;

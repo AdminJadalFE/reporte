@@ -1,6 +1,6 @@
 const initialState = {
     isAuthenticated: false,
-    user: {
+    auth: {
       id: "",
       name: "",
       token: "",
@@ -21,7 +21,7 @@ const initialState = {
         return {
           ...state,
           isAuthenticated: true,
-          user: {
+          auth: {
             id: action.payload?.id || "",
             name: action.payload?.name || "",
             token: action.payload?.token || "",
@@ -34,7 +34,7 @@ const initialState = {
         return {
           ...state,
           isAuthenticated: false,
-          user: {
+          auth: {
             id: "",
             name: "",
             token: "",

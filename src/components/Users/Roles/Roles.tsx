@@ -1,22 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { PageHeaders } from "../../../Shared/Prism/Prism";
 import { Card, CardHeader, CardBody, Table, Col, Row } from "reactstrap";
-import { Modaluser } from "./Modal/CreateUser";
+import { Modalrol } from "./Modal/CreateRol";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchRoles } from "../../../Redux/Rol/Action/Action";
 
 const Roles = () => {
   const [roles, setRoles] = useState([]);
 
-  // Assume you fetch the data from the API here using useEffect
+  const dispatch = useDispatch();
+  const rolData = useSelector((state) => state.rol.roles);
+console.log('rolData',rolData);
   useEffect(() => {
-    // Replace this with your actual API endpoint
-    const apiUrl = "http://127.0.0.1:8000/api/roles/";
-
-    // Fetch data from the API
-    fetch(apiUrl)
-      .then((response) => response.json())
-      .then((data) => setRoles(data.message))
-      .catch((error) => console.error("Error fetching data:", error));
-  }, []);
+    dispatch(fetchRoles());
+  }, [dispatch]);
 
   // Sort roles by ID in ascending order
   const sortedRoles = roles.slice().sort((a, b) => a.id - b.id);
@@ -35,7 +32,7 @@ const Roles = () => {
           <Card>
             <CardHeader>
               <h3 className="card-title">Roles</h3>
-              <Modaluser/>
+              <Modalrol/>
             </CardHeader>
             <CardBody className="p-0">
               <div className="table-responsive">
@@ -48,13 +45,26 @@ const Roles = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {sortedRoles.map((role) => (
+                    {rolData.map((role) => (
                       <tr key={role.id}>
                         <th scope="row" className="ps-5">
                           {role.id}
                         </th>
                         <td>{role.name}</td>
-                        <td>Editar|Eliminar</td>
+                        <td>
+                          <button
+                              className="btn btn-primary btn-sm m-2"
+                              onClick={() => console.log('ssss')}
+                            >
+                              Editar
+                          </button>  
+                          <button
+                              className="btn btn-danger btn-sm m-2"
+                              onClick={() => console.log('ssss')}
+                            >
+                              Eliminar
+                          </button>  
+                        </td>
                       </tr>
                     ))}
                   </tbody>

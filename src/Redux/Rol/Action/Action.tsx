@@ -14,3 +14,19 @@ export const fetchRoles = () => async (dispatch: Dispatch) => {
       console.error('Error al obtener la lista de usuarios:', error);
     }
   };
+
+  export const createRol = (userData) => async (dispatch: Dispatch) => {
+    try {
+      const response = await axios.post('http://127.0.0.1:8000/api/roles/', userData);
+      const newUser = response.data; // Ajusta según la estructura de tus datos
+  
+      dispatch({
+        type: 'CREATE_ROL_SUCCESS',
+        payload: newUser,
+      });
+
+    dispatch(fetchRoles());
+    } catch (error) {
+      console.error('Error al crear un nuevo usuario:', error);
+    }
+  };  

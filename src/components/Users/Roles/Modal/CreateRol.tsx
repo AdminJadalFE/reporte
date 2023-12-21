@@ -99,7 +99,7 @@ export const PageHeaderstyle = (props: any) => {
     </div>
   )
 }
-export function Modaluser(args: any) {
+export function Modalrol(args: any) {
   const [modal, setModal] = useState(false);
 
   const Countryoptions = [
@@ -118,7 +118,7 @@ export function Modaluser(args: any) {
         <i className="fe fe-plus"></i> Agregar Rol
       </Button>
       <Modal isOpen={modal} toggle={toggle} {...args} size="lg">
-        <ModalHeader toggle={toggle}>Crear Usuario</ModalHeader>
+        <ModalHeader toggle={toggle}>Crear Rol</ModalHeader>
         <ModalBody>
           <div className="py-1">
             <Form className="form" noValidate>

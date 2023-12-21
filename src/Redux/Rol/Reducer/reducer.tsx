@@ -16,7 +16,15 @@ export default function rolReducer(state = initialState, action: Action) {
               ...state,
               roles: action.payload,
               message: "Roles fetched successfully",
-            };        
+            };
+
+        case "CREATE_ROL_SUCCESS":
+            return {
+                ...state,
+                roles: [...state.roles, action.payload],
+                message: "Rol created successfully",
+                };
+
         default:
             return state;
         }

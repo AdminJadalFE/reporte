@@ -1,10 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import 'react-date-range/dist/styles.css'; // main css file
 import 'react-date-range/dist/theme/default.css'; // theme css file
-import { Breadcrumb, BreadcrumbItem, Input, Modal, Button, ModalHeader, Label, ModalBody, Form, Row, Col, ModalFooter, Dropdown, DropdownMenu, DropdownItem, UncontrolledDropdown, DropdownToggle } from "reactstrap";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  Input,
+  Modal,
+  Button,
+  ModalHeader,
+  Label,
+  ModalBody,
+  Form,
+  Row,
+  Col,
+  ModalFooter,
+  Dropdown,
+  DropdownMenu,
+  DropdownItem,
+  UncontrolledDropdown,
+  DropdownToggle,
+  Card,
+  CardBody,
+  CardTitle,
+  CardHeader,
+  PopoverBody,
+  PopoverHeader,
+  UncontrolledPopover,
+
+} from 'reactstrap';
 import { addDays } from 'date-fns';
 import { DateRangePicker } from 'react-date-range';
 import Select from 'react-select';
+import { useDispatch } from 'react-redux'; // No necesitas importar 'useSelector' si no lo estás utilizando
+import { createProduct } from '../../../../Redux/Product/Action/Action';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; // Asegúrate de importar el archivo CSS de react-toastify
+
 
 export const PageHeader = (props: any) => {
 
@@ -99,8 +130,10 @@ export const PageHeaderstyle = (props: any) => {
     </div>
   )
 }
-export function Modaluser(args: any) {
+
+export function Modalproduct(args: any) {
   const [modal, setModal] = useState(false);
+  const dispatch = useDispatch();
 
   const Countryoptions = [
     { value: 'Administrador', label: 'Administrador' },
@@ -110,7 +143,44 @@ export function Modaluser(args: any) {
   ];
   const [countryOption, setCountryOption] = useState<any>(null);  
 
+  const [formData, setFormData] = useState({
+    name: '',
+    description: '',
+    product_code: '',
+    price: '',
+    stock: '',    
+  });  
+
   const toggle = () => setModal(!modal);
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+  
+  const DefaultTostify = () => {
+    console.log('asdfasf');
+    toast.success(
+      <p className="text-white tx-16 mb-0">
+        Success: Well done Details Submitted Successfully
+      </p>,
+      {
+        position: toast.POSITION.TOP_RIGHT,
+        hideProgressBar: true,
+        autoClose: 2000,
+        theme: "colored",
+      }
+    );
+  };
+  
+  const handleSave = () => {
+    console.log('Enviando datos al backend:', formData);
+    dispatch(createProduct(formData));
+    DefaultTostify();
+    console.log('DefaultTostify()dd',DefaultTostify())    
+  };
 
   return (
     <div>
@@ -133,7 +203,8 @@ export function Modaluser(args: any) {
                           type="text"
                           name="name"
                           placeholder="nombre"
-                          // defaultValue="John Smith"
+                          value={formData.name}
+                          onChange={handleChange}
                         />
                       </div>
                     </Col>
@@ -143,9 +214,10 @@ export function Modaluser(args: any) {
                         <Input
                           className="form-control"
                           type="text"
-                          name="name"
+                          name="description"
                           placeholder="descripcion"
-                          // defaultValue="John Smith"
+                          value={formData.description}
+                          onChange={handleChange}
                         />
                       </div>
                     </Col>                                      
@@ -157,7 +229,9 @@ export function Modaluser(args: any) {
                         <Input
                           className="form-control"
                           type="number"
-                          name="number"
+                          name="product_code"
+                          value={formData.product_code}
+                          onChange={handleChange}
                         />
                       </div>
                     </Col>
@@ -167,7 +241,9 @@ export function Modaluser(args: any) {
                         <Input
                           className="form-control"
                           type="number"
-                          name="number"
+                          name="price"
+                          value={formData.price}
+                          onChange={handleChange}                          
                         />
                       </div>
                     </Col>
@@ -177,7 +253,9 @@ export function Modaluser(args: any) {
                         <Input
                           className="form-control"
                           type="number"
-                          name="number"
+                          name="stock"
+                          value={formData.stock}
+                          onChange={handleChange}                          
                         />
                       </div>
                     </Col>                                             
@@ -190,7 +268,7 @@ export function Modaluser(args: any) {
         <ModalFooter>
           <Row>
             <Col className="d-flex justify-content-end">
-              <Button color="" className="btn btn-primary" onClick={toggle}>
+              <Button color="" className="btn btn-primary" onClick={handleSave}>
                 Guardar
               </Button>
             </Col>
@@ -200,3 +278,4 @@ export function Modaluser(args: any) {
     </div>
   );
 }
+

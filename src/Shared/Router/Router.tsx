@@ -30,6 +30,7 @@ const Services = lazy(() => import("../../components/Inventory/Services/Services
 const Permissions = lazy(() => import("../../components/Users/Permissions/Permissions"));
 const Sales = lazy(() => import("../../components/Sales/Sales"));
 const Purchases = lazy(() => import("../../components/Purchases/Purchases"));
+const SelectCompany = lazy(() => import("../../components/Company/SelectCompany/SelectCompany"));
 const UserList01 = lazy(() => import("../../components/Apps/UserList/UserList01/UserList01"));
 const UserList02 = lazy(() => import("../../components/Apps/UserList/UserList02/UserList02"));
 const UserList03 = lazy(() => import("../../components/Apps/UserList/UserList03/UserList03"));
@@ -396,6 +397,9 @@ export const Routing = () => {
           <Route>
             <Route path={`${import.meta.env.BASE_URL}users/purchases`} element={<Purchases />} />
           </Route>      
+          <Route>
+            <Route path={`${import.meta.env.BASE_URL}users/select`} element={<SelectCompany />} />
+          </Route> 
 
         </Route>
         <Route path={`${import.meta.env.BASE_URL}`} element={<Custompages />}>
@@ -453,6 +457,9 @@ export const Routing = () => {
             path={`${import.meta.env.BASE_URL}account/lockscreen/lockscreen03`}
             element={<LockScreen03 />}
           />
+          <Route>
+            <Route path={`${import.meta.env.BASE_URL}company/select`} element={<SelectCompany />} />
+          </Route> 
         </Route>
         <Route>
           <Route path={`${import.meta.env.BASE_URL}pages/switcher`} element={<Switcherapp />} />

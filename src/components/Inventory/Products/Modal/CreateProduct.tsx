@@ -164,7 +164,7 @@ export function Modalproduct(args: any) {
     console.log('asdfasf');
     toast.success(
       <p className="text-white tx-16 mb-0">
-        Success: Well done Details Submitted Successfully
+        AGREGADO EXITOSAMENTE!
       </p>,
       {
         position: toast.POSITION.TOP_RIGHT,
@@ -178,12 +178,14 @@ export function Modalproduct(args: any) {
   const handleSave = () => {
     console.log('Enviando datos al backend:', formData);
     dispatch(createProduct(formData));
-    DefaultTostify();
-    console.log('DefaultTostify()dd',DefaultTostify())    
+    toggle();
+    DefaultTostify();   
   };
 
   return (
     <div>
+    <ToastContainer />
+
       <Button color="primary" onClick={toggle}>
         <i className="fe fe-plus"></i> Agregar Producto
       </Button>
@@ -207,7 +209,7 @@ export function Modalproduct(args: any) {
                           onChange={handleChange}
                         />
                       </div>
-                    </Col>
+                    </Col>           
                     <Col>
                       <div className="mb-3">
                         <Label>Descripcion del Producto</Label>

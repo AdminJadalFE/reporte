@@ -179,6 +179,12 @@ export function Modaluser(args: any) {
     dispatch(registerUser(formData));
     toggle();
     registroAlert();
+    setFormData({
+      name: '',
+      email: '',
+      password: '',
+      role: null,
+    })
   };  
 
   return (

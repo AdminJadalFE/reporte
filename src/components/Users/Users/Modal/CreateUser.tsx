@@ -171,6 +171,10 @@ export function Modaluser(args: any) {
   };
 
   const handleSave = () => {
+    if (!formData.role) {
+      errorAlert('Por favor selecciona un rol.');
+      return;
+    }
     if (formData.password.length < 8) {
       errorAlert('La contraseña debe tener al menos 8 caracteres');
       return;

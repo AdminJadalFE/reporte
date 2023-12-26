@@ -15,13 +15,14 @@ import {
   TabContent,
   TabPane,
 } from "reactstrap";
-import { auth } from "../../Firebase/firebase";
+//import { auth } from "../../Firebase/firebase";
 import classnames from "classnames";
 import axios from "axios";
 import firebaselogo from "../../assets/images/png/4.png";
 import reactlogo from "../../assets/images/png/5.png";
 import { useDispatch, useSelector } from "react-redux";
 import { loginSuccess } from "../../Redux/Auth/Action/Action";
+import { auth } from '../../Util/axios';
 
 const Login = () => {
   const dispatch = useDispatch();  
@@ -61,7 +62,7 @@ const Login = () => {
   const Login = async (e) => {
     e.preventDefault(); // Move this line to the beginning if you want to prevent the default form submission
     try {
-      const resp = await axios.post("http://127.0.0.1:8000/api/login/", {
+      const resp = await auth.post("/api/login/", {
         email,
         password,
       });

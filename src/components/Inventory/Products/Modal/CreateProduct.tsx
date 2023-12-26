@@ -135,14 +135,6 @@ export function Modalproduct(args: any) {
   const [modal, setModal] = useState(false);
   const dispatch = useDispatch();
 
-  const Countryoptions = [
-    { value: 'Administrador', label: 'Administrador' },
-    { value: 'Usuario', label: 'Usuario' },
-    { value: 'Vendedor', label: 'Vendedor' },
-    { value: 'Cajero', label: 'Cajero' },
-  ];
-  const [countryOption, setCountryOption] = useState<any>(null);  
-
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -164,7 +156,7 @@ export function Modalproduct(args: any) {
     console.log('asdfasf');
     toast.success(
       <p className="text-white tx-16 mb-0">
-        AGREGADO EXITOSAMENTE!
+        Agregado exitosamente!
       </p>,
       {
         position: toast.POSITION.TOP_RIGHT,
@@ -179,7 +171,14 @@ export function Modalproduct(args: any) {
     console.log('Enviando datos al backend:', formData);
     dispatch(createProduct(formData));
     toggle();
-    DefaultTostify();   
+    DefaultTostify();
+    setFormData({
+      name: '',
+      description: '',
+      product_code: '',
+      price: '',
+      stock: '',
+    });
   };
 
   return (

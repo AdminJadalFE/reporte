@@ -98,10 +98,11 @@ const Login = () => {
 
   let navigate = useNavigate();
   const RouteChange = () => {
-    let path = `${import.meta.env.BASE_URL}dashboard/dashboard01/`;
+    // let path = `${import.meta.env.BASE_URL}dashboard/dashboard01/`;
+    let path = `${import.meta.env.BASE_URL}company/select/`;
     navigate(path);
   };
-
+  
   const updatedState = useSelector((state) => state); // Mueve esta línea dentro del componente
 
   useEffect(() => {

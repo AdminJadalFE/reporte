@@ -56,16 +56,15 @@ const SelectedCompany = () => {
       name="Apps"
       fonticonsname="Seleccionar Empresa"
     />
-   
     <Row className="flex-lg-nowrap">
       <Col className="col-12">
         <Row className="flex-lg-nowrap">
+        <Card className="text-center">   
           <Col className="col-12 mb-3">
             <div className="">
               <div className="">
                 <Row>
                   <Col className="mb-4">
-                 
                   </Col>
                   <Col className="col-auto mb-4">
                     <div className="mb-3 w-100">
@@ -149,10 +148,10 @@ const SelectedCompany = () => {
               </div>
             </div>
           </Col>
+          </Card>
         </Row>
-
         {/* <!-- User Form Modal --> */}
-      </Col>
+      </Col>  
     </Row>
   </div>
   );

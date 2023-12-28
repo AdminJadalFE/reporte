@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Row, Col, Card, CardBody, Input } from "reactstrap";
+import { Row, Col, Card, CardBody, Button, Input, Modal } from "reactstrap";
 import { PageHeaderstyle } from "./../../../Shared/Prism/Prism";
 import { Modaluser } from "./Modal/CreateUser";
+import  EditUser from "./Modal/EditUser";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUsers,deleteUser } from "../../../Redux/User/Action/Action";
-import axios from 'axios';
-import Swal from 'sweetalert2';
+import { fetchUsers, deleteUser } from "../../../Redux/User/Action/Action";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 const UserList02 = () => {
   const dispatch = useDispatch();
@@ -16,7 +17,7 @@ const UserList02 = () => {
     dispatch(fetchUsers());
   }, [dispatch]);
 
-  const [alert, setAlert] = useState("Congratulations!")
+  const [alert, setAlert] = useState("Congratulations!");
 
   function eliminarAlert() {
     Swal.fire({
@@ -44,9 +45,25 @@ const UserList02 = () => {
     dispatch(deleteUser(userId)); // Utiliza la acción deleteUser
   };
 
+  const [modal, setModal] = useState(false);
+  const toggle = () => setModal(!modal);
+
+
+  const [selectedUserId, setSelectedUserId] = useState(null);
+
+  const handleEdit = (userId) => {
+    setSelectedUserId(userId);
+    toggle();
+  };
   return (
     <div>
-    <PageHeaderstyle title="Lista de Usuarios"home="Home"Pages="Apps"elements="User List"name="User List 02"/>
+      <PageHeaderstyle
+        title="Lista de Usuarios"
+        home="Home"
+        Pages="Apps"
+        elements="User List"
+        name="User List 02"
+      />
       <Row className="flex-lg-nowrap">
         <Col className="col-12">
           <Row className="flex-lg-nowrap">
@@ -55,7 +72,7 @@ const UserList02 = () => {
                 <CardBody>
                   <Row>
                     <Col className="mb-4">
-                     <Modaluser/>
+                      <Modaluser />
                     </Col>
                     <Col className="col-auto mb-4">
                       <div className="mb-3 w-100">
@@ -67,7 +84,7 @@ const UserList02 = () => {
                             type="text"
                             className="form-control"
                             placeholder="Search User"
-                            onChange={(ele) => handleSearch(ele.target.value)}  // Cambiado de myfunction a handleSearch
+                            onChange={(ele) => handleSearch(ele.target.value)} // Cambiado de myfunction a handleSearch
                           />
                         </div>
                       </div>
@@ -87,22 +104,29 @@ const UserList02 = () => {
                               {list.name}
                             </p>
                             <small className="text-muted">{list.email}</small>
-                            <br/>
-                            <small className="text-muted">{list.roles.map((role) => role.name).join(', ')}</small>
+                            <br />
+                            <small className="text-muted">
+                              {list.roles.map((role) => role.name).join(", ")}
+                            </small>
                           </div>
                           <div className="float-sm-end ms-auto mt-4 mt-sm-0">
-                            <Link
-                              to="#"
-                              className="btn btn-primary btn-sm m-2"
-                            >
+                            <Link to="#" className="btn btn-primary btn-sm m-2">
                               Editar
                             </Link>
+
+                            <button
+                            className="btn btn-primary btn-sm m-2"
+                            onClick={() => handleEdit(list.id)}
+                          >
+                            Editar2
+                          </button>
+
                             <button
                               className="btn btn-danger btn-sm m-2"
                               onClick={() => handleDelete(list.id)}
                             >
                               Eliminar
-                            </button>                        
+                            </button>
                           </div>
                         </div>
                       </Col>
@@ -114,6 +138,11 @@ const UserList02 = () => {
           </Row>
         </Col>
       </Row>
+
+      <Modal isOpen={modal} toggle={toggle} size="lg">
+        <EditUser userId={selectedUserId} />
+      </Modal>
+      
     </div>
   );
 };

@@ -8,6 +8,7 @@ import Select from 'react-select';
 import { useDispatch, useSelector } from "react-redux";
 import { registerUser } from "../../../../Redux/User/Action/Action";
 import { fetchRoles } from "../../../../Redux/Rol/Action/Action";
+import { fetchCompanies } from '../../../../Redux/Company/Action/Action'; 
 import Swal from "sweetalert2";
 export const PageHeader = (props: any) => {
 
@@ -111,6 +112,7 @@ export function Modaluser(args: any) {
     email: '',
     password: '',
     role: null,
+    company: null,
   });
 
   const [alert, setAlert] = useState("Congratulations!")
@@ -136,17 +138,24 @@ export function Modaluser(args: any) {
     });
   };
 
-  const [countryOption, setCountryOption] = useState<any>(null);
+  const [rolOption, setRolOption] = useState<any>(null);
+  const [companyOption, setCompanyOption] = useState<any>(null);
 
   const dispatch = useDispatch();
   const rolData = useSelector((state) => state.rol.roles);
-  console.log('alldata',rolData);
+  const companyData = useSelector((state) => state.company.companies);
 
+  console.log('companyData',companyData);
 
     
-  const Countryoptions = rolData.map((role) => ({
+  const Roloptions = rolData.map((role) => ({
     value: role.id,
     label: role.name,
+  }));
+
+  const Companyoptions = companyData.map((company) => ({
+    value: company.id,
+    label: company.name,
   }));
 
   const toggle = () => setModal(!modal);
@@ -154,6 +163,12 @@ export function Modaluser(args: any) {
   useEffect(() => {
     dispatch(fetchRoles());
   }, [dispatch]);
+
+  
+  useEffect(() => {
+    dispatch(fetchCompanies());
+  }, [dispatch]);
+
 
   const handleChange = (e) => {
     setFormData({
@@ -163,13 +178,21 @@ export function Modaluser(args: any) {
   };
 
   const handleRoleChange = (selectedOption) => {
-    setCountryOption(selectedOption);
+    setRolOption(selectedOption);
     setFormData({
       ...formData,
       role: selectedOption?.value || null,
     });
   };
 
+  const handleCompanyChange = (selectedOption) => {
+    setCompanyOption(selectedOption);
+    setFormData({
+      ...formData,
+      company: selectedOption?.value || null,
+    });
+  };
+  
   const handleSave = () => {
     if (!formData.role) {
       errorAlert('Por favor selecciona un rol.');
@@ -188,6 +211,7 @@ export function Modaluser(args: any) {
       email: '',
       password: '',
       role: null,
+      company: null,
     })
   };  
 
@@ -271,17 +295,30 @@ export function Modaluser(args: any) {
                     <Col md="5" className="mb-3">
                       <Label className="form-label">Rol</Label>
                       <Select
-                      value={Countryoptions.find((option) => option.value === formData.role)}
+                      value={Roloptions.find((option) => option.value === formData.role)}
                       onChange={handleRoleChange}
-                      options={Countryoptions}
-                      placeholder="admin"
+                      options={Roloptions}
+                      // placeholder="admin"
                       classNamePrefix="Search"
                     />
                       <div className="invalid-feedback">
                         Please select a valid country.
                       </div>
                     </Col>
-                  </Row>
+                    <Col md="5" className="mb-3">
+                      <Label className="form-label">Empresa</Label>
+                      <Select
+                      value={Companyoptions.find((option) => option.value === formData.company)}
+                      onChange={handleCompanyChange}
+                      options={Companyoptions}
+                      // placeholder="admin"
+                      classNamePrefix="Search"
+                    />
+                      <div className="invalid-feedback">
+                        Please select a valid country.
+                      </div>
+                    </Col>                    
+                  </Row>                
                 </Col>
               </Row>
             </Form>

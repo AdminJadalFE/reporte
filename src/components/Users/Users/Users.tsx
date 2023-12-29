@@ -140,7 +140,7 @@ const UserList02 = () => {
       </Row>
 
       <Modal isOpen={modal} toggle={toggle} size="lg">
-        <EditUser userId={selectedUserId} />
+        <EditUser userId={selectedUserId} onClose={toggle} />
       </Modal>
       
     </div>

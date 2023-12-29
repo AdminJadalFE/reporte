@@ -1,28 +1,45 @@
-import React, { useState,useEffect } from 'react';
-import 'react-date-range/dist/styles.css'; // main css file
-import 'react-date-range/dist/theme/default.css'; // theme css file
-import { Breadcrumb, BreadcrumbItem, Input, Modal, Button, ModalHeader, Label, ModalBody, Form, Row, Col, ModalFooter, Dropdown, DropdownMenu, DropdownItem, UncontrolledDropdown, DropdownToggle } from "reactstrap";
-import { addDays } from 'date-fns';
-import { DateRangePicker } from 'react-date-range';
-import Select from 'react-select';
+import React, { useState, useEffect } from "react";
+import "react-date-range/dist/styles.css"; // main css file
+import "react-date-range/dist/theme/default.css"; // theme css file
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  Input,
+  Modal,
+  Button,
+  ModalHeader,
+  Label,
+  ModalBody,
+  Form,
+  Row,
+  Col,
+  ModalFooter,
+  Dropdown,
+  DropdownMenu,
+  DropdownItem,
+  UncontrolledDropdown,
+  DropdownToggle,
+} from "reactstrap";
+import { addDays } from "date-fns";
+import { DateRangePicker } from "react-date-range";
+import Select from "react-select";
 import { useDispatch, useSelector } from "react-redux";
 import { registerUser } from "../../../../Redux/User/Action/Action";
 import { fetchRoles } from "../../../../Redux/Rol/Action/Action";
-import { fetchCompanies } from '../../../../Redux/Company/Action/Action'; 
+import { fetchCompanies } from "../../../../Redux/Company/Action/Action";
 import Swal from "sweetalert2";
 
 export function Modaluser(args: any) {
-
   const [modal, setModal] = useState(false);
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
+    name: "",
+    email: "",
+    password: "",
     role: null,
     company: null,
   });
 
-  const [alert, setAlert] = useState("Congratulations!")
+  const [alert, setAlert] = useState("Congratulations!");
 
   function registroAlert() {
     Swal.fire({
@@ -37,11 +54,11 @@ export function Modaluser(args: any) {
 
   const errorAlert = (errorMessage) => {
     Swal.fire({
-      title: 'Error',
+      title: "Error",
       text: errorMessage,
-      icon: 'error',
-      confirmButtonText: 'OK',
-      cancelButtonColor: '#4454c3',
+      icon: "error",
+      confirmButtonText: "OK",
+      cancelButtonColor: "#4454c3",
     });
   };
 
@@ -52,9 +69,8 @@ export function Modaluser(args: any) {
   const rolData = useSelector((state) => state.rol.roles);
   const companyData = useSelector((state) => state.company.companies);
 
-  console.log('companyData',companyData);
+  console.log("companyData", companyData);
 
-    
   const Roloptions = rolData.map((role) => ({
     value: role.id,
     label: role.name,
@@ -71,11 +87,9 @@ export function Modaluser(args: any) {
     dispatch(fetchRoles());
   }, [dispatch]);
 
-  
   useEffect(() => {
     dispatch(fetchCompanies());
   }, [dispatch]);
-
 
   const handleChange = (e) => {
     setFormData({
@@ -99,28 +113,28 @@ export function Modaluser(args: any) {
       company: selectedOption?.value || null,
     });
   };
-  
+
   const handleSave = () => {
     if (!formData.role) {
-      errorAlert('Por favor selecciona un rol.');
+      errorAlert("Por favor selecciona un rol.");
       return;
     }
     if (formData.password.length < 8) {
-      errorAlert('La contraseña debe tener al menos 8 caracteres');
+      errorAlert("La contraseña debe tener al menos 8 caracteres");
       return;
     }
-    console.log('Enviando datos al backend:', formData);
+    console.log("Enviando datos al backend:", formData);
     dispatch(registerUser(formData));
     toggle();
     registroAlert();
     setFormData({
-      name: '',
-      email: '',
-      password: '',
+      name: "",
+      email: "",
+      password: "",
       role: null,
       company: null,
-    })
-  };  
+    });
+  };
 
   return (
     <div>
@@ -159,7 +173,7 @@ export function Modaluser(args: any) {
                           name="email"
                           placeholder="user@example.com"
                           value={formData.email}
-                          onChange={handleChange}                          
+                          onChange={handleChange}
                         />
                       </div>
                     </Col>
@@ -178,7 +192,7 @@ export function Modaluser(args: any) {
                           name="password"
                           placeholder="••••••"
                           value={formData.password}
-                          onChange={handleChange}     
+                          onChange={handleChange}
                         />
                       </div>
                     </Col>
@@ -200,32 +214,36 @@ export function Modaluser(args: any) {
                   </Row>
                   <Row>
                     <Col md="5" className="mb-3">
-                      <Label className="form-label">Rol</Label>
+                      <Label className="form-label">Empresa</Label>
                       <Select
-                      value={Roloptions.find((option) => option.value === formData.role)}
-                      onChange={handleRoleChange}
-                      options={Roloptions}
-                      // placeholder="admin"
-                      classNamePrefix="Search"
-                    />
+                        value={Companyoptions.find(
+                          (option) => option.value === formData.company
+                        )}
+                        onChange={handleCompanyChange}
+                        options={Companyoptions}
+                        // placeholder="admin"
+                        classNamePrefix="Search"
+                      />
                       <div className="invalid-feedback">
                         Please select a valid country.
                       </div>
                     </Col>
                     <Col md="5" className="mb-3">
-                      <Label className="form-label">Empresa</Label>
+                      <Label className="form-label">Rol</Label>
                       <Select
-                      value={Companyoptions.find((option) => option.value === formData.company)}
-                      onChange={handleCompanyChange}
-                      options={Companyoptions}
-                      // placeholder="admin"
-                      classNamePrefix="Search"
-                    />
+                        value={Roloptions.find(
+                          (option) => option.value === formData.role
+                        )}
+                        onChange={handleRoleChange}
+                        options={Roloptions}
+                        // placeholder="admin"
+                        classNamePrefix="Search"
+                      />
                       <div className="invalid-feedback">
                         Please select a valid country.
                       </div>
-                    </Col>                    
-                  </Row>                
+                    </Col>
+                  </Row>
                 </Col>
               </Row>
             </Form>

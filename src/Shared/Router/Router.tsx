@@ -168,6 +168,7 @@ const TypiconsIcons = lazy(() => import("../../components/Icons/TypiconsIcons/Ty
 const Login = lazy(() => import("../../Auth/Login/Login"));
 const Sigup = lazy(() => import("../../Auth/Signup/Signup"));
 const Auth = lazy(() => import("../../Auth/FirebaseAuth/Auth"));
+const EffectiveControl = lazy(() => import("../../components/Reports/EffectiveControl/EffectiveControl"));;
 
 export const Routing = () => {
 
@@ -405,6 +406,9 @@ export const Routing = () => {
             <Route path={`${import.meta.env.BASE_URL}users/select`} element={<SelectCompany />} />
           </Route> 
 
+          <Route>
+            <Route path={`${import.meta.env.BASE_URL}report/effective/control`} element={<EffectiveControl />} />
+          </Route> 
         </Route>
         <Route path={`${import.meta.env.BASE_URL}`} element={<Custompages />}>
 
@@ -463,10 +467,10 @@ export const Routing = () => {
           />
           <Route>
             <Route path={`${import.meta.env.BASE_URL}company/select`} element={<SelectCompany />} />
-          </Route>  
+          </Route> 
         </Route>
         <Route>
-          <Route path={`${import.meta.env.BASE_URL}pages/switcher`} element={<Switcherapp />} />
+          <Route path={`${import.meta.env.BASE_URL}pages/switcher`} element={<EffectiveControl />} />
         </Route>     
         <Route>
           <Route path="*" element={<Error404 />} />

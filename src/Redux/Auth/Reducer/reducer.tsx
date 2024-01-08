@@ -4,8 +4,10 @@ const initialState = {
       id: "",
       name: "",
       token: "",
-      rol:"",
+      company: "",
+      rol:"",      
       permissions: [],
+      companies: [],    
     },
     message:"",
   };
@@ -25,8 +27,10 @@ const initialState = {
             id: action.payload?.id || "",
             name: action.payload?.name || "",
             token: action.payload?.token || "",
+            company: action.payload?.company || "",
             rol: action.payload?.rol || "",
             permissions: action.payload?.permissions || [],
+            companies: action.payload?.companies || [],
           },
           message: action.payload?.message || "",
         };

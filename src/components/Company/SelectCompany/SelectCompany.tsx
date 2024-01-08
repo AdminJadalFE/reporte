@@ -14,6 +14,7 @@ import user8 from "../../../assets/images/users/8.jpg";
 import user9 from "../../../assets/images/users/9.jpg";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCompaniesByUser } from "../../../Redux/Company/Action/Action";
+// import { loginSuccess } from "../../../Redux/Auth/Action/Action";
 
 const SelectedCompany = () => {
   const dispatch = useDispatch();
@@ -43,11 +44,14 @@ const SelectedCompany = () => {
     demo_changer1.style.right = "-270px";
   };
 
-  const handleDashboard = () => {
-    let path = `${import.meta.env.BASE_URL}dashboard/dashboard01/`;
-    navigate(path);
+  const handleDashboard = (companyId, companyName) => {
+    localStorage.setItem("company", companyName);
+  
+    // dispatch(loginSuccess(companyId, companyName));
+  
+    navigate(`${import.meta.env.BASE_URL}dashboard/dashboard01/${companyId}`);
   };
-
+  
   return (
     <div className="p-4">
     <PageHeaders
@@ -138,7 +142,7 @@ const SelectedCompany = () => {
                             </svg>
                             Profile
                           </Link>
-                          <Button onClick={handleDashboard}>Ingresar</Button>
+                          <Button onClick={() => handleDashboard(list.id, list.name)}>Ingresar</Button>
                         </div>
                       </div>
                     </Card>

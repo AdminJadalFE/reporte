@@ -77,7 +77,9 @@ const Login = () => {
         localStorage.setItem("permissions", resp.data.data.permissions);
 
         console.log('resp.data.data',resp.data.data);
-        console.log('almacenando en redux',dispatch(loginSuccess(resp.data.data)));
+
+        dispatch(loginSuccess(resp.data.data));
+        
         setLoader(true);
         RouteChange();
         setLoader(false);

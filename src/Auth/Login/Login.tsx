@@ -72,14 +72,16 @@ const Login = () => {
         console.log("Response Data:", resp.data);
 
         localStorage.setItem("username", resp.data.data.name);
-        localStorage.setItem("rol", resp.data.data.rol);
+        //localStorage.setItem("rol", resp.data.data.rol);
         localStorage.setItem("token", resp.data.data.token);
-        localStorage.setItem("permissions", resp.data.data.permissions);
+        //localStorage.setItem("permissions", resp.data.data.permissions);
+        localStorage.setItem("companies", JSON.stringify(resp.data.data.companies));
 
         console.log('resp.data.data',resp.data.data);
 
-        dispatch(loginSuccess(resp.data.data));
-        
+        dispatch(loginSuccess({ ...resp.data.data }));
+
+
         setLoader(true);
         RouteChange();
         setLoader(false);

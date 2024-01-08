@@ -182,8 +182,8 @@ export const Routing = () => {
         <Route path={`${import.meta.env.BASE_URL}`} element={<App />}>
           <Route>
             <Route index element={<Dashboard />} />
-            // <Route path={`${import.meta.env.BASE_URL}dashboard/dashboard01`} element={<Dashboard />} />
-            <Route path={`${import.meta.env.BASE_URL}dashboard/dashboard01/:companyId`} element={<Dashboard />} />
+            <Route path={`${import.meta.env.BASE_URL}dashboard/dashboard01`} element={<Dashboard />} />
+            
             <Route path={`${import.meta.env.BASE_URL}dashboard/dashboard02`} element={<Dashboard2 />} />
             <Route path={`${import.meta.env.BASE_URL}dashboard/dashboard03`} element={<Dashboard3 />} />
             <Route path={`${import.meta.env.BASE_URL}dashboard/dashboard04`} element={<Dashboard4 />} />
@@ -468,9 +468,9 @@ export const Routing = () => {
         <Route>
           <Route path={`${import.meta.env.BASE_URL}pages/switcher`} element={<Switcherapp />} />
         </Route>     
-        // <Route>
-        //   <Route path="*" element={<Error404 />} />
-        // </Route>        
+        <Route>
+          <Route path="*" element={<Error404 />} />
+        </Route>        
       </Routes>
     </React.Suspense>
   )

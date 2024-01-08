@@ -20,6 +20,7 @@ import favicon from "../../../assets/images/brand/favicon.png";
 import { MENUITEMS } from "../Sidebar/SideMenu";
 import ProfileService from "../../Prism/profile";
 import EditProfileService from "../../Prism/editprofile";
+import { useSelector } from "react-redux";
 
 export const Header = () => {
   
@@ -150,6 +151,7 @@ const Fullscreen: any = (vale: any) => {
 	const [faces6, setImage] = useState(Image);
 	const [outPut, setoutPut] = useState(EditProfileService.returnId());
   let { companyId } = useParams();
+  const companyName = useSelector((state) => state.auth.auth.company); // Extrae el nombre de la empresa del estado
 
 
 	useEffect(() => {
@@ -227,7 +229,7 @@ const Fullscreen: any = (vale: any) => {
             </Link>
             <UncontrolledDropdown className="dropdown header-option mt-4">
                 <span className="nav-span">
-                  <h4>Empresa XYZ { companyId }</h4>
+                  <h4>Empresa - {companyName}</h4>
                 </span>
             </UncontrolledDropdown>
             <div className="d-flex order-lg-2 ms-lg-auto">

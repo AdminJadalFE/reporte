@@ -14,7 +14,8 @@ import user8 from "../../../assets/images/users/8.jpg";
 import user9 from "../../../assets/images/users/9.jpg";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCompaniesByUser } from "../../../Redux/Company/Action/Action";
-// import { loginSuccess } from "../../../Redux/Auth/Action/Action";
+import { selectCompany } from "../../../Redux/Auth/Action/Action";
+import { loginWithRoleAndPermissions } from "../../../Redux/Auth/Action/Action";
 
 const SelectedCompany = () => {
   const dispatch = useDispatch();
@@ -46,10 +47,29 @@ const SelectedCompany = () => {
 
   const handleDashboard = (companyId, companyName) => {
     localStorage.setItem("company", companyName);
-  
-    // dispatch(loginSuccess(companyId, companyName));
-  
-    navigate(`${import.meta.env.BASE_URL}dashboard/dashboard01/${companyId}`);
+    
+    const companiesData = JSON.parse(localStorage.getItem("companies") || '');
+    const selectedCompany = companiesData.find(company => company.id === companyId);
+
+    //console.log('selectedCompany',selectedCompany);
+    const rolName = selectedCompany.roles[0].rol_name;
+    const permissions = selectedCompany.roles[0].permissions;
+
+    // console.log('Nombre del Rol:', rolName);
+    // console.log('Permisos:', permissions);
+
+    localStorage.setItem("rol", rolName);
+    localStorage.setItem("permissions", permissions);
+
+    dispatch(loginWithRoleAndPermissions(rolName, permissions));
+    // localStorage.setItem("selectedRoles", JSON.stringify(roles));
+
+    //localStorage.setItem("permissions", resp.data.data.permissions);
+    //const parsedCompanies = storedCompanies ? JSON.parse(storedCompanies.compcompanyId) : [];
+
+    dispatch(selectCompany(companyName));
+   
+    navigate(`${import.meta.env.BASE_URL}dashboard/dashboard01/`);
   };
   
   return (

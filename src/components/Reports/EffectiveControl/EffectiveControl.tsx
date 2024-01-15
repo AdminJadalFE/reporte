@@ -12,6 +12,8 @@ import {
 import { PageHeaders } from "../../../Shared/Prism/Prism";
 import DatePicker from "react-multi-date-picker";
 import Select from "react-select";
+import axios from "axios";
+
 
 const EffectiveControl = () => {
   console.log("asdfasdfasdf");
@@ -23,6 +25,21 @@ const EffectiveControl = () => {
     { value: "Usa", label: "Usa" },
     { value: "Aus", label: "Aus" },
   ];
+
+  const [pdfUrl, setPdfUrl] = useState<string | null>(null);
+
+  const openPdf = async () => {
+    try {
+      const response = await axios.get("http://127.0.0.1:8003/api/report/sale/pdf/day", {
+        responseType: "arraybuffer",
+      });
+      const blob = new Blob([response.data], { type: "application/pdf" });
+      const pdfUrl = URL.createObjectURL(blob);
+      setPdfUrl(pdfUrl);
+    } catch (error) {
+      console.error("Error al cargar el PDF", error);
+    }
+  };
 
   return (
     <div>
@@ -133,6 +150,7 @@ const EffectiveControl = () => {
                       color=""
                       type="button"
                       className="btn btn-primary btn-svgs btn-svg-white mt-4 ml-4 mr-4"
+                      onClick={() => openPdf()}
                     >
                       <svg
                         className="svg-icon"
@@ -190,8 +208,35 @@ const EffectiveControl = () => {
                   </svg>
                       <span className="btn-svg-text">MOSTRAR/OCULTAR</span>
                     </Button>
+
+
+
+
+
+
+                    
                   </div>
+
+                  
+
                 </Col>
+
+                {pdfUrl && (
+                  <div className="pdf-viewer">
+                    <object
+                      data={pdfUrl}
+                      type="application/pdf"
+                      width="100%"
+                      height="600px"
+                    >
+                      <p>
+                        Tu navegador no puede mostrar el PDF. Puedes descargarlo
+                        <a href={pdfUrl}>aquí</a>.
+                      </p>
+                    </object>
+                  </div>
+                )}
+
               </Row>
             </CardBody>
           </Card>

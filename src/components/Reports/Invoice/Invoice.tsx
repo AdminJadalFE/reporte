@@ -8,13 +8,15 @@ import {
   Row,
   Label,
   Button,
+  Input,
 } from "reactstrap";
 import { PageHeaders } from "../../../Shared/Prism/Prism";
 import DatePicker from "react-multi-date-picker";
 import Select from "react-select";
 import axios from "axios";
+import { Fixedheader } from ".//DataTable/Fixedheader";
 
-const EffectiveControl = () => {
+const Invoice = () => {
   console.log("asdfasdfasdf");
   const [dates, setDates] = useState<any>();
   const [countryOption, setCountryOption] = useState<any>(null);
@@ -46,7 +48,7 @@ const EffectiveControl = () => {
   return (
     <div>
       <PageHeaders
-        title="Reporte Acumulado por Día"
+        title="Reporte Factura"
         home="Home"
         name="Pages"
         fonticonsname="Empty"
@@ -62,7 +64,39 @@ const EffectiveControl = () => {
               <Row>
                 <Col lg="6">
                   <div className="mb-3">
-                    <Label className="form-label">Desde: </Label>
+                    <Label className="form-label">Cliente: </Label>
+                  </div>
+                  <div className="row row-sm">
+                    <div className="col-lg">
+                      <Input
+                        className="form-control mb-4"
+                        placeholder="cliente"
+                        type="text"
+                      />
+                    </div>
+                  </div>
+                </Col>
+
+                <Col lg="6">
+                  <div className="mb-3">
+                    <Label className="form-label">Número de Documento: </Label>
+                  </div>
+                  <div className="row row-sm">
+                    <div className="col-lg">
+                      <Input
+                        className="form-control mb-4"
+                        placeholder="número de documento"
+                        type="text"
+                      />
+                    </div>
+                  </div>
+                </Col>
+              </Row>
+
+              <Row>
+                <Col lg="6">
+                  <div className="mb-3">
+                    <Label className="form-label">Fecha de Inicio: </Label>
                   </div>
                   <div className="wd-200 mg-b-30">
                     <div className="input-group">
@@ -94,7 +128,7 @@ const EffectiveControl = () => {
                 </Col>
                 <Col lg="6">
                   <div className="mb-3">
-                    <Label className="form-label">Hasta: </Label>
+                    <Label className="form-label">Fecha de Fin: </Label>
                   </div>
                   <div className="wd-200 mg-b-30">
                     <div className="input-group">
@@ -128,7 +162,7 @@ const EffectiveControl = () => {
               <Row>
                 <Col lg="6">
                   <div className="mb-3 mt-3">
-                    <Label className="form-label">Selecciona un Local: </Label>
+                    <Label className="form-label">Situación: </Label>
                   </div>
                   <div className="wd-200 mg-b-30">
                     <Select
@@ -140,7 +174,20 @@ const EffectiveControl = () => {
                     />
                   </div>
                 </Col>
+
+                <Col lg="6">
+                  <div className="mb-3 mt-7">
+                    <Button color="" tag="a" className="btn btn-primary">
+                      Buscar
+                    </Button>
+                  </div>
+                </Col>
               </Row>
+
+              <div className="table-responsive datatble-filter">
+                <Fixedheader />
+              </div>
+
               <Row>
                 <Col lg="6">
                   <div className="mb-3 mt-3">
@@ -236,8 +283,8 @@ const EffectiveControl = () => {
   );
 };
 
-EffectiveControl.propTypes = {};
+Invoice.propTypes = {};
 
-EffectiveControl.defaultProps = {};
+Invoice.defaultProps = {};
 
-export default EffectiveControl;
+export default Invoice;

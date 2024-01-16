@@ -168,7 +168,8 @@ const TypiconsIcons = lazy(() => import("../../components/Icons/TypiconsIcons/Ty
 const Login = lazy(() => import("../../Auth/Login/Login"));
 const Sigup = lazy(() => import("../../Auth/Signup/Signup"));
 const Auth = lazy(() => import("../../Auth/FirebaseAuth/Auth"));
-const EffectiveControl = lazy(() => import("../../components/Reports/EffectiveControl/EffectiveControl"));;
+const EffectiveControl = lazy(() => import("../../components/Reports/EffectiveControl/EffectiveControl"));
+const Invoice = lazy(() => import("../../components/Reports/Invoice/Invoice"));
 
 export const Routing = () => {
 
@@ -408,7 +409,10 @@ export const Routing = () => {
 
           <Route>
             <Route path={`${import.meta.env.BASE_URL}report/effective/control`} element={<EffectiveControl />} />
-          </Route> 
+          </Route>
+          <Route>
+            <Route path={`${import.meta.env.BASE_URL}report/invoice`} element={<Invoice />} />
+          </Route>            
         </Route>
         <Route path={`${import.meta.env.BASE_URL}`} element={<Custompages />}>
 

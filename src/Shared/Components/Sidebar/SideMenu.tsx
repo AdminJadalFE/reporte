@@ -1277,6 +1277,13 @@ export const MENUITEMS: menu[] = [
         active: false,
         children: [
           {
+            path: `${import.meta.env.BASE_URL}report/invoice`,
+            type: "link",
+            active: false,
+            selected: false,
+            title: "Reporte Factura",
+          },          
+          {
             path: `${import.meta.env.BASE_URL}report/accumulated/day`,
             type: "link",
             active: false,

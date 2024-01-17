@@ -1282,7 +1282,21 @@ export const MENUITEMS: menu[] = [
             active: false,
             selected: false,
             title: "Reporte Factura",
-          },          
+          },
+          {
+            path: `${import.meta.env.BASE_URL}report/administrative`,
+            type: "link",
+            active: false,
+            selected: false,
+            title: "Reporte Administrativo",
+          },
+          {
+            path: `${import.meta.env.BASE_URL}report/statistical`,
+            type: "link",
+            active: false,
+            selected: false,
+            title: "Reporte Estadístico",
+          },                                                  
           {
             path: `${import.meta.env.BASE_URL}report/accumulated/day`,
             type: "link",

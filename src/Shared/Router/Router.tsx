@@ -170,6 +170,8 @@ const Sigup = lazy(() => import("../../Auth/Signup/Signup"));
 const Auth = lazy(() => import("../../Auth/FirebaseAuth/Auth"));
 const EffectiveControl = lazy(() => import("../../components/Reports/EffectiveControl/EffectiveControl"));
 const Invoice = lazy(() => import("../../components/Reports/Invoice/Invoice"));
+const Statistical = lazy(() => import("../../components/Reports/Statistical/Statistical"));
+const Administrative = lazy(() => import("../../components/Reports/Administrative/Administrative"));
 
 export const Routing = () => {
 
@@ -412,7 +414,13 @@ export const Routing = () => {
           </Route>
           <Route>
             <Route path={`${import.meta.env.BASE_URL}report/invoice`} element={<Invoice />} />
-          </Route>            
+          </Route>
+          <Route>
+            <Route path={`${import.meta.env.BASE_URL}report/statistical`} element={<Statistical />} />
+          </Route>  
+          <Route>
+            <Route path={`${import.meta.env.BASE_URL}report/administrative`} element={<Administrative />} />
+          </Route>                                  
         </Route>
         <Route path={`${import.meta.env.BASE_URL}`} element={<Custompages />}>
 

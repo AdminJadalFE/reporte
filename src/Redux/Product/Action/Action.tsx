@@ -18,15 +18,16 @@ export const fetchProducts = () => async (dispatch: Dispatch) => {
   export const createProduct = (ProductsData) => async (dispatch: Dispatch) => {
     try {
       const response = await axios.post('http://127.0.0.1:8001/api/products/', ProductsData);
-      const newProduct = response.data; 
+      const newProduct = response.data;
   
       dispatch({
         type: 'CREATE_PRODUCT_SUCCESS',
         payload: newProduct,
       });
-
-    dispatch(fetchProducts());
+  
+      dispatch(fetchProducts());
     } catch (error) {
       console.error('Error al crear un nuevo producto:', error);
+      //throw error; //retornar error
     }
-  };    
+  };

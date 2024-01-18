@@ -37,6 +37,7 @@ export function Modaluser(args: any) {
     password: "",
     role: null,
     company: null,
+    rolesAndCompanies: [{ role: null, company: null }],
   });
 
   const [alert, setAlert] = useState("Congratulations!");
@@ -98,31 +99,41 @@ export function Modaluser(args: any) {
     });
   };
 
-  const handleRoleChange = (selectedOption) => {
-    setRolOption(selectedOption);
+  const handleRoleChange = (selectedOption, index) => {
+    const updatedRolesAndCompanies = [...formData.rolesAndCompanies];
+    updatedRolesAndCompanies[index].role = selectedOption?.value || null;
+
     setFormData({
       ...formData,
-      role: selectedOption?.value || null,
+      rolesAndCompanies: updatedRolesAndCompanies,
     });
   };
 
-  const handleCompanyChange = (selectedOption) => {
-    setCompanyOption(selectedOption);
+  const handleCompanyChange = (selectedOption, index) => {
+    const updatedRolesAndCompanies = [...formData.rolesAndCompanies];
+    updatedRolesAndCompanies[index].company = selectedOption?.value || null;
+
     setFormData({
       ...formData,
-      company: selectedOption?.value || null,
+      rolesAndCompanies: updatedRolesAndCompanies,
     });
   };
 
   const handleSave = () => {
-    if (!formData.role) {
-      errorAlert("Por favor selecciona un rol.");
+    const hasEmptyRoleOrCompany = formData.rolesAndCompanies.some(
+      (item) => !item.role || !item.company
+    );
+  
+    if (hasEmptyRoleOrCompany) {
+      errorAlert("Por favor selecciona un rol y una empresa para cada conjunto.");
       return;
     }
+  
     if (formData.password.length < 8) {
       errorAlert("La contraseña debe tener al menos 8 caracteres");
       return;
     }
+  
     console.log("Enviando datos al backend:", formData);
     dispatch(registerUser(formData));
     toggle();
@@ -131,11 +142,30 @@ export function Modaluser(args: any) {
       name: "",
       email: "",
       password: "",
-      role: null,
-      company: null,
+      rolesAndCompanies: [{ role: null, company: null }],
+    });
+  };
+  
+
+  const handleAddMore = () => {
+    setFormData({
+      ...formData,
+      rolesAndCompanies: [
+        ...formData.rolesAndCompanies,
+        { role: null, company: null },
+      ],
     });
   };
 
+  const handleRemove = (index) => {
+    const updatedRolesAndCompanies = [...formData.rolesAndCompanies];
+    updatedRolesAndCompanies.splice(index, 1);
+
+    setFormData({
+      ...formData,
+      rolesAndCompanies: updatedRolesAndCompanies,
+    });
+  };
   return (
     <div>
       <Button color="primary" onClick={toggle}>
@@ -213,37 +243,55 @@ export function Modaluser(args: any) {
                     </Col>
                   </Row>
                   <Row>
-                    <Col md="5" className="mb-3">
-                      <Label className="form-label">Empresa</Label>
-                      <Select
-                        value={Companyoptions.find(
-                          (option) => option.value === formData.company
-                        )}
-                        onChange={handleCompanyChange}
-                        options={Companyoptions}
-                        // placeholder="admin"
-                        classNamePrefix="Search"
-                      />
-                      <div className="invalid-feedback">
-                        Please select a valid country.
-                      </div>
-                    </Col>
-                    <Col md="5" className="mb-3">
-                      <Label className="form-label">Rol</Label>
-                      <Select
-                        value={Roloptions.find(
-                          (option) => option.value === formData.role
-                        )}
-                        onChange={handleRoleChange}
-                        options={Roloptions}
-                        // placeholder="admin"
-                        classNamePrefix="Search"
-                      />
-                      <div className="invalid-feedback">
-                        Please select a valid country.
-                      </div>
-                    </Col>
+                    {formData.rolesAndCompanies.map((item, index) => (
+                      <React.Fragment key={index}>
+                        <Col md="5" className="mb-3">
+                          <Label className="form-label">Empresa</Label>
+                          <Select
+                            value={Companyoptions.find(
+                              (option) => option.value === item.company
+                            )}
+                            onChange={(selectedOption) =>
+                              handleCompanyChange(selectedOption, index)
+                            }
+                            options={Companyoptions}
+                            classNamePrefix="Search"
+                          />
+                        </Col>
+                        <Col md="5" className="mb-3">
+                          <Label className="form-label">Rol</Label>
+                          <Select
+                            value={Roloptions.find(
+                              (option) => option.value === item.role
+                            )}
+                            onChange={(selectedOption) =>
+                              handleRoleChange(selectedOption, index)
+                            }
+                            options={Roloptions}
+                            classNamePrefix="Search"
+                          />
+                        </Col>
+                        <Col md="2" className="mb-3 mt-5">
+                          <Button
+                            color=""
+                            type="button"
+                            className="btn btn-danger"
+                            onClick={() => handleRemove(index)}
+                          >
+                            <i className="fe fe-trash"></i>
+                          </Button>
+                        </Col>
+                      </React.Fragment>
+                    ))}
                   </Row>
+                  <Button
+                    color=""
+                    type="button"
+                    className="btn btn-primary"
+                    onClick={handleAddMore}
+                  >
+                    <i className="fe fe-plus me-2"></i>Agregar
+                  </Button>
                 </Col>
               </Row>
             </Form>

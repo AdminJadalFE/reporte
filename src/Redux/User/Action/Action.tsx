@@ -68,7 +68,7 @@ export const showUserById = (userId) => async (dispatch) => {
   try {
     const response = await axios.get(`http://127.0.0.1:8000/api/users/${userId.userId}`);
     const userDetails = response.data.message;
-    
+    console.log('userDetails',userDetails);
     dispatch({
       type: "SHOW_USER_BY_ID_SUCCESS",
       payload: userDetails,
@@ -87,6 +87,7 @@ export const updateUser = (userId, updatedUserData) => async (dispatch) => {
       type: "UPDATE_USER_SUCCESS",
       payload: updatedUser,
     });
+    dispatch(fetchUsers());
   } catch (error) {
     console.error('Error al actualizar el usuario:', error);
   }

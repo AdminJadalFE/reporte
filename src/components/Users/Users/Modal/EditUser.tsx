@@ -15,6 +15,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { showUserById } from "../../../../Redux/User/Action/Action";
 import Select from "react-select";
 
+import { updateUser } from "../../../../Redux/User/Action/Action"; 
+
 const EditUser = ({ userId, toggle, onClose, ...props }) => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
@@ -55,20 +57,29 @@ const EditUser = ({ userId, toggle, onClose, ...props }) => {
     password: "",
     role: null,
     company: null,
+    rolesAndCompanies: [{ role: null, company: null }],
   });
 
   useEffect(() => {
     if (!loading) {
+
+      const rolesAndCompaniesData = user?.companies?.map((company) => ({
+        role: company?.roles?.[0]?.rol_id || null,
+        company: company?.roles?.[0]?.company_id || null,
+      })) || [];
+      console.log('company?.roles?.[0]?.id ')
+      console.log('rolesAndCompaniesData',rolesAndCompaniesData);
       setFormData((prevFormData) => ({
         ...prevFormData,
         name: user?.name || "",
         email: user?.email || "",
-        company: user?.companies?.[0]?.id || null,
-        role: user?.roles[0] || null,
+        //company: user?.companies?.[0]?.id || null,
+        //role: user?.companies?.[0]?.roles?.[0]?.id || null,
+        rolesAndCompanies: rolesAndCompaniesData,
       }));
     }
   }, [loading, user]);
-  
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevFormData) => ({
@@ -77,20 +88,68 @@ const EditUser = ({ userId, toggle, onClose, ...props }) => {
     }));
   };
 
-  const handleRoleChange = (selectedOption) => {
-    setRolOption(selectedOption);
+  const handleRoleChange = (selectedOption, index) => {
+    const updatedRolesAndCompanies = [...formData.rolesAndCompanies];
+    updatedRolesAndCompanies[index].role = selectedOption?.value || null;
+
     setFormData({
       ...formData,
-      role: selectedOption?.value || null,
+      rolesAndCompanies: updatedRolesAndCompanies,
     });
   };
-  const handleCompanyChange = (selectedOption) => {
-    setCompanyOption(selectedOption);
+
+  const handleCompanyChange = (selectedOption, index) => {
+    const updatedRolesAndCompanies = [...formData.rolesAndCompanies];
+    updatedRolesAndCompanies[index].company = selectedOption?.value || null;
+
     setFormData({
       ...formData,
-      company: selectedOption?.value || null,
+      rolesAndCompanies: updatedRolesAndCompanies,
     });
   };
+
+
+  const handleAddMore = () => {
+    setFormData({
+      ...formData,
+      rolesAndCompanies: [
+        ...formData.rolesAndCompanies,
+        { role: null, company: null },
+      ],
+    });
+  };
+
+  const handleRemove = (index) => {
+    const updatedRolesAndCompanies = [...formData.rolesAndCompanies];
+    updatedRolesAndCompanies.splice(index, 1);
+
+    setFormData({
+      ...formData,
+      rolesAndCompanies: updatedRolesAndCompanies,
+    });
+  };
+
+  const handleUpdate = async () => {
+    const { name, email, password, rolesAndCompanies } = formData;
+
+    const updatedUser = {
+      id: userId,
+      name,
+      email,
+      password,
+      rolesAndCompanies,
+    };
+
+    // Dispatch the update action
+    try {
+      await dispatch(updateUser(userId,updatedUser));
+      // Optionally, you can handle success, close the modal, or show a notification
+      onClose(); // Close the modal after successful update
+    } catch (error) {
+      console.error("Error updating user:", error);
+      // Optionally, you can handle errors, show a notification, etc.
+    }
+  };  
 
   return (
     <Modal isOpen={true} toggle={toggle} size="lg">
@@ -152,38 +211,55 @@ const EditUser = ({ userId, toggle, onClose, ...props }) => {
               </Col>
             </Row>
             <Row>
-              <Col md="5" className="mb-3">
-                <Label className="form-label">Empresa</Label>
-                <Select
-                  value={Companyoptions.find(
-                    (option) => option.value === formData.company
-                  )}
-                  onChange={handleCompanyChange}
-                  options={Companyoptions}
-                  // placeholder="admin"
-                  classNamePrefix="Search"
-                />
-                <div className="invalid-feedback">
-                  Please select a valid country.
-                </div>
-              </Col>
-
-              <Col md="5" className="mb-3">
-                <Label className="form-label">Rol</Label>
-                <Select
-                  value={Roloptions.find(
-                    (option) => option.value === formData.role
-                  )}
-                  onChange={handleRoleChange}
-                  options={Roloptions}
-                  // placeholder="admin"
-                  classNamePrefix="Search"
-                />
-                <div className="invalid-feedback">
-                  Please select a valid country.
-                </div>
-              </Col>
-            </Row>
+            {formData.rolesAndCompanies.map((item, index) => (
+              <React.Fragment key={index}>
+                <Col md="5" className="mb-3">
+                  <Label className="form-label">Empresa</Label>
+                  <Select
+                    value={Companyoptions.find(
+                      (option) => option.value === item.company
+                    )}
+                    onChange={(selectedOption) =>
+                      handleCompanyChange(selectedOption, index)
+                    }
+                    options={Companyoptions}
+                    classNamePrefix="Search"
+                  />
+                </Col>
+                <Col md="5" className="mb-3">
+                  <Label className="form-label">Rol</Label>
+                  <Select
+                    value={Roloptions.find(
+                      (option) => option.value === item.role
+                    )}
+                    onChange={(selectedOption) =>
+                      handleRoleChange(selectedOption, index)
+                    }
+                    options={Roloptions}
+                    classNamePrefix="Search"
+                  />
+                </Col>
+                <Col md="2" className="mb-3 mt-5">
+                  <Button
+                    color=""
+                    type="button"
+                    className="btn btn-danger"
+                    onClick={() => handleRemove(index)}
+                  >
+                    <i className="fe fe-trash"></i>
+                  </Button>
+                </Col>
+              </React.Fragment>
+            ))}
+          </Row>
+          <Button
+          color=""
+          type="button"
+          className="btn btn-primary"
+          onClick={handleAddMore}
+        >
+          <i className="fe fe-plus me-2"></i>Agregar
+        </Button>
           </Form>
         </div>
       </ModalBody>
@@ -193,7 +269,7 @@ const EditUser = ({ userId, toggle, onClose, ...props }) => {
             <Button color="secondary" onClick={onClose}>
               Cerrar
             </Button>
-            <Button color="primary" className="ml-2">
+            <Button color="primary" className="ml-2" onClick={handleUpdate}>
               Guardar
             </Button>
           </Col>

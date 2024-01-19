@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Row, Col, Card, CardBody, Button, Input, Modal } from "reactstrap";
 import { PageHeaderstyle } from "./../../../Shared/Prism/Prism";
 import { Modaluser } from "./Modal/CreateUser";
-import  EditUser from "./Modal/EditUser";
+import EditUser from "./Modal/EditUser";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUsers, deleteUser } from "../../../Redux/User/Action/Action";
 import axios from "axios";
@@ -47,7 +47,6 @@ const UserList02 = () => {
 
   const [modal, setModal] = useState(false);
   const toggle = () => setModal(!modal);
-
 
   const [selectedUserId, setSelectedUserId] = useState(null);
 
@@ -110,16 +109,12 @@ const UserList02 = () => {
                             </small>
                           </div>
                           <div className="float-sm-end ms-auto mt-4 mt-sm-0">
-                            <Link to="#" className="btn btn-primary btn-sm m-2">
-                              Editar
-                            </Link>
-
                             <button
-                            className="btn btn-primary btn-sm m-2"
-                            onClick={() => handleEdit(list.id)}
-                          >
-                            Editar2
-                          </button>
+                              className="btn btn-primary btn-sm m-2"
+                              onClick={() => handleEdit(list.id)}
+                            >
+                              Editar
+                            </button>
 
                             <button
                               className="btn btn-danger btn-sm m-2"
@@ -142,7 +137,6 @@ const UserList02 = () => {
       <Modal isOpen={modal} toggle={toggle} size="lg">
         <EditUser userId={selectedUserId} onClose={toggle} />
       </Modal>
-      
     </div>
   );
 };

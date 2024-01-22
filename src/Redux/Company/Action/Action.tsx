@@ -45,3 +45,19 @@ export const fetchCompanies = () => async (dispatch: Dispatch) => {
       console.error('Error al obtener la lista de empresas:', error);
     }
   };
+
+  export const createCompany = (companyData) => async (dispatch: Dispatch) => {
+    try {
+        const response = await axios.post('http://127.0.0.1:8000/api/companies/', companyData);
+        const newCompany = response.data; // Ajusta según la estructura de tus datos
+
+        dispatch({
+            type: 'CREATE_COMPANY_SUCCESS',
+            payload: newCompany,
+        });
+
+        dispatch(fetchCompaniesByUser()); // Cambiado para que coincida con la función existente
+    } catch (error) {
+        console.error('Error al crear una nueva empresa:', error);
+    }
+};

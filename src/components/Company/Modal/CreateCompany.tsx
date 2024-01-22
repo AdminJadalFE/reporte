@@ -6,7 +6,7 @@ import { addDays } from 'date-fns';
 import { DateRangePicker } from 'react-date-range';
 import Select from 'react-select';
 import { useDispatch, useSelector } from "react-redux";
-import { registerUser } from "../../../Redux/User/Action/Action";
+import { createCompany } from "../../../Redux/Company/Action/Action";
 import { fetchRoles } from "../../../Redux/Rol/Action/Action";
 import Swal from "sweetalert2";
 export const PageHeader = (props: any) => {
@@ -107,10 +107,11 @@ export function Modalcompany(args: any) {
 
   const [modal, setModal] = useState(false);
   const [formData, setFormData] = useState({
+    identity_document_type_id: '1',
+    number: '',
     name: '',
-    email: '',
-    password: '',
-    role: null,
+    soap_send_id: '01',
+    soap_type_id: 'XY',
   });
 
   const [alert, setAlert] = useState("Congratulations!")
@@ -171,23 +172,24 @@ export function Modalcompany(args: any) {
   };
 
   const handleSave = () => {
-    if (!formData.role) {
-      errorAlert('Por favor selecciona un rol.');
-      return;
-    }
-    if (formData.password.length < 8) {
-      errorAlert('La contraseña debe tener al menos 8 caracteres');
-      return;
-    }
+    // if (!formData.role) {
+    //   errorAlert('Por favor selecciona un rol.');
+    //   return;
+    // }
+    // if (formData.password.length < 8) {
+    //   errorAlert('La contraseña debe tener al menos 8 caracteres');
+    //   return;
+    // }
     console.log('Enviando datos al backend:', formData);
-    dispatch(registerUser(formData));
+    dispatch(createCompany(formData));
     toggle();
     registroAlert();
     setFormData({
+      identity_document_type_id: '',
+      number: '',
       name: '',
-      email: '',
-      password: '',
-      role: null,
+      soap_send_id: '',
+      soap_type_id: '',
     })
   };  
 
@@ -225,9 +227,9 @@ export function Modalcompany(args: any) {
                         <Input
                           className="form-control"
                           type="number"
-                          name="email"
+                          name="number"
                           placeholder="número de razón social"
-                          value={formData.email}
+                          value={formData.number}
                           onChange={handleChange}                          
                         />
                       </div>

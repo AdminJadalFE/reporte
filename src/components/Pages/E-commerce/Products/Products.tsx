@@ -3,7 +3,7 @@ import { Button, Card, CardBody, CardHeader, Col, FormGroup, Input, Label, Pagin
 import { CardTitle } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { connect } from "react-redux"
-import { AddToCart } from '../../../../Redux/Action/Action';
+import { AddToCart } from '../../../../Redux/Example/Action/Action';
 import { PODUCTDATA, productDatastate } from './data';
 import Select from 'react-select';
 import { PageHeaderstyle } from '../../../../Shared/Prism/Prism';

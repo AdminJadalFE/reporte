@@ -4,7 +4,7 @@ import product1 from "../../../../assets/images/products/1.jpg";
 import product9 from "../../../../assets/images/products/9.jpg";
 import { Card, CardBody, CardFooter, CardHeader, CardTitle, Col, Input, Label, Row, Table } from "reactstrap";
 import { Link } from "react-router-dom";
-import { AddToCart } from "../../../../Redux/Action/Action"
+import { AddToCart } from '../../../../Redux/Example/Action/Action';
 import { PODUCTDATA } from "../Products/data";
 import { useParams } from "react-router-dom";
 import { connect } from "react-redux";

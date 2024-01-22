@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Dispatch } from 'redux';
+import { Dispatch, AnyAction } from 'redux';
 
 export const fetchCompaniesByUser = () => async (dispatch: Dispatch) => {
     try {
@@ -32,11 +32,11 @@ export const fetchCompaniesByUser = () => async (dispatch: Dispatch) => {
     }
 };
 
-export const fetchCompanies = () => async (dispatch: Dispatch) => {
+export const fetchCompanies = () => async (dispatch: Dispatch<AnyAction>) => {
     try {
       const response = await axios.get('http://127.0.0.1:8000/api/companies/');
       const companiesData = response.data.message;
-      console.log('companies',companiesData)  
+      console.log('companies', companiesData);
       dispatch({
         type: 'FETCH_COMPANIES_SUCCESS',
         payload: companiesData,
@@ -44,7 +44,7 @@ export const fetchCompanies = () => async (dispatch: Dispatch) => {
     } catch (error) {
       console.error('Error al obtener la lista de empresas:', error);
     }
-  };
+};
 
   export const createCompany = (companyData) => async (dispatch: Dispatch) => {
     try {

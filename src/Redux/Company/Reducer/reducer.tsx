@@ -1,10 +1,17 @@
+import { AnyAction } from 'redux';
+export interface CompanyState {
+  isAuthenticated: boolean;
+  message: string;
+  companies: any[];
+}
+
 const initialState = {
   isAuthenticated: false,
   message: "",
   companies: [],
 };
 
-const reducer = (state = initialState, action) => {
+const reducer = (state: CompanyState = initialState, action: AnyAction) => {
   switch (action.type) {
     case "FETCH_COMPANIES_BY_USER_SUCCESS":
       return {

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Card, CardBody, CardFooter, CardTitle, Col, Row } from 'reactstrap';
 import { Link } from 'react-router-dom';
-import { AddToCart, ProductReduxData } from "../../../../Redux/Action/Action"
+import { AddToCart, ProductReduxData } from '../../../../Redux/Example/Action/Action';
+
 import { PODUCTDATA } from '../Products/data';
 import { connect } from 'react-redux';
 import { PageHeaderstyle } from '../../../../Shared/Prism/Prism';

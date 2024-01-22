@@ -2,7 +2,7 @@ import React,{useState,useEffect } from 'react';
 import { Button, Card, CardBody, CardHeader, CardTitle, Col, Input, Row, Table, UncontrolledTooltip } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { connect } from "react-redux";
-import { AddToCart, ProductReduxData } from "../../../../Redux/Action/Action"
+import { AddToCart, ProductReduxData } from '../../../../Redux/Example/Action/Action';
 import { cartData, CartDataItem } from './data';
 import { PageHeaderstyle } from '../../../../Shared/Prism/Prism';
 

@@ -24,6 +24,10 @@ const Accordions = () =>{
       alert("Text copied successfully")
       }
 
+      const toggleExample = (targetId: string) => {
+        console.log(`Toggle function called for targetId: ${targetId}`);
+      };
+
   return(
   <div>
     <PageHeaders
@@ -39,7 +43,7 @@ const Accordions = () =>{
             <h3 className="card-title">Default Accordion</h3>
           </CardHeader>
           <CardBody>
-             <UncontrolledAccordion className="panel-group Accordion1" role="tablist" aria-multiselectable="true" defaultOpen="w"  >
+             <UncontrolledAccordion className="panel-group Accordion1" role="tablist" aria-multiselectable="true" defaultOpen="w" toggle={toggleExample}>
               <AccordionItem className="panel panel-default">
                 <AccordionHeader targetId="headingOne" className="panel-heading" tag="h4">
                       Collapsible Group Item #1
@@ -237,7 +241,7 @@ const Accordions = () =>{
             <h3 className="card-title">Default Accordion 2</h3>
           </CardHeader>
           <CardBody>
-            <UncontrolledAccordion className="panel-group Accordion1" role="tablist" aria-multiselectable="true" defaultOpen="w">
+            <UncontrolledAccordion className="panel-group Accordion1" role="tablist" aria-multiselectable="true" defaultOpen="w" toggle={toggleExample}>
               <AccordionItem className="panel panel-default active">
                 <AccordionHeader className="panel-heading " role="tab" targetId="headingOne1" tag="h4">
                       Collapsible Group Item #1
@@ -474,6 +478,7 @@ const Accordions = () =>{
                   'Closed2',
                 ]}
                 stayOpen
+                toggle={toggleExample}
               >
                 {/* <!-- Section 1 --> */}
                 <AccordionItem>
@@ -587,7 +592,7 @@ const Accordions = () =>{
             <h3 className="card-title">Accordion Style 3</h3>
           </CardHeader>
           <CardBody>
-            <UncontrolledAccordion className="demo-accordion accordionjs m-0 Accordion1" defaultOpen="a" >
+            <UncontrolledAccordion className="demo-accordion accordionjs m-0 Accordion1" defaultOpen="a" toggle={toggleExample}>
               <AccordionItem>
                 <AccordionHeader targetId="1" tag="h3" className="border-bottom">
                   Section 1
@@ -697,7 +702,7 @@ const Accordions = () =>{
             <h3 className="card-title">Accordion style</h3>
           </CardHeader>
           <CardBody>
-           <UncontrolledAccordion className="panel-group1 accordion2" id="accordion1" defaultOpen="e">
+           <UncontrolledAccordion className="panel-group1 accordion2" id="accordion1" defaultOpen="e" toggle={toggleExample}>
               <AccordionItem className="panel panel-default mb-4 br-7 overflow-hidden">
                 <AccordionHeader  className="panel-heading1 " targetId="collapseFour" tag="h4">
                   
@@ -733,7 +738,7 @@ const Accordions = () =>{
                 </AccordionBody>
               </AccordionItem>
               </UncontrolledAccordion>
-              <UncontrolledAccordion className="panel-group1 accordion2" id="accordion1" defaultOpen="d">
+              <UncontrolledAccordion className="panel-group1 accordion2" id="accordion1" defaultOpen="d" toggle={toggleExample}>
               <AccordionItem className="panel panel-default br-7 overflow-hidden">
                 <AccordionHeader className="panel-heading1" targetId="collapseFive" tag="h4">
                   

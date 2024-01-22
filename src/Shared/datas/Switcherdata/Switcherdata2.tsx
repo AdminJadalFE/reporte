@@ -205,7 +205,7 @@ li.forEach((e: Element, i: number) => {
       const cssPropName = `--primary-color-rgb`;
       const cssPropName1 = `--primary--bg-color`;
       const cssPropName2 = `--primary--bg-hover`;
-      const cssPropName3 = `--primary--bg-hover`;
+      const cssPropName3 = `--primary--bg-active`;
       handleThemeUpdate({
         [cssPropName]: hex2rgb(color),
         [cssPropName1]: hex2rgb(color),

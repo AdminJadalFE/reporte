@@ -6,15 +6,21 @@ import { fetchUsers,deleteUser } from "../../../Redux/User/Action/Action";
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from 'redux';
 import { fetchCompanies } from "../../../Redux/Company/Action/Action";
+import { CompanyState  } from "../../../Redux/Company/Reducer/reducer";
 import { Modalcompany } from "../Modal/CreateCompany";
 
 const Companies = () => {
-  const dispatch = useDispatch();
-  const companyData = useSelector((state) => state.company.companies);
+  const dispatch: Dispatch<any> = useDispatch();
+  const companyData = useSelector((state: { company: CompanyState }) => state.company.companies);
 
   useEffect(() => {
-    dispatch(fetchCompanies());
+    const fetchData = async () => {
+      await dispatch(fetchCompanies());
+    };
+
+    fetchData();
   }, [dispatch]);
 
   return (
@@ -40,7 +46,7 @@ const Companies = () => {
                             type="text"
                             className="form-control"
                             placeholder="Buscar Empresa"
-                            onChange={(ele) => handleSearch(ele.target.value)}  // Cambiado de myfunction a handleSearch
+                            //onChange={(ele) => handleSearch(ele.target.value)}  // Cambiado de myfunction a handleSearch
                           />
                         </div>
                       </div>
@@ -69,7 +75,7 @@ const Companies = () => {
                             </Link>
                             <button
                               className="btn btn-danger btn-sm m-2"
-                              onClick={() => handleDelete(list.id)}
+                              //onClick={() => handleDelete(list.id)}
                             >
                               Eliminar
                             </button>                        

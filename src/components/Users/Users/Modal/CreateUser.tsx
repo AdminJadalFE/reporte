@@ -28,17 +28,28 @@ import { registerUser } from "../../../../Redux/User/Action/Action";
 import { fetchRoles } from "../../../../Redux/Rol/Action/Action";
 import { fetchCompanies } from "../../../../Redux/Company/Action/Action";
 import Swal from "sweetalert2";
+import { RolState } from "../../../../Redux/Rol/Reducer/reducer";
+import { CompanyState } from "../../../../Redux/Company/Reducer/reducer";
 
 export function Modaluser(args: any) {
   const [modal, setModal] = useState(false);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    name: string;
+    email: string;
+    password: string;
+    role: number | null;
+    company: number | null;
+    rolesAndCompanies: { role: number | null; company: number | null }[];
+  }>({
     name: "",
     email: "",
     password: "",
-    role: null,
-    company: null,
+    role: null as number | null,
+    company: null as number | null,
     rolesAndCompanies: [{ role: null, company: null }],
   });
+  
+  
 
   const [alert, setAlert] = useState("Congratulations!");
 
@@ -67,8 +78,9 @@ export function Modaluser(args: any) {
   const [companyOption, setCompanyOption] = useState<any>(null);
 
   const dispatch = useDispatch();
-  const rolData = useSelector((state) => state.rol.roles);
-  const companyData = useSelector((state) => state.company.companies);
+  const rolData = useSelector((state: RolState) => state.rol.roles);
+  const companyData = useSelector((state: CompanyState) => state.company.companies);
+
 
   console.log("companyData", companyData);
 
@@ -85,11 +97,11 @@ export function Modaluser(args: any) {
   const toggle = () => setModal(!modal);
 
   useEffect(() => {
-    dispatch(fetchRoles());
+    fetchRoles()(dispatch);
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch(fetchCompanies());
+    fetchCompanies()(dispatch);
   }, [dispatch]);
 
   const handleChange = (e) => {
@@ -135,15 +147,18 @@ export function Modaluser(args: any) {
     }
   
     console.log("Enviando datos al backend:", formData);
-    dispatch(registerUser(formData));
+    registerUser(formData)(dispatch);
     toggle();
     registroAlert();
-    setFormData({
+    setFormData((prevFormData) => ({
+      ...prevFormData,
       name: "",
       email: "",
       password: "",
+      role: null,
+      company: null,
       rolesAndCompanies: [{ role: null, company: null }],
-    });
+    }));
   };
   
 

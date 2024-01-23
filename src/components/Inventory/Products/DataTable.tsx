@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, CardHeader,CardBody, CardTitle, Col, Row } from "reactstrap";
 import { PageHeaders } from "../../../Shared/Prism/Prism";
-import {BasicTable} from "./Basictable"
+//import {BasicTable} from "./Basictable"
 import{Fixedheader} from "./Fixedheader"
 import { ExportCSV } from './Exportcvs';
 import{DataTabless} from "./Deleterows"
@@ -24,7 +24,7 @@ const DataTable = () => (
           </CardHeader>
           <CardBody>
             <div className="table-responsive">
-            <BasicTable />
+            // BasicTable
             </div>
           </CardBody>
         </Card>

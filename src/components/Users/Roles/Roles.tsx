@@ -4,19 +4,20 @@ import { Card, CardHeader, CardBody, Table, Col, Row } from "reactstrap";
 import { Modalrol } from "./Modal/CreateRol";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchRoles } from "../../../Redux/Rol/Action/Action";
+import { RolState } from "../../../Redux/Rol/Reducer/reducer";
 
 const Roles = () => {
   const [roles, setRoles] = useState([]);
 
   const dispatch = useDispatch();
-  const rolData = useSelector((state) => state.rol.roles);
+  const rolData = useSelector((state: RolState) => state.rol.roles);
 
   useEffect(() => {
-    dispatch(fetchRoles());
+    fetchRoles()(dispatch);
   }, [dispatch]);
   console.log('rolData',rolData);
   // Sort roles by ID in ascending order
-  const sortedRoles = roles.slice().sort((a, b) => a.id - b.id);
+  //const sortedRoles = roles.slice().sort((a, b) => a.id - b.id);
 
   return (
     <div>

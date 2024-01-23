@@ -1,23 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { Card, CardHeader, CardBody, CardTitle, Col, Row } from "reactstrap";
 import { PageHeaders } from "../../../Shared/Prism/Prism";
-import { BasicTable } from "./Basictable";
+//import { BasicTable } from "./Basictable";
 import { Modalproduct } from "./Modal/CreateProduct";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../../../Redux/Product/Action/Action";
+import { ProductState } from "../../../Redux/Product/Reducer/reducer";
 
 const Promotions = () => {
   const [products, setProducts] = useState([]);
   const dispatch = useDispatch();
   
-  const productsFromState = useSelector((state) => state.product.products);
+  const productsFromState = useSelector((state: ProductState) => state.product.products);
 
   useEffect(() => {
     setProducts(productsFromState);
   }, [productsFromState]);
   
   useEffect(() => {
-    dispatch(fetchProducts());
+    fetchProducts()(dispatch);
   }, [dispatch]);
   
 console.log('producsts')
@@ -39,7 +40,7 @@ console.log('producsts')
             </CardHeader>
             <CardBody>
               <div className="table-responsive">
-                <BasicTable data={products} />
+                //BasicTable
               </div>
             </CardBody>
           </Card>

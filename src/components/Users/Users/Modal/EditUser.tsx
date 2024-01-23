@@ -16,13 +16,17 @@ import { showUserById } from "../../../../Redux/User/Action/Action";
 import Select from "react-select";
 
 import { updateUser } from "../../../../Redux/User/Action/Action"; 
+import { RolState } from "../../../../Redux/Rol/Reducer/reducer";
+import { CompanyState }  from "../../../../Redux/Company/Reducer/reducer";
+import { UserState } from "../../../../Redux/User/Reducer/reducer";
 
 const EditUser = ({ userId, toggle, onClose, ...props }) => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
-  const user = useSelector((state) => state.user.userDetail);
-  const companyData = useSelector((state) => state.company.companies);
-  const rolData = useSelector((state) => state.rol.roles);
+
+  const user = useSelector((state: UserState) => state.user.userDetail[0]);
+  const companyData = useSelector((state: CompanyState) => state.company.companies);
+  const rolData = useSelector((state: RolState) => state.rol.roles);
 
   const [companyOption, setCompanyOption] = useState<any>(null);
   const [rolOption, setRolOption] = useState<any>(null);
@@ -40,7 +44,7 @@ const EditUser = ({ userId, toggle, onClose, ...props }) => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        await dispatch(showUserById({ userId }));
+        await showUserById({ userId })(dispatch);
         setLoading(false);
       } catch (error) {
         console.error("Error al obtener el usuario:", error);
@@ -64,8 +68,10 @@ const EditUser = ({ userId, toggle, onClose, ...props }) => {
     if (!loading) {
 
       const rolesAndCompaniesData = user?.companies?.map((company) => ({
-        role: company?.roles?.[0]?.rol_id || null,
-        company: company?.roles?.[0]?.company_id || null,
+        //role: company?.roles?.[0]?.rol_id || null,
+        role: company || null,
+        //company: company?.roles?.[0]?.company_id || null,
+        company: company || null,
       })) || [];
       console.log('company?.roles?.[0]?.id ')
       console.log('rolesAndCompaniesData',rolesAndCompaniesData);
@@ -142,7 +148,7 @@ const EditUser = ({ userId, toggle, onClose, ...props }) => {
 
     // Dispatch the update action
     try {
-      await dispatch(updateUser(userId,updatedUser));
+      await updateUser(userId,updatedUser)(dispatch);
       // Optionally, you can handle success, close the modal, or show a notification
       onClose(); // Close the modal after successful update
     } catch (error) {

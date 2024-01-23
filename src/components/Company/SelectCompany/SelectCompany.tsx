@@ -16,10 +16,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchCompaniesByUser } from "../../../Redux/Company/Action/Action";
 import { selectCompany } from "../../../Redux/Auth/Action/Action";
 import { loginWithRoleAndPermissions } from "../../../Redux/Auth/Action/Action";
+import { CompanyState } from "../../../Redux/Company/Reducer/reducer";
 
 const SelectedCompany = () => {
   const dispatch = useDispatch();
-  const companyData = useSelector((state) => state.company.companies);
+  const companyData = useSelector((state: { company: CompanyState }) => state.company.companies);
   console.log('companyData',companyData)
 
   const [modal, setModal] = useState<boolean>(false);
@@ -29,7 +30,7 @@ const SelectedCompany = () => {
   let navigate = useNavigate();
 
   useEffect(() => {
-    dispatch(fetchCompaniesByUser());
+    fetchCompaniesByUser()(dispatch);
   }, [dispatch]);
 
   document.querySelector("body")?.classList.add("main-body", "light-mode", "ltr", "page-style1", "error-page");

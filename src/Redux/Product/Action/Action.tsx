@@ -25,7 +25,7 @@ export const fetchProducts = () => async (dispatch: Dispatch) => {
         payload: newProduct,
       });
   
-      dispatch(fetchProducts());
+      fetchProducts()(dispatch);
     } catch (error) {
       console.error('Error al crear un nuevo producto:', error);
       //throw error; //retornar error

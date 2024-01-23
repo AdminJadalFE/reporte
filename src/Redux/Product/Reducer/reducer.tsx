@@ -1,3 +1,12 @@
+export interface ProductState {
+  isAuthenticated: boolean;
+  message: string;
+  products: [],
+  product:{
+    products:[]
+  }
+}
+
 const initialState = {
     isAuthenticated: false,
     message: "",

@@ -21,6 +21,7 @@ import { MENUITEMS } from "../Sidebar/SideMenu";
 import ProfileService from "../../Prism/profile";
 import EditProfileService from "../../Prism/editprofile";
 import { useSelector } from "react-redux";
+import { AuthState } from "../../../Redux/Auth/Reducer/reducer";
 
 export const Header = () => {
   
@@ -151,7 +152,7 @@ const Fullscreen: any = (vale: any) => {
 	const [faces6, setImage] = useState(Image);
 	const [outPut, setoutPut] = useState(EditProfileService.returnId());
   let { companyId } = useParams();
-  const companyName = useSelector((state) => state.auth.auth.company); // Extrae el nombre de la empresa del estado
+  const companyName = useSelector((state: AuthState) => state.auth.auth.company);
 
 
 	useEffect(() => {

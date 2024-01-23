@@ -2,23 +2,24 @@ import React, { useEffect, useState } from "react";
 import { PageHeaders } from "../../../Shared/Prism/Prism";
 import { Card, CardHeader, CardBody, Table, Col, Row } from "reactstrap";
 
+interface Permission {
+  id: number;
+  name: string;
+  // Add other properties if available
+}
 
-const Permissions  = () => {
-  const [roles, setRoles] = useState([]);
+const Permissions = () => {
+  const [roles, setRoles] = useState<Permission[]>([]);
 
-  // Assume you fetch the data from the API here using useEffect
   useEffect(() => {
-    // Replace this with your actual API endpoint
     const apiUrl = "http://127.0.0.1:8000/api/permissions/";
 
-    // Fetch data from the API
     fetch(apiUrl)
       .then((response) => response.json())
       .then((data) => setRoles(data.message))
       .catch((error) => console.error("Error fetching data:", error));
   }, []);
 
-  // Sort roles by ID in ascending order
   const sortedRoles = roles.slice().sort((a, b) => a.id - b.id);
 
   return (
@@ -65,4 +66,4 @@ const Permissions  = () => {
   );
 };
 
-export default Permissions ;
+export default Permissions;

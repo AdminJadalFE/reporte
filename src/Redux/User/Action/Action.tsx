@@ -42,8 +42,8 @@ export const fetchUsers = () => async (dispatch: Dispatch) => {
         type: 'REGISTER_USER_SUCCESS',
         payload: newUser,
       });
-
-    dispatch(fetchUsers());
+  
+    await fetchUsers()(dispatch);
     } catch (error) {
       console.error('Error al crear un nuevo usuario:', error);
     }

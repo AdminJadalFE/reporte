@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { createRol } from "../../../../Redux/Rol/Action/Action";
 import Swal from "sweetalert2";
 import { fetchPermissions } from "../../../../Redux/Permission/Action/Action";
+import { PermissionState } from "../../../../Redux/Permission/Reducer/reducer";
 
 export const PageHeader = (props: any) => {  
   const [dropdownOpen, setDropdownOpen] = useState<any>(false);
@@ -107,15 +108,15 @@ export const PageHeaderstyle = (props: any) => {
 export function Modalrol(args: any) {
   const [modal, setModal] = useState(false);
   const dispatch = useDispatch();
-  const permissionData = useSelector((state) => state.permission.permissions);
+  const permissionData = useSelector((state: PermissionState) => (state.permission.permissions as { id: number, name: string }[]));
 
   useEffect(() => {
-    dispatch(fetchPermissions());
+    fetchPermissions()(dispatch);
   }, [dispatch]);
 
   const [formData, setFormData] = useState({
     name: '',
-    permissions: [],
+    permissions: [] as string[], 
   });
 
   const toggle = () => setModal(!modal);
@@ -138,7 +139,8 @@ export function Modalrol(args: any) {
     });
   };
 
-  const handleCheckboxChange = (permission) => {
+
+  const handleCheckboxChange = (permission: string) => {
     const isChecked = formData.permissions.includes(permission);
 
     if (isChecked) {
@@ -158,7 +160,7 @@ export function Modalrol(args: any) {
 
   const handleSave = () => {
     console.log('Enviando datos al backend:', formData);
-    dispatch(createRol(formData));
+    createRol(formData)(dispatch);
     toggle();
     registroAlert();
   };

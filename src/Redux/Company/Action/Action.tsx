@@ -56,7 +56,7 @@ export const fetchCompanies = () => async (dispatch: Dispatch<AnyAction>) => {
             payload: newCompany,
         });
 
-        dispatch(fetchCompaniesByUser()); // Cambiado para que coincida con la función existente
+        await fetchCompaniesByUser()(dispatch);
     } catch (error) {
         console.error('Error al crear una nueva empresa:', error);
     }

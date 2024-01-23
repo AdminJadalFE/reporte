@@ -229,7 +229,7 @@ export function Modaluser(args: any) {
                             className="form-control"
                             placeholder="Buscar producto"
                             onChange={(ele) => {
-                              myfunction(ele.target.value);
+                              //myfunction
                             }}
                           />
                         </div>

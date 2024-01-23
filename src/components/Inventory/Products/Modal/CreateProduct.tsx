@@ -168,8 +168,8 @@ export function Modalproduct(args: any) {
   };
   
   const handleSave = () => {
-    console.log('Enviando datos al backend:', formData);
-    dispatch(createProduct(formData));
+    console.log('Enviando datos al backend:', formData);    
+    createProduct(formData)(dispatch);
     toggle();
     DefaultTostify();
     setFormData({

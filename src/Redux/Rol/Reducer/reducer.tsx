@@ -3,6 +3,9 @@ export interface RolState {
   isAuthenticated: boolean;
   message: string;
   roles: any[];
+  rol: {
+    roles: any[]; 
+  };
 }
 
 const initialState = {

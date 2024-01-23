@@ -1,3 +1,12 @@
+export interface PermissionState {
+    isAuthenticated: boolean;
+    message: string;
+    permissions: [],
+    permission:{
+        permissions:[]
+    }
+  }
+
 const initialState = {
     isAuthenticated: false,
     message: "",

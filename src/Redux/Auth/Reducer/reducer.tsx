@@ -1,15 +1,35 @@
-const initialState = {
+export interface AuthState {
+  isAuthenticated: boolean;
+  message: string;
+  auth: {
+    id: string;
+    name: string;
+    token: string;
+    company: string;
+    rol: string;
+    permissions: string[];
+    companies: string[];
+    auth: {
+      company: string;
+    };
+  };
+}
+
+const initialState: AuthState = {
   isAuthenticated: false,
+  message: "",
   auth: {
     id: "",
     name: localStorage.getItem("username") || "",
     token: localStorage.getItem("token") || "",
     company: localStorage.getItem("company") || "",
     rol: localStorage.getItem("rol") || "",
-    permissions: localStorage.getItem("permissions") || [],
-    companies: [],
+    permissions: (localStorage.getItem("permissions") || "").split(","),
+    companies: (localStorage.getItem("companies") || "").split(","),
+    auth: {
+      company: localStorage.getItem("company") || "",
+    },
   },
-  message: "",
 };
 
 interface Action {

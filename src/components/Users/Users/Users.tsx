@@ -8,13 +8,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchUsers, deleteUser } from "../../../Redux/User/Action/Action";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { UserState } from "../../../Redux/User/Reducer/reducer";
+import { User } from "../../../Redux/User/Reducer/reducer";
 
 const UserList02 = () => {
   const dispatch = useDispatch();
-  const userData = useSelector((state) => state.user.users);
+  const userData = useSelector((state: UserState) => state.user.users);
 
   useEffect(() => {
-    dispatch(fetchUsers());
+    fetchUsers()(dispatch);
   }, [dispatch]);
 
   const [alert, setAlert] = useState("Congratulations!");
@@ -30,9 +32,9 @@ const UserList02 = () => {
     });
   }
 
-  const [filteredData, setFilteredData] = useState([]);
+  const [filteredData, setFilteredData] = useState<User[]>([]);
 
-  const handleSearch = (inputData) => {
+  const handleSearch = (inputData: string) => {
     const filteredUsers = userData.filter((user) =>
       user.name.toLowerCase().includes(inputData.toLowerCase())
     );
@@ -42,7 +44,7 @@ const UserList02 = () => {
   const displayData = filteredData.length > 0 ? filteredData : userData;
 
   const handleDelete = (userId) => {
-    dispatch(deleteUser(userId)); // Utiliza la acción deleteUser
+    deleteUser(userId)(dispatch);
   };
 
   const [modal, setModal] = useState(false);
@@ -135,7 +137,7 @@ const UserList02 = () => {
       </Row>
 
       <Modal isOpen={modal} toggle={toggle} size="lg">
-        <EditUser userId={selectedUserId} onClose={toggle} />
+        //EditUser 
       </Modal>
     </div>
   );

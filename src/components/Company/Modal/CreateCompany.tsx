@@ -113,6 +113,9 @@ export function Modalcompany(args: any) {
     name: '',
     soap_send_id: '01',
     soap_type_id: 'XY',
+    role: null,
+    trade_name: '',
+    trade_code: '',    
   });
 
   const [alert, setAlert] = useState("Congratulations!")
@@ -154,7 +157,7 @@ export function Modalcompany(args: any) {
   const toggle = () => setModal(!modal);
 
   useEffect(() => {
-    dispatch(fetchRoles());
+     fetchRoles()(dispatch);
   }, [dispatch]);
 
   const handleChange = (e) => {
@@ -182,7 +185,7 @@ export function Modalcompany(args: any) {
     //   return;
     // }
     console.log('Enviando datos al backend:', formData);
-    dispatch(createCompany(formData));
+    createCompany(formData)(dispatch);
     toggle();
     registroAlert();
     setFormData({
@@ -191,6 +194,9 @@ export function Modalcompany(args: any) {
       name: '',
       soap_send_id: '',
       soap_type_id: '',
+      role: null,
+      trade_name: '', 
+      trade_code: '',     
     })
   };  
 
@@ -249,7 +255,7 @@ export function Modalcompany(args: any) {
                           type="text"
                           name="trade_name"
                           placeholder="nombre comercial"
-                          value={formData.email}
+                          value={formData.trade_name} 
                           onChange={handleChange}                          
                         />
                       </div>
@@ -262,7 +268,7 @@ export function Modalcompany(args: any) {
                           type="number"
                           name="trade_name"
                           placeholder="código de comercio"
-                          value={formData.email}
+                          value={formData.trade_code} 
                           onChange={handleChange}                          
                         />
                       </div>

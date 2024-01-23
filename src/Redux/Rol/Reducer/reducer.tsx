@@ -1,3 +1,10 @@
+import { AnyAction } from 'redux';
+export interface RolState {
+  isAuthenticated: boolean;
+  message: string;
+  roles: any[];
+}
+
 const initialState = {
     isAuthenticated: false,
     message: "",

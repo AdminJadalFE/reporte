@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { createCompany } from "../../../Redux/Company/Action/Action";
 import { fetchRoles } from "../../../Redux/Rol/Action/Action";
 import Swal from "sweetalert2";
+import { RolState } from "../../../Redux/Rol/Reducer/reducer";
 export const PageHeader = (props: any) => {
 
   const [dropdownOpen, setDropdownOpen] = useState<any>(false);
@@ -140,7 +141,7 @@ export function Modalcompany(args: any) {
   const [countryOption, setCountryOption] = useState<any>(null);
 
   const dispatch = useDispatch();
-  const rolData = useSelector((state) => state.rol.roles);
+  const rolData = useSelector((state: RolState) => state.roles);
   console.log('alldata',rolData);
 
 

@@ -15,6 +15,10 @@ import {
 import { Link } from "react-router-dom";
 import { PageHeaders } from "../../../Shared/Prism/Prism";
 
+const toggleExample = (targetId: string) => {
+  console.log(`Toggle function called for targetId: ${targetId}`);
+};
+
 const FAQS = () => {
   return (
     <div>
@@ -23,7 +27,7 @@ const FAQS = () => {
         <Col md="12">
           <Card className="p-5">
             <div className="panel-group faqaccordion1" id="accordion1">
-              <UncontrolledAccordion className="panel panel-default border-0" defaultOpen="a">
+              <UncontrolledAccordion className="panel panel-default border-0" defaultOpen="a" toggle={toggleExample}>
                 <AccordionItem>
                   <AccordionHeader tag="h4" targetId="headingOne1">
                     How To Insert All The Plugins?
@@ -48,7 +52,7 @@ const FAQS = () => {
                   </AccordionBody>
                 </AccordionItem>
               </UncontrolledAccordion>
-              <UncontrolledAccordion className="panel panel-default border-0 mt-2" defaultOpen="b">
+              <UncontrolledAccordion className="panel panel-default border-0 mt-2" defaultOpen="b" toggle={toggleExample}>
                 <AccordionItem>
                   <AccordionHeader tag="h4" targetId="headingTwo2">
                     How Can I contact?
@@ -73,7 +77,7 @@ const FAQS = () => {
                   </AccordionBody>
                 </AccordionItem>
               </UncontrolledAccordion>
-              <UncontrolledAccordion className="panel panel-default border-0 mt-2"  defaultOpen="c">
+              <UncontrolledAccordion className="panel panel-default border-0 mt-2"  defaultOpen="c" toggle={toggleExample}>
                 <AccordionItem>
                   <AccordionHeader tag="h4" targetId="headingThree3">
                     Can I use this Plugins in Another Template?
@@ -99,7 +103,7 @@ const FAQS = () => {
                   </AccordionBody>
                 </AccordionItem>
               </UncontrolledAccordion>
-              <UncontrolledAccordion className="panel panel-default border-0 mt-2"  defaultOpen="d">
+              <UncontrolledAccordion className="panel panel-default border-0 mt-2"  defaultOpen="d" toggle={toggleExample}>
                 <AccordionItem>
                   <AccordionHeader tag="h4" targetId="heading4">
                     It is Easy to Customizable?
@@ -125,7 +129,7 @@ const FAQS = () => {
                   </AccordionBody>
                 </AccordionItem>
               </UncontrolledAccordion>
-              <UncontrolledAccordion className="panel panel-default border-0 mt-2"  defaultOpen="e">
+              <UncontrolledAccordion className="panel panel-default border-0 mt-2"  defaultOpen="e" toggle={toggleExample}>
                 <AccordionItem>
                   <AccordionHeader tag="h4" targetId="heading5">
                     How can I download This template?
@@ -151,7 +155,7 @@ const FAQS = () => {
                   </AccordionBody>
                 </AccordionItem>
               </UncontrolledAccordion>
-              <UncontrolledAccordion className="panel panel-default border-0 mt-2"  defaultOpen='f'>
+              <UncontrolledAccordion className="panel panel-default border-0 mt-2"  defaultOpen='f' toggle={toggleExample}>
                 <AccordionItem>
                   <AccordionHeader tag="h4" targetId="heading6">
                     How Can I Add another page in Template?

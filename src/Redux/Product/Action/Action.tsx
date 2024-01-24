@@ -1,9 +1,10 @@
 import axios from 'axios';
 import { Dispatch } from 'redux';
+import { inventory } from "../../../Util/axios";
 
 export const fetchProducts = () => async (dispatch: Dispatch) => {
     try {
-      const response = await axios.get('http://127.0.0.1:8001/api/products/');
+      const response = await inventory.get("api/products/");
       const productsData = response.data.message;
 
       dispatch({
@@ -17,7 +18,7 @@ export const fetchProducts = () => async (dispatch: Dispatch) => {
 
   export const createProduct = (ProductsData) => async (dispatch: Dispatch) => {
     try {
-      const response = await axios.post('http://127.0.0.1:8001/api/products/', ProductsData);
+      const response = await inventory.post("api/products/", ProductsData);
       const newProduct = response.data;
   
       dispatch({

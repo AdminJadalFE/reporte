@@ -14,8 +14,9 @@ import { PageHeaders } from "../../../Shared/Prism/Prism";
 import DatePicker from "react-multi-date-picker";
 import Select from "react-select";
 import axios from "axios";
-import { StackedChart,BasicColumn } from './ChartFunction/apexchart';
-import { Fixedheader } from './DataTable/Fixedheader';
+import { StackedChart, BasicColumn } from "./ChartFunction/apexchart";
+import { Fixedheader } from "./DataTable/Fixedheader";
+import { report } from "../../../Util/axios";
 
 const Statistical = () => {
   console.log("asdfasdfasdf");
@@ -32,12 +33,9 @@ const Statistical = () => {
 
   const openPdf = async () => {
     try {
-      const response = await axios.get(
-        "http://127.0.0.1:8003/api/report/sale/pdf/day",
-        {
-          responseType: "arraybuffer",
-        }
-      );
+      const response = await report.get("api/report/sale/pdf/day", {
+        responseType: "arraybuffer",
+      });
       const blob = new Blob([response.data], { type: "application/pdf" });
       const pdfUrl = URL.createObjectURL(blob);
       setPdfUrl(pdfUrl);
@@ -185,7 +183,6 @@ const Statistical = () => {
                 </Col>
               </Row>
 
-
               <Row>
                 <Col lg="6">
                   <div className="mb-3 mt-3">
@@ -274,24 +271,25 @@ const Statistical = () => {
                 )}
               </Row>
               <Row>
-              <div className="table-responsive datatble-filter">
-              <Fixedheader />
-            </div></Row>
+                <div className="table-responsive datatble-filter">
+                  <Fixedheader />
+                </div>
+              </Row>
               <Row>
-                    <Col lg={6} md={12}>
-                    <Card>
-                      <CardHeader>
-                        <CardTitle as='h3'>Stacked Area Chart</CardTitle>
-                      </CardHeader>
-                      <CardBody>
-                        <StackedChart />
-                      </CardBody>
-                    </Card>
-                  </Col>
+                <Col lg={6} md={12}>
+                  <Card>
+                    <CardHeader>
+                      <CardTitle as="h3">Stacked Area Chart</CardTitle>
+                    </CardHeader>
+                    <CardBody>
+                      <StackedChart />
+                    </CardBody>
+                  </Card>
+                </Col>
 
-                  <Col lg={6} md={12}>                  
+                <Col lg={6} md={12}>
                   <BasicColumn />
-                  </Col>
+                </Col>
               </Row>
             </CardBody>
           </Card>

@@ -1,4 +1,4 @@
-import Axios from 'axios';
+import Axios from "axios";
 
 // const axios = Axios.create({
 //   baseURL: "http://192.168.18.13:3001/api/",
@@ -15,7 +15,7 @@ const auth = Axios.create({
   // withCredentials: true,
   headers: {
     "Content-Type": "application/json",
-    "Accept": "application/json",
+    Accept: "application/json",
   },
 });
 
@@ -25,7 +25,7 @@ const inventory = Axios.create({
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",
-    "Accept": "application/json",
+    Accept: "application/json",
   },
 });
 
@@ -35,17 +35,17 @@ const sale = Axios.create({
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",
-    "Accept": "application/json",
+    Accept: "application/json",
   },
 });
 
 //report-ms-laravel 8003
 const report = Axios.create({
-  baseURL: "http://127.0.0.1:8002/",
+  baseURL: "http://127.0.0.1:8003/",
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",
-    "Accept": "application/json",
+    Accept: "application/json",
   },
 });
 

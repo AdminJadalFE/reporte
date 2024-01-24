@@ -7,22 +7,27 @@ import { ExportCSV } from './Exportcvs';
 import{DataTabless} from "./Deleterows"
 import {Savetable} from "./Addrows"
 import { Modaluser } from "./Modal/CreateUser";
+import { inventory } from "../../../Util/axios";
 
 const Services = () => {
   const [services, setServices] = useState([]);
 
   useEffect(() => {
-    fetch("http://127.0.0.1:8001/api/services")
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.success) {        
-          // Update the state with the retrieved products
-          setServices(data.message);
-          console.log('data message', data.message);
+    const fetchData = async () => {
+      try {
+        const response = await inventory.get("api/services");
+        if (response.data.success) {
+          setServices(response.data.message);
+          console.log('data message', response.data.message);
         } else {
-          console.error("Failed to fetch products");
+          console.error("Error al recuperar los servicios");
         }
-      })
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
   }, []);
 
 return (

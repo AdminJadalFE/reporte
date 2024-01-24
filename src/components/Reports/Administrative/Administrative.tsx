@@ -15,6 +15,7 @@ import DatePicker from "react-multi-date-picker";
 import Select from "react-select";
 import axios from "axios";
 import { Fixedheader } from ".//DataTable/Fixedheader";
+import { report } from "../../../Util/axios";
 
 const Administrative = () => {
   console.log("asdfasdfasdf");
@@ -31,12 +32,9 @@ const Administrative = () => {
 
   const openPdf = async () => {
     try {
-      const response = await axios.get(
-        "http://127.0.0.1:8003/api/report/sale/pdf/day",
-        {
-          responseType: "arraybuffer",
-        }
-      );
+      const response = await report.get("api/report/sale/pdf/day", {
+        responseType: "arraybuffer",
+      });
       const blob = new Blob([response.data], { type: "application/pdf" });
       const pdfUrl = URL.createObjectURL(blob);
       setPdfUrl(pdfUrl);
@@ -44,6 +42,7 @@ const Administrative = () => {
       console.error("Error al cargar el PDF", error);
     }
   };
+  
 
   return (
     <div>

@@ -7,25 +7,29 @@ import { ExportCSV } from './Exportcvs';
 import{DataTabless} from "./Deleterows"
 import {Savetable} from "./Addrows"
 import { Modaluser } from "./Modal/CreateUser";
+import { inventory } from "../../../Util/axios";
 
 const Promotions = () => {
   const [promotions,setPromotions] = useState([]);
 
   useEffect(() => {
-    // Fetch data from the API endpoint
-    fetch("http://127.0.0.1:8001/api/promotions")
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.success) {
-          // Update the state with the retrieved products
-          setPromotions(data.message);
-          console.log('data.message',data.message);
+    const fetchData = async () => {
+      try {
+        const response = await inventory.get("api/promotions");
+        if (response.data.success) {
+          setPromotions(response.data.message);
+          console.log('data.message', response.data.message);
         } else {
-          console.error("Failed to fetch products");
+          console.error("Error al recuperar las promociones");
         }
-      })
-      .catch((error) => console.error("Error fetching data:", error));
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+  
+    fetchData();
   }, []);
+  
 
 return (
   <div>

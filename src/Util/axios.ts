@@ -9,6 +9,7 @@ import Axios from 'axios';
 //   },
 // });
 
+//auth-ms-larvel 8000
 const auth = Axios.create({
   baseURL: "http://127.0.0.1:8000/",
   // withCredentials: true,
@@ -18,6 +19,7 @@ const auth = Axios.create({
   },
 });
 
+//inventory-ms-laravel 8001
 const inventory = Axios.create({
   baseURL: "http://127.0.0.1:8001/",
   withCredentials: true,
@@ -27,6 +29,7 @@ const inventory = Axios.create({
   },
 });
 
+//sale-ms-laravel 8002
 const sale = Axios.create({
   baseURL: "http://127.0.0.1:8002/",
   withCredentials: true,
@@ -36,4 +39,14 @@ const sale = Axios.create({
   },
 });
 
-export { auth, inventory, sale };
+//report-ms-laravel 8003
+const report = Axios.create({
+  baseURL: "http://127.0.0.1:8002/",
+  withCredentials: true,
+  headers: {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+  },
+});
+
+export { auth, inventory, sale, report };

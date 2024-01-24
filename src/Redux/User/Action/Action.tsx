@@ -1,12 +1,12 @@
 import axios from 'axios';
 import { Dispatch } from 'redux';
+import { auth } from "../../../Util/axios";
 
 export const initializeState = () => async (dispatch: Dispatch) => {
   try {
-
-    const response = await axios.get('http://127.0.0.1:8000/api/users/');
- 
+    const response = await auth.get("api/users/");
     const usersData = response.data;
+
     dispatch({
       type: 'INITIALIZE_STATE',
       payload: {
@@ -21,7 +21,7 @@ export const initializeState = () => async (dispatch: Dispatch) => {
 
 export const fetchUsers = () => async (dispatch: Dispatch) => {
     try {
-      const response = await axios.get('http://127.0.0.1:8000/api/users/');
+      const response = await auth.get("api/users/");
       const usersData = response.data.message;
 
       dispatch({
@@ -35,8 +35,8 @@ export const fetchUsers = () => async (dispatch: Dispatch) => {
 
   export const registerUser = (userData) => async (dispatch: Dispatch) => {
     try {
-      const response = await axios.post('http://127.0.0.1:8000/api/register/', userData);
-      const newUser = response.data; // Ajusta según la estructura de tus datos
+      const response = await auth.post("api/register/", userData);
+      const newUser = response.data;
   
       dispatch({
         type: 'REGISTER_USER_SUCCESS',
@@ -53,7 +53,8 @@ export const fetchUsers = () => async (dispatch: Dispatch) => {
     try {
       const confirmDelete = window.confirm("¿Estás seguro de que quieres eliminar este usuario?");
       if (confirmDelete) {
-        await axios.delete(`http://127.0.0.1:8000/api/users/${userId}`);
+        await auth.delete(`api/users/${userId}`);
+
         dispatch({
           type: 'DELETE_USER_SUCCESS',
           payload: userId,
@@ -66,9 +67,9 @@ export const fetchUsers = () => async (dispatch: Dispatch) => {
 
 export const showUserById = (userId) => async (dispatch) => {
   try {
-    const response = await axios.get(`http://127.0.0.1:8000/api/users/${userId.userId}`);
+    const response = await auth.get(`api/users/${userId.userId}`);
     const userDetails = response.data.message;
-    console.log('userDetails',userDetails);
+    
     dispatch({
       type: "SHOW_USER_BY_ID_SUCCESS",
       payload: userDetails,
@@ -80,7 +81,7 @@ export const showUserById = (userId) => async (dispatch) => {
 
 export const updateUser = (userId, updatedUserData) => async (dispatch) => {
   try {
-    const response = await axios.put(`http://127.0.0.1:8000/api/users/${userId}`, updatedUserData);
+    const response = await auth.put(`api/users/${userId}`, updatedUserData);
     const updatedUser = response.data; 
   
     dispatch({

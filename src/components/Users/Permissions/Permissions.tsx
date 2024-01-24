@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { PageHeaders } from "../../../Shared/Prism/Prism";
 import { Card, CardHeader, CardBody, Table, Col, Row } from "reactstrap";
+import { auth } from "../../../Util/axios";
 
 interface Permission {
   id: number;
@@ -12,12 +13,16 @@ const Permissions = () => {
   const [roles, setRoles] = useState<Permission[]>([]);
 
   useEffect(() => {
-    const apiUrl = "http://127.0.0.1:8000/api/permissions/";
+    const fetchData = async () => {
+      try {
+        const response = await auth.get("api/permissions/");
+        setRoles(response.data.message);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
 
-    fetch(apiUrl)
-      .then((response) => response.json())
-      .then((data) => setRoles(data.message))
-      .catch((error) => console.error("Error fetching data:", error));
+    fetchData();
   }, []);
 
   const sortedRoles = roles.slice().sort((a, b) => a.id - b.id);

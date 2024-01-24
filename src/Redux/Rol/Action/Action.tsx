@@ -1,9 +1,10 @@
 import axios from 'axios';
 import { Dispatch } from 'redux';
+import { auth } from "../../../Util/axios";
 
 export const fetchRoles = () => async (dispatch: Dispatch) => {
     try {
-      const response = await axios.get('http://127.0.0.1:8000/api/roles/');
+      const response = await auth.get("api/roles/");
       const rolesData = response.data.message;
 
       dispatch({
@@ -17,8 +18,8 @@ export const fetchRoles = () => async (dispatch: Dispatch) => {
 
   export const createRol = (userData: any) => async (dispatch: Dispatch) => {
     try {
-      const response = await axios.post('http://127.0.0.1:8000/api/roles/', userData);
-      const newUser = response.data; // Ajusta según la estructura de tus datos
+      const response = await auth.post("api/roles/", userData);
+      const newUser = response.data;
   
       dispatch({
         type: 'CREATE_ROL_SUCCESS',

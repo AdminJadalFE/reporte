@@ -8,12 +8,13 @@ import Axios from "axios";
 //     "Accept": "application/json",
 //   },
 // });
-
+//
 //auth-ms-larvel 8000
 const auth = Axios.create({
   baseURL: "http://3.85.216.85:9003/",
   // withCredentials: true,
   headers: {
+    "Access-Control-Allow-Origin": "*",
     "Content-Type": "application/json",
     Accept: "application/json",
   },

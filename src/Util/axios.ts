@@ -12,12 +12,9 @@ import Axios from "axios";
 //auth-ms-larvel 8000
 const auth = Axios.create({
   baseURL: "http://3.85.216.85:9003/",
-  // withCredentials: true,
   headers: {
-    'Access-Control-Allow-Origin': '*',
-    'origin':'x-requested-with',
-    'Access-Control-Allow-Headers': 'POST, GET, PUT, DELETE, OPTIONS, HEAD, Authorization, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Access-Control-Allow-Origin',
-    'Content-Type': 'application/json'
+    "Content-Type": "application/json",
+    Accept: "application/json",
   },
 });
 

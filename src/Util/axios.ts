@@ -16,6 +16,7 @@ const auth = Axios.create({
     "Content-Type": "application/json",
     Accept: "application/json",
   },
+  withCredentials: true, 
 });
 
 //inventory-ms-laravel 8001

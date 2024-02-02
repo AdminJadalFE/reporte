@@ -11,7 +11,7 @@ import Axios from "axios";
 //
 //auth-ms-larvel 8000
 const auth = Axios.create({
-  baseURL: "http://3.85.216.85:9003/",
+  baseURL: "https://migracion.jadal.pe/",
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",

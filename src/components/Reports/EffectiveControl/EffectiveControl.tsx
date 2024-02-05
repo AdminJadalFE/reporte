@@ -14,6 +14,7 @@ import DatePicker from "react-multi-date-picker";
 import Select from "react-select";
 import axios from "axios";
 import { report } from "../../../Util/axios";
+import { BasicTable } from "./DataTable/Basictable";
 
 const EffectiveControl = () => {
   console.log("asdfasdfasdf");
@@ -227,6 +228,7 @@ const EffectiveControl = () => {
                   </div>
                 )}
               </Row>
+              <BasicTable/>
             </CardBody>
           </Card>
         </Col>

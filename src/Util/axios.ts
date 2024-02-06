@@ -21,7 +21,7 @@ const auth = Axios.create({
 
 //inventory-ms-laravel 8001
 const inventory = Axios.create({
-  baseURL: "http://127.0.0.1:8001/",
+  baseURL: "https://migracion.jadal.pe/",
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",
@@ -31,7 +31,7 @@ const inventory = Axios.create({
 
 //sale-ms-laravel 8002
 const sale = Axios.create({
-  baseURL: "http://127.0.0.1:8002/",
+  baseURL: "https://migracion.jadal.pe/",
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",
@@ -41,7 +41,7 @@ const sale = Axios.create({
 
 //report-ms-laravel 8003
 const report = Axios.create({
-  baseURL: "http://127.0.0.1:8003/",
+  baseURL: "https://migracion.jadal.pe/",
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",

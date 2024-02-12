@@ -11,7 +11,7 @@ import Axios from "axios";
 //
 //auth-ms-larvel 8000
 const auth = Axios.create({
-  baseURL: "https://migracion.jadal.pe/",
+  baseURL: "http://127.0.0.1:8000/",
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
@@ -41,7 +41,7 @@ const sale = Axios.create({
 
 //report-ms-laravel 8003
 const report = Axios.create({
-  baseURL: "http://127.0.0.1:8003/",
+  baseURL: "http://127.0.0.1:8000/",
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",

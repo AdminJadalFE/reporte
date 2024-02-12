@@ -2714,7 +2714,7 @@
     "react-lifecycles-compat" "^3.0.0"
     "warning" "^4.0.3"
 
-"react-multi-date-picker@^4.0.0":
+"react-multi-date-picker@^4.4.1":
   "integrity" "sha512-z0utCiMYijt2w3UoVJkYgsReE9l1k6DkiL13Vr2RKHnBnorKK0IYq7xpfkuMimvt7sLumFr5wTKsWumCgSkXkA=="
   "resolved" "https://registry.npmjs.org/react-multi-date-picker/-/react-multi-date-picker-4.4.1.tgz"
   "version" "4.4.1"

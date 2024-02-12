@@ -172,6 +172,7 @@ const EffectiveControl = lazy(() => import("../../components/Reports/EffectiveCo
 const Invoice = lazy(() => import("../../components/Reports/Invoice/Invoice"));
 const Statistical = lazy(() => import("../../components/Reports/Statistical/Statistical"));
 const Administrative = lazy(() => import("../../components/Reports/Administrative/Administrative"));
+const AccumulatedDay = lazy(() => import("../../components/Reports/AccumulatedDay/AccumulatedDay"));
 
 export const Routing = () => {
 
@@ -420,7 +421,10 @@ export const Routing = () => {
           </Route>  
           <Route>
             <Route path={`${import.meta.env.BASE_URL}report/administrative`} element={<Administrative />} />
-          </Route>                                  
+          </Route>
+          <Route>
+            <Route path={`${import.meta.env.BASE_URL}report/accumulated/day`} element={<AccumulatedDay />} />
+          </Route>                                                
         </Route>
         <Route path={`${import.meta.env.BASE_URL}`} element={<Custompages />}>
 

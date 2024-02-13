@@ -46,7 +46,7 @@ const EffectiveControl = () => {
   return (
     <div>
       <PageHeaders
-        title="Reporte Acumulado por Día"
+        title="Reporte Control Efectivo"
         home="Home"
         name="Pages"
         fonticonsname="Empty"
@@ -147,7 +147,7 @@ const EffectiveControl = () => {
                     <Label className="form-label">Opciones:</Label>
                   </div>
 
-                  <div className="wd-200 mg-b-30 mb-3 mt-3">
+                  <div className="wd-200 mg-b-30 mb-3 mt-3 d-flex justify-content-between">
                     <Button
                       color=""
                       type="button"

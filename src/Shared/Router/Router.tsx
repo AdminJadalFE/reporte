@@ -173,6 +173,8 @@ const Invoice = lazy(() => import("../../components/Reports/Invoice/Invoice"));
 const Statistical = lazy(() => import("../../components/Reports/Statistical/Statistical"));
 const Administrative = lazy(() => import("../../components/Reports/Administrative/Administrative"));
 const AccumulatedDay = lazy(() => import("../../components/Reports/AccumulatedDay/AccumulatedDay"));
+const Sale = lazy(() => import("../../components/Reports/Sale/Sale")); 
+const Bank = lazy(() => import("../../components/Reports/Bank/Bank")); 
 
 export const Routing = () => {
 
@@ -424,7 +426,13 @@ export const Routing = () => {
           </Route>
           <Route>
             <Route path={`${import.meta.env.BASE_URL}report/accumulated/day`} element={<AccumulatedDay />} />
-          </Route>                                                
+          </Route>
+          <Route>
+            <Route path={`${import.meta.env.BASE_URL}report/sale`} element={<Sale />} />
+          </Route>
+          <Route>
+            <Route path={`${import.meta.env.BASE_URL}report/bank`} element={<Bank />} />
+          </Route>                                                                         
         </Route>
         <Route path={`${import.meta.env.BASE_URL}`} element={<Custompages />}>
 

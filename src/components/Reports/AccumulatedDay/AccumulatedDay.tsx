@@ -56,7 +56,7 @@ const AccumulatedDay = () => {
       }
 
       // Enviar las fechas formateadas al endpoint
-      const response = await report.post("api/report/pdf/day", {
+      const response = await report.post("api/report/accumulated/day/table", {
         startDate: formattedStartDate,
         endDate: formattedEndDate,
       });
@@ -69,8 +69,95 @@ const AccumulatedDay = () => {
   };
 
   const openPdf = async () => {
-    console.log("open PDF");
+    try {
+      // Convertir las fechas a formato legible antes de enviarlas
+      const formattedStartDate =
+        startDate?.day + "-" + startDate?.month.number + "-" + startDate?.year;
+      const formattedEndDate =
+        endDate?.day + "-" + endDate?.month.number + "-" + endDate?.year;
+  
+      console.log(
+        "formattedStartDate",
+        formattedStartDate,
+        "formattedEndDate",
+        formattedEndDate
+      );
+  
+      if (!formattedStartDate || !formattedEndDate) {
+        console.error("Las fechas no son válidas");
+        return;
+      }
+  
+      // Enviar las fechas formateadas al endpoint
+      const response = await report.post("api/report/accumulated/day/pdf", {
+        startDate: formattedStartDate,
+        endDate: formattedEndDate,
+      }, {
+        responseType: 'blob' // Especificar que esperamos una respuesta de tipo blob
+      });
+  
+      // Convertir la respuesta a un ArrayBuffer
+      const arrayBuffer = await response.data.arrayBuffer();
+  
+      // Crear un objeto Blob con los datos del PDF
+      const blob = new Blob([arrayBuffer], { type: "application/pdf" });
+      const url = URL.createObjectURL(blob);
+  
+      // Abrir el PDF en una nueva ventana
+      window.open(url, "_blank");
+    } catch (error) {
+      console.error("Error al cargar los datos del informe", error);
+    }
   };
+  
+  
+
+  const openExcel = async () => {
+    try {
+      // Convertir las fechas a formato legible antes de enviarlas
+      const formattedStartDate = `${startDate?.day}-${startDate?.month.number}-${startDate?.year}`;
+      const formattedEndDate = `${endDate?.day}-${endDate?.month.number}-${endDate?.year}`;
+  
+      console.log(
+        "formattedStartDate",
+        formattedStartDate,
+        "formattedEndDate",
+        formattedEndDate
+      );
+  
+      if (!formattedStartDate || !formattedEndDate) {
+        console.error("Las fechas no son válidas");
+        return;
+      }
+  
+      // Enviar las fechas formateadas al endpoint
+      const response = await report.post(
+        "api/report/accumulated/day/excel",
+        {
+          startDate: formattedStartDate,
+          endDate: formattedEndDate,
+        },
+        {
+          responseType: "blob", // Especificar que esperamos una respuesta de tipo blob
+        }
+      );
+  
+      // Convertir la respuesta a un ArrayBuffer
+      const arrayBuffer = await response.data.arrayBuffer();
+  
+      // Crear un objeto Blob con los datos del Excel
+      const blob = new Blob([arrayBuffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+      const url = URL.createObjectURL(blob);
+  
+      // Abrir el Excel en una nueva ventana
+      window.open(url, "_blank");
+    } catch (error) {
+      console.error("Error al cargar los datos del informe", error);
+    }
+  };
+  
+
+  
 
   const handleDateChange = (date) => {
     const formattedDate = format(date, "yyyy-MM-dd");
@@ -242,7 +329,7 @@ const AccumulatedDay = () => {
                       color=""
                       type="button"
                       className="btn btn-primary btn-svgs btn-svg-white mt-4 ml-4 mr-4 "
-                      onClick={() => openPdf()}
+                      onClick={() => openExcel()}
                     >
                       <svg
                         className="svg-icon"

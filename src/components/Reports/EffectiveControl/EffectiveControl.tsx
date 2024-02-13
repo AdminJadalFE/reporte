@@ -17,18 +17,52 @@ import { report } from "../../../Util/axios";
 import { BasicTable } from "./DataTable/Basictable";
 
 const EffectiveControl = () => {
-  console.log("asdfasdfasdf");
   const [dates, setDates] = useState<any>();
   const [countryOption, setCountryOption] = useState<any>(null);
+
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+
   const Countryoptions = [
-    { value: "Germany", label: "Germany" },
-    { value: "Canada", label: "Canada" },
-    { value: "Usa", label: "Usa" },
-    { value: "Aus", label: "Aus" },
+    { value: "Principal", label: "Principal" },
+    { value: "Secundario", label: "Secundario" },
+    { value: "Tercer", label: "Tercer" },
+    { value: "Cuarto", label: "Cuarto" },
   ];
 
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
 
+  const [reportData, setReportData] = useState<any[]>([]);
+  const openTable = async () => {
+    try {
+      const formattedStartDate =
+        startDate?.day + "-" + startDate?.month.number + "-" + startDate?.year;
+      const formattedEndDate =
+        endDate?.day + "-" + endDate?.month.number + "-" + endDate?.year;
+
+      console.log(
+        "formattedStartDate",
+        formattedStartDate,
+        "formattedEndDate",
+        formattedEndDate
+      );
+
+      if (!formattedStartDate || !formattedEndDate) {
+        console.error("Las fechas no son válidas");
+        return;
+      }
+      
+      const response = await report.post("api/report/accumulated/day/table", {
+        startDate: formattedStartDate,
+        endDate: formattedEndDate,
+      });
+
+      console.log(response.data); 
+      setReportData(response.data);
+    } catch (error) {
+      console.error("Error al cargar los datos del informe", error);
+    }
+  };
   const openPdf = async () => {
     try {
       const response = await report.get("api/report/sale/pdf/day", {
@@ -41,7 +75,6 @@ const EffectiveControl = () => {
       console.error("Error al cargar el PDF", error);
     }
   };
-  
 
   return (
     <div>
@@ -82,11 +115,14 @@ const EffectiveControl = () => {
                         </div>
                       </div>
                       <DatePicker
+                        format="DD/MM/YYYY"
                         className="form-control"
-                        placeholder="Date Range"
-                        value={dates}
-                        onChange={setDates}
-                        multiple
+                        placeholder="Desde"
+                        selected={startDate}
+                        onChange={(startDate) => {
+                          console.log(startDate);
+                          setStartDate(startDate);
+                        }}
                         numberOfMonths={1}
                       />
                     </div>
@@ -114,11 +150,11 @@ const EffectiveControl = () => {
                         </div>
                       </div>
                       <DatePicker
+                        format="DD/MM/YYYY"
                         className="form-control"
-                        placeholder="Date Range"
-                        value={dates}
-                        onChange={setDates}
-                        multiple
+                        placeholder="Hasta"
+                        value={endDate}
+                        onChange={(endDate) => setEndDate(endDate)}
                         numberOfMonths={1}
                       />
                     </div>
@@ -142,73 +178,87 @@ const EffectiveControl = () => {
                 </Col>
               </Row>
               <Row>
-                <Col lg="6">
+                <Col lg="12">
                   <div className="mb-3 mt-3">
                     <Label className="form-label">Opciones:</Label>
                   </div>
 
                   <div className="wd-200 mg-b-30 mb-3 mt-3 d-flex justify-content-between">
-                    <Button
-                      color=""
-                      type="button"
-                      className="btn btn-primary btn-svgs btn-svg-white mt-4 ml-4 mr-4"
-                      onClick={() => openPdf()}
-                    >
-                      <svg
-                        className="svg-icon"
-                        xmlns="http://www.w3.org/2000/svg"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        width="24"
-                      >
-                        <path d="M0 0h24v24H0V0z" fill="none"></path>
-                        <path
-                          d="M13 4H6v16h12V9h-5V4zm3 14H8v-2h8v2zm0-6v2H8v-2h8z"
-                          opacity=".3"
-                        ></path>
-                        <path d="M8 16h8v2H8zm0-4h8v2H8zm6-10H6c-1.1 0-2 .9-2 2v16c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"></path>
-                      </svg>
-                      <span className="btn-svg-text">VIZUALIZAR PDF</span>
-                    </Button>
+                    <Row>
+                      <Col lg="12">
+                        <Button
+                          color=""
+                          type="button"
+                          className="btn btn-primary btn-svgs btn-svg-white mt-4 ml-4 mr-4"
+                          onClick={() => openTable()}
+                        >
+                          <svg
+                            className="svg-icon"
+                            xmlns="http://www.w3.org/2000/svg"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            width="24"
+                          >
+                            <path d="M0 0h24v24H0V0z" fill="none"></path>
+                            <path
+                              d="M13 4H6v16h12V9h-5V4zm3 14H8v-2h8v2zm0-6v2H8v-2h8z"
+                              opacity=".3"
+                            ></path>
+                            <path d="M8 16h8v2H8zm0-4h8v2H8zm6-10H6c-1.1 0-2 .9-2 2v16c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"></path>
+                          </svg>
+                          <span className="btn-svg-text">FILTRAR</span>
+                        </Button>
+                      </Col>
+                    </Row>
 
-                    <Button
-                      color=""
-                      type="button"
-                      className="btn btn-primary btn-svgs btn-svg-white mt-4 ml-4 mr-4"
-                    >
-                      <svg
-                        className="svg-icon"
-                        xmlns="http://www.w3.org/2000/svg"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        width="24"
-                      >
-                        <path d="M0 0h24v24H0V0z" fill="none"></path>
-                        <path
-                          d="M13 4H6v16h12V9h-5V4zm3 14H8v-2h8v2zm0-6v2H8v-2h8z"
-                          opacity=".3"
-                        ></path>
-                        <path d="M8 16h8v2H8zm0-4h8v2H8zm6-10H6c-1.1 0-2 .9-2 2v16c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"></path>
-                      </svg>
-                      <span className="btn-svg-text">DESCARGAR EXCEL</span>
-                    </Button>
-
-                    <Button
-                      color=""
-                      type="button"
-                      className="btn btn-primary btn-svgs btn-svg-white mt-4 ml-4 mr-4"
-                    >
-                      <svg
-                        className="svg-icon"
-                        xmlns="http://www.w3.org/2000/svg"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        width="24"
-                      >
-                        <path d="M.2 10a11 11 0 0119.6 0A11 11 0 01.2 10zm9.8 4a4 4 0 100-8 4 4 0 000 8zm0-2a2 2 0 110-4 2 2 0 010 4z" />
-                      </svg>
-                      <span className="btn-svg-text">MOSTRAR/OCULTAR</span>
-                    </Button>
+                    <Row>
+                      <Col lg="12">
+                        <Button
+                          color=""
+                          type="button"
+                          className="btn btn-primary btn-svgs btn-svg-white mt-4 ml-4 mr-4 "
+                          onClick={() => openPdf()}
+                        >
+                          <svg
+                            className="svg-icon"
+                            xmlns="http://www.w3.org/2000/svg"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            width="24"
+                          >
+                            <path d="M0 0h24v24H0V0z" fill="none"></path>
+                            <path
+                              d="M13 4H6v16h12V9h-5V4zm3 14H8v-2h8v2zm0-6v2H8v-2h8z"
+                              opacity=".3"
+                            ></path>
+                            <path d="M8 16h8v2H8zm0-4h8v2H8zm6-10H6c-1.1 0-2 .9-2 2v16c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"></path>
+                          </svg>
+                          <span className="btn-svg-text">PDF</span>
+                        </Button>
+                        <Button
+                          color=""
+                          type="button"
+                          className="btn btn-primary btn-svgs btn-svg-white mt-4 ml-4 mr-4 "
+                          onClick={() => openExcel()}
+                        >
+                          <svg
+                            className="svg-icon"
+                            xmlns="http://www.w3.org/2000/svg"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            width="24"
+                          >
+                            <path d="M0 0h24v24H0V0z" fill="none"></path>
+                            <path
+                              d="M13 4H6v16h12V9h-5V4zm3 14H8v-2h8v2zm0-6v2H8v-2h8z"
+                              opacity=".3"
+                            ></path>
+                            <path d="M8 16h8v2H8zm0-4h8v2H8zm6-10H6c-1.1 0-2 .9-2 2v16c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"></path>
+                          </svg>
+                          <span className="btn-svg-text">EXCEL</span>
+                        </Button>
+                      </Col>
+                    </Row>
                   </div>
                 </Col>
 
@@ -228,7 +278,7 @@ const EffectiveControl = () => {
                   </div>
                 )}
               </Row>
-              <BasicTable/>
+              <BasicTable data={reportData} />
             </CardBody>
           </Card>
         </Col>

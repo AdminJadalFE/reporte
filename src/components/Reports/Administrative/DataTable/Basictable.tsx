@@ -12,61 +12,49 @@ export const BasicTable = ({ data }: any) => {
   const columns: any = React.useMemo(
     () => [
       {
-        Header: "Fecha",
+        Header: "F. Trabajo",
         accessor: "fecha",
       },
       {
-        Header: "Combust.(VP)",
+        Header: "CONTADO",
         accessor: "84 OCT(produc)-Galones",
       },
       {
-        Header: "Productos(VP)",
+        Header: "CRÉDITO",
         accessor: "84 OCT(produc)-Soles",
       },
       {
-        Header: "Pag.Cta|Pag.Adel(OI)",
+        Header: "DEPÓSITOS (S)",
         accessor: "90 OCT-Galones(produc)",
       },      
       {
-        Header: "Otros(OI)",
+        Header: "BOLETA",
         accessor: "90 OCT-Galones(product)",
       },
       {
-        Header: "Tienda Lucosa(OI)",
-        accessor: "95 OCT-Galones(produc)",
+        Header: "EFÉCTIVO (C)",
+        accessor: "95 OCT-Galones(produc)1",
       },      
       {
-        Header: "Total Ingresos del Dia",
-        accessor: "95 OCT-Galones(product)",
+        Header: "TARJETA (C)",
+        accessor: "95 OCT-Galones(product)2",
       },
       {
-        Header: "Efectivo del Dia(Teórico)",
-        accessor: "97 OCT-Galones(produc)",
+        Header: "TRANSF. (C)",
+        accessor: "95 OCT-Galones(product)3",
       },      
       {
-        Header: "Efectivo del Día(Físico)",
-        accessor: "97 OCT-Galones(product)",
+        Header: "NTA. CREDITO (C)",
+        accessor: "95 OCT-Galones(product)4",
       },
       {
-        Header: "Dif. Vta Día Liq. Día",
-        accessor: "REGULAR-Galones(produc)",
-      },      
-      {
-        Header: "Efectivo Anterior",
-        accessor: "REGULAR-Galones(product)",
+        Header: "BANCA (C)",
+        accessor: "95 OCT-Galones(product)5",
       },
       {
-        Header: "Efect. Día + Efect. Anter.",
-        accessor: "PREMIUM(produc)",
-      },      
-      {
-        Header: "TOTAL DEPÓSITO",
-        accessor: "PREMIUM(product)",
-      },
-      {
-        Header: "Depositos Pendientes Caja Fuerte",
-        accessor: "GAS GLP(Galones)",
-      },                                          
+        Header: "TOTAL (C)",
+        accessor: "95 OCT-Galones(product)6",
+      },                                            
     ],
     []
   );
@@ -132,7 +120,7 @@ export const BasicTable = ({ data }: any) => {
                     className="bg-primary text-white"
                     {...column.getHeaderProps(column.getSortByToggleProps())}
                     // className={column.className}
-                    style={{ padding: "1px", fontSize: "9px"}} // Ajusta el tamaño de fuente y el padding de los encabezados
+                    // style={{ padding: "1px", fontSize: "9px"}} 
                   >
                     <span className="tabletitle">
                       {column.render("Header")}

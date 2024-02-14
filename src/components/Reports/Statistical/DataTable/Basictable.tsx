@@ -16,57 +16,25 @@ export const BasicTable = ({ data }: any) => {
         accessor: "fecha",
       },
       {
-        Header: "Combust.(VP)",
+        Header: "PRODUCTO A",
         accessor: "84 OCT(produc)-Galones",
       },
       {
-        Header: "Productos(VP)",
+        Header: "PRODUCTO B",
         accessor: "84 OCT(produc)-Soles",
       },
       {
-        Header: "Pag.Cta|Pag.Adel(OI)",
+        Header: "PRODUCTO C",
         accessor: "90 OCT-Galones(produc)",
       },      
       {
-        Header: "Otros(OI)",
+        Header: "PRODUCTO D",
         accessor: "90 OCT-Galones(product)",
       },
       {
-        Header: "Tienda Lucosa(OI)",
+        Header: "TOTAL",
         accessor: "95 OCT-Galones(produc)",
-      },      
-      {
-        Header: "Total Ingresos del Dia",
-        accessor: "95 OCT-Galones(product)",
-      },
-      {
-        Header: "Efectivo del Dia(Teórico)",
-        accessor: "97 OCT-Galones(produc)",
-      },      
-      {
-        Header: "Efectivo del Día(Físico)",
-        accessor: "97 OCT-Galones(product)",
-      },
-      {
-        Header: "Dif. Vta Día Liq. Día",
-        accessor: "REGULAR-Galones(produc)",
-      },      
-      {
-        Header: "Efectivo Anterior",
-        accessor: "REGULAR-Galones(product)",
-      },
-      {
-        Header: "Efect. Día + Efect. Anter.",
-        accessor: "PREMIUM(produc)",
-      },      
-      {
-        Header: "TOTAL DEPÓSITO",
-        accessor: "PREMIUM(product)",
-      },
-      {
-        Header: "Depositos Pendientes Caja Fuerte",
-        accessor: "GAS GLP(Galones)",
-      },                                          
+      },                                    
     ],
     []
   );
@@ -132,7 +100,7 @@ export const BasicTable = ({ data }: any) => {
                     className="bg-primary text-white"
                     {...column.getHeaderProps(column.getSortByToggleProps())}
                     // className={column.className}
-                    style={{ padding: "1px", fontSize: "9px"}} // Ajusta el tamaño de fuente y el padding de los encabezados
+                    //  style={{ padding: "1px", fontSize: "9px"}}
                   >
                     <span className="tabletitle">
                       {column.render("Header")}

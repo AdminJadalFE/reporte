@@ -12,61 +12,45 @@ export const BasicTable = ({ data }: any) => {
   const columns: any = React.useMemo(
     () => [
       {
-        Header: "Fecha",
+        Header: "Tipo",
         accessor: "fecha",
       },
       {
-        Header: "Combust.(VP)",
+        Header: "SERIE",
         accessor: "84 OCT(produc)-Galones",
       },
       {
-        Header: "Productos(VP)",
+        Header: "NÚMERO",
         accessor: "84 OCT(produc)-Soles",
       },
       {
-        Header: "Pag.Cta|Pag.Adel(OI)",
+        Header: "RECEPTOR",
         accessor: "90 OCT-Galones(produc)",
       },      
       {
-        Header: "Otros(OI)",
+        Header: "EMISIÓN",
         accessor: "90 OCT-Galones(product)",
       },
       {
-        Header: "Tienda Lucosa(OI)",
+        Header: "PUBLICACIÓN",
         accessor: "95 OCT-Galones(produc)",
       },      
       {
-        Header: "Total Ingresos del Dia",
+        Header: "MONEDA",
         accessor: "95 OCT-Galones(product)",
       },
       {
-        Header: "Efectivo del Dia(Teórico)",
+        Header: "TOTAL",
         accessor: "97 OCT-Galones(produc)",
       },      
       {
-        Header: "Efectivo del Día(Físico)",
+        Header: "ESTADO",
         accessor: "97 OCT-Galones(product)",
       },
       {
-        Header: "Dif. Vta Día Liq. Día",
+        Header: "OPCIONES",
         accessor: "REGULAR-Galones(produc)",
-      },      
-      {
-        Header: "Efectivo Anterior",
-        accessor: "REGULAR-Galones(product)",
-      },
-      {
-        Header: "Efect. Día + Efect. Anter.",
-        accessor: "PREMIUM(produc)",
-      },      
-      {
-        Header: "TOTAL DEPÓSITO",
-        accessor: "PREMIUM(product)",
-      },
-      {
-        Header: "Depositos Pendientes Caja Fuerte",
-        accessor: "GAS GLP(Galones)",
-      },                                          
+      },                                     
     ],
     []
   );
@@ -132,7 +116,7 @@ export const BasicTable = ({ data }: any) => {
                     className="bg-primary text-white"
                     {...column.getHeaderProps(column.getSortByToggleProps())}
                     // className={column.className}
-                    style={{ padding: "1px", fontSize: "9px"}} // Ajusta el tamaño de fuente y el padding de los encabezados
+                    //  style={{ padding: "1px", fontSize: "9px"}}
                   >
                     <span className="tabletitle">
                       {column.render("Header")}

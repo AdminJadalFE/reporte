@@ -10,7 +10,12 @@ import {
   Button,
 } from "reactstrap";
 import { PageHeaders } from "../../../Shared/Prism/Prism";
-import DatePicker from "react-multi-date-picker";
+
+import DatePicker, { registerLocale } from "react-datepicker";
+import es from "date-fns/locale/es";
+registerLocale("es", es);
+import "react-datepicker/dist/react-datepicker.css";
+
 import Select from "react-select";
 import axios from "axios";
 import { report } from "../../../Util/axios";
@@ -35,11 +40,22 @@ const Administrative = () => {
   const [reportData, setReportData] = useState<any[]>([]);
   const openTable = async () => {
     try {
-      const formattedStartDate =
-        startDate?.day + "-" + startDate?.month.number + "-" + startDate?.year;
-      const formattedEndDate =
-        endDate?.day + "-" + endDate?.month.number + "-" + endDate?.year;
+      const formattedStartDate = startDate
+        ? `${startDate.getDate().toString().padStart(2, "0")}-${(
+            startDate.getMonth() + 1
+          )
+            .toString()
+            .padStart(2, "0")}-${startDate.getFullYear()}`
+        : null;
+      const formattedEndDate = endDate
+        ? `${endDate.getDate().toString().padStart(2, "0")}-${(
+            endDate.getMonth() + 1
+          )
+            .toString()
+            .padStart(2, "0")}-${endDate.getFullYear()}`
+        : null;
 
+      console.log("startDate", startDate, "endDate", endDate);
       console.log(
         "formattedStartDate",
         formattedStartDate,
@@ -115,6 +131,7 @@ const Administrative = () => {
                         </div>
                       </div>
                       <DatePicker
+                        locale="es"
                         format="DD/MM/YYYY"
                         className="form-control"
                         placeholder="Desde"
@@ -150,10 +167,11 @@ const Administrative = () => {
                         </div>
                       </div>
                       <DatePicker
+                        locale="es"
                         format="DD/MM/YYYY"
                         className="form-control"
                         placeholder="Hasta"
-                        value={endDate}
+                        selected={endDate}
                         onChange={(endDate) => setEndDate(endDate)}
                         numberOfMonths={1}
                       />

@@ -12,31 +12,31 @@ export const BasicTable = ({ data }: any) => {
   const columns: any = React.useMemo(
     () => [
       {
-        Header: "Tipo",
+        Header: "Tipo doc.",
         accessor: "fecha",
       },
       {
-        Header: "SERIE",
+        Header: "N° doc.",
         accessor: "84 OCT(produc)-Galones",
       },
       {
-        Header: "NÚMERO",
+        Header: "Producto",
         accessor: "84 OCT(produc)-Soles",
       },
       {
-        Header: "RECEPTOR",
+        Header: "Cantidad",
         accessor: "90 OCT-Galones(produc)",
       },      
       {
-        Header: "EMISIÓN",
+        Header: "Precio",
         accessor: "90 OCT-Galones(product)",
       },
       {
-        Header: "PUBLICACIÓN",
+        Header: "Dscto",
         accessor: "95 OCT-Galones(produc)",
       },      
       {
-        Header: "MONEDA",
+        Header: "Total",
         accessor: "95 OCT-Galones(product)",
       },
       {
@@ -44,11 +44,11 @@ export const BasicTable = ({ data }: any) => {
         accessor: "97 OCT-Galones(produc)",
       },      
       {
-        Header: "ESTADO",
+        Header: "Fecha Emisión",
         accessor: "97 OCT-Galones(product)",
       },
       {
-        Header: "OPCIONES",
+        Header: "Situación",
         accessor: "REGULAR-Galones(produc)",
       },                                     
     ],

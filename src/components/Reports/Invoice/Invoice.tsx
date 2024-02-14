@@ -12,8 +12,8 @@ import {
 import { PageHeaders } from "../../../Shared/Prism/Prism";
 
 import DatePicker, { registerLocale } from "react-datepicker";
-import es from 'date-fns/locale/es';
-registerLocale('es', es)
+import es from "date-fns/locale/es";
+registerLocale("es", es);
 import "react-datepicker/dist/react-datepicker.css";
 
 import Select from "react-select";
@@ -30,10 +30,9 @@ const Invoice = () => {
   const [endDate, setEndDate] = useState(null);
 
   const Countryoptions = [
-    { value: "Principal", label: "Principal" },
-    { value: "Secundario", label: "Secundario" },
-    { value: "Tercer", label: "Tercer" },
-    { value: "Cuarto", label: "Cuarto" },
+    { value: "Todos", label: "Todos" },
+    { value: "Facturado", label: "Facturado" },
+    { value: "No Facturado", label: "No Facturado" },
   ];
 
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
@@ -42,18 +41,22 @@ const Invoice = () => {
   const openTable = async () => {
     try {
       const formattedStartDate = startDate
-      ? `${startDate.getDate().toString().padStart(2, '0')}-${(
-          startDate.getMonth() + 1
-        ).toString().padStart(2, '0')}-${startDate.getFullYear()}`
-      : null;
-    const formattedEndDate = endDate
-      ? `${endDate.getDate().toString().padStart(2, '0')}-${(
-          endDate.getMonth() + 1
-        ).toString().padStart(2, '0')}-${endDate.getFullYear()}`
-      : null;
+        ? `${startDate.getDate().toString().padStart(2, "0")}-${(
+            startDate.getMonth() + 1
+          )
+            .toString()
+            .padStart(2, "0")}-${startDate.getFullYear()}`
+        : null;
+      const formattedEndDate = endDate
+        ? `${endDate.getDate().toString().padStart(2, "0")}-${(
+            endDate.getMonth() + 1
+          )
+            .toString()
+            .padStart(2, "0")}-${endDate.getFullYear()}`
+        : null;
 
-    console.log('startDate', startDate, 'endDate', endDate);
-        
+      console.log("startDate", startDate, "endDate", endDate);
+
       console.log(
         "formattedStartDate",
         formattedStartDate,
@@ -65,13 +68,13 @@ const Invoice = () => {
         console.error("Las fechas no son válidas");
         return;
       }
-      
+
       const response = await report.post("api/report/accumulated/day/table", {
         startDate: formattedStartDate,
         endDate: formattedEndDate,
       });
 
-      console.log(response.data); 
+      console.log(response.data);
       setReportData(response.data);
     } catch (error) {
       console.error("Error al cargar los datos del informe", error);
@@ -107,6 +110,26 @@ const Invoice = () => {
             </CardHeader>
             <CardBody>
               <Row>
+                <Col lg="6">
+                <div className="mb-3">
+                  <label className="form-label">Cliente</label>
+                  </div>
+                  <input
+                    type="text"
+                    className="form-control required mb-3"
+                    placeholder="cliente"
+                  />
+                </Col>
+                <Col lg="6">
+                <div className="mb-3">
+                  <label className="form-label">N° Documento</label>
+                  </div>
+                  <input
+                    type="text"
+                    className="form-control required mb-3"
+                    placeholder="documento"
+                  />
+                </Col>                
                 <Col lg="6">
                   <div className="mb-3">
                     <Label className="form-label">Desde: </Label>
@@ -180,14 +203,14 @@ const Invoice = () => {
               <Row>
                 <Col lg="6">
                   <div className="mb-3 mt-3">
-                    <Label className="form-label">Selecciona un Local: </Label>
+                    <Label className="form-label">Situacion: </Label>
                   </div>
                   <div className="wd-200 mg-b-30">
                     <Select
                       defaultValue={countryOption}
                       onChange={setCountryOption}
                       options={Countryoptions}
-                      placeholder="Country"
+                      placeholder="Todos"
                       classNamePrefix="Search"
                     />
                   </div>

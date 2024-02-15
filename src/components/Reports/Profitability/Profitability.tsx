@@ -65,7 +65,7 @@ const Profitability = () => {
   };
   const openPdf = async () => {
     try {
-      const response = await report.get("api/report/sale/pdf/day", {
+      const response = await report.get("api/report/pdf/sale/day", {
         responseType: "arraybuffer",
       });
       const blob = new Blob([response.data], { type: "application/pdf" });

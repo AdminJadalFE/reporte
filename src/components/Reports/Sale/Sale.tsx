@@ -69,7 +69,7 @@ const Sale = () => {
         return;
       }
       
-      const response = await report.post("api/report/sale/table", {
+      const response = await report.post("api/report/table/sale", {
         startDate: formattedStartDate,
         endDate: formattedEndDate,
       });
@@ -101,7 +101,7 @@ const Sale = () => {
       }
 
       const response = await report.post(
-        "api/report/accumulated/day/pdf",
+        "api/report/pdf/accumulated/day",
         {
           startDate: formattedStartDate,
           endDate: formattedEndDate,
@@ -140,7 +140,7 @@ const Sale = () => {
       }
 
       const response = await report.post(
-        "api/report/accumulated/day/excel",
+        "api/report/excel/accumulated/day",
         {
           startDate: formattedStartDate,
           endDate: formattedEndDate,

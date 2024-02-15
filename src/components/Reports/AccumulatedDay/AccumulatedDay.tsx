@@ -71,7 +71,7 @@ const AccumulatedDay = () => {
         return;
       }
       
-      const response = await report.post("api/report/accumulated/day/table", {
+      const response = await report.post("api/report/table/accumulated/day", {
         startDate: formattedStartDate,
         endDate: formattedEndDate,
       });
@@ -85,11 +85,22 @@ const AccumulatedDay = () => {
 
   const openPdf = async () => {
     try {
-      const formattedStartDate =
-        startDate?.day + "-" + startDate?.month.number + "-" + startDate?.year;
-      const formattedEndDate =
-        endDate?.day + "-" + endDate?.month.number + "-" + endDate?.year;
+      const formattedStartDate = startDate
+        ? `${startDate.getDate().toString().padStart(2, "0")}-${(
+            startDate.getMonth() + 1
+          )
+            .toString()
+            .padStart(2, "0")}-${startDate.getFullYear()}`
+        : null;
+      const formattedEndDate = endDate
+        ? `${endDate.getDate().toString().padStart(2, "0")}-${(
+            endDate.getMonth() + 1
+          )
+            .toString()
+            .padStart(2, "0")}-${endDate.getFullYear()}`
+        : null;
 
+      console.log("startDate", startDate, "endDate", endDate);
       console.log(
         "formattedStartDate",
         formattedStartDate,
@@ -103,7 +114,7 @@ const AccumulatedDay = () => {
       }
 
       const response = await report.post(
-        "api/report/accumulated/day/pdf",
+        "api/report/pdf/accumulated/day",
         {
           startDate: formattedStartDate,
           endDate: formattedEndDate,
@@ -113,12 +124,19 @@ const AccumulatedDay = () => {
         }
       );
 
-      const arrayBuffer = await response.data.arrayBuffer();
-
-      const blob = new Blob([arrayBuffer], { type: "application/pdf" });
+      const blob = new Blob([response.data], { type: "application/pdf" });
       const url = URL.createObjectURL(blob);
-
-      window.open(url, "_blank");
+  
+      // Construir el nombre del archivo basado en la fecha y hora actual
+      const fileName = `reporte-acumulado-diario-${new Date().toLocaleDateString('en-CA').split('/').join('-')}-${new Date().toLocaleTimeString('en-GB', {hour12: false}).replace(/:/g, '-')}.pdf`;
+  
+      // Crear un enlace y simular el clic para descargar el archivo
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", fileName);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     } catch (error) {
       console.error("Error al cargar los datos del informe", error);
     }
@@ -126,9 +144,21 @@ const AccumulatedDay = () => {
 
   const openExcel = async () => {
     try {
-      const formattedStartDate = `${startDate?.day}-${startDate?.month.number}-${startDate?.year}`;
-      const formattedEndDate = `${endDate?.day}-${endDate?.month.number}-${endDate?.year}`;
-
+      const formattedStartDate = startDate
+        ? `${startDate.getDate().toString().padStart(2, "0")}-${(
+            startDate.getMonth() + 1
+          )
+            .toString()
+            .padStart(2, "0")}-${startDate.getFullYear()}`
+        : null;
+      const formattedEndDate = endDate
+        ? `${endDate.getDate().toString().padStart(2, "0")}-${(
+            endDate.getMonth() + 1
+          )
+            .toString()
+            .padStart(2, "0")}-${endDate.getFullYear()}`
+        : null;
+        
       console.log(
         "formattedStartDate",
         formattedStartDate,
@@ -142,7 +172,7 @@ const AccumulatedDay = () => {
       }
 
       const response = await report.post(
-        "api/report/accumulated/day/excel",
+        "api/report/excel/accumulated/day",
         {
           startDate: formattedStartDate,
           endDate: formattedEndDate,
@@ -152,14 +182,21 @@ const AccumulatedDay = () => {
         }
       );
 
-      const arrayBuffer = await response.data.arrayBuffer();
-
-      const blob = new Blob([arrayBuffer], {
+      const blob = new Blob([response.data], {
         type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       });
       const url = URL.createObjectURL(blob);
-
-      window.open(url, "_blank");
+  
+      // Construir el nombre del archivo basado en la fecha y hora actual
+      const fileName = `reporte-acumulado-diario-${new Date().toLocaleDateString('en-CA').split('/').join('-')}-${new Date().toLocaleTimeString('en-GB', {hour12: false}).replace(/:/g, '-')}.xlsx`;
+  
+      // Crear un enlace y simular el clic para descargar el archivo
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", fileName);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     } catch (error) {
       console.error("Error al cargar los datos del informe", error);
     }

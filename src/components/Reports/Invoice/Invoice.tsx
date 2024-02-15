@@ -82,12 +82,56 @@ const Invoice = () => {
   };
   const openPdf = async () => {
     try {
-      const response = await report.get("api/report/sale/pdf/day", {
-        responseType: "arraybuffer",
-      });
+      const formattedStartDate = startDate
+        ? `${startDate.getDate().toString().padStart(2, "0")}-${(
+            startDate.getMonth() + 1
+          )
+            .toString()
+            .padStart(2, "0")}-${startDate.getFullYear()}`
+        : null;
+      const formattedEndDate = endDate
+        ? `${endDate.getDate().toString().padStart(2, "0")}-${(
+            endDate.getMonth() + 1
+          )
+            .toString()
+            .padStart(2, "0")}-${endDate.getFullYear()}`
+        : null;
+
+      console.log("startDate", startDate, "endDate", endDate);
+      console.log(
+        "formattedStartDate",
+        formattedStartDate,
+        "formattedEndDate",
+        formattedEndDate
+      );
+
+      if (!formattedStartDate || !formattedEndDate) {
+        console.error("Las fechas no son válidas");
+        return;
+      }
+
+      const response = await report.post(
+        "api/report/pdf/invoice",
+        {
+          startDate: formattedStartDate,
+          endDate: formattedEndDate,
+        },
+        {
+          responseType: "blob",
+        }
+      );
+
       const blob = new Blob([response.data], { type: "application/pdf" });
-      const pdfUrl = URL.createObjectURL(blob);
-      setPdfUrl(pdfUrl);
+      const url = URL.createObjectURL(blob);
+        
+      const fileName = `reporte-facturas-${new Date().toLocaleDateString('en-CA').split('/').join('-')}-${new Date().toLocaleTimeString('en-GB', {hour12: false}).replace(/:/g, '-')}.pdf`;
+  
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", fileName);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     } catch (error) {
       console.error("Error al cargar el PDF", error);
     }

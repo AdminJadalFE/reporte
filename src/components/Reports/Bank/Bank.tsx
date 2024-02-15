@@ -54,7 +54,7 @@ const Bank = () => {
         return;
       }
       
-      const response = await report.get("api/report/bank/table");
+      const response = await report.get("api/report/table/bank");
 
       console.log(response.data); 
       setReportData(response.data);
@@ -83,7 +83,7 @@ const Bank = () => {
       }
 
       const response = await report.post(
-        "api/report/accumulated/day/pdf",
+        "api/report/pdf/accumulated/day",
         {
           startDate: formattedStartDate,
           endDate: formattedEndDate,
@@ -122,7 +122,7 @@ const Bank = () => {
       }
 
       const response = await report.post(
-        "api/report/accumulated/day/excel",
+        "api/report/excel/accumulated/day",
         {
           startDate: formattedStartDate,
           endDate: formattedEndDate,

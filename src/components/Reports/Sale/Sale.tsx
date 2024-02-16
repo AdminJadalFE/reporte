@@ -83,11 +83,22 @@ const Sale = () => {
 
   const openPdf = async () => {
     try {
-      const formattedStartDate =
-        startDate?.day + "-" + startDate?.month.number + "-" + startDate?.year;
-      const formattedEndDate =
-        endDate?.day + "-" + endDate?.month.number + "-" + endDate?.year;
+      const formattedStartDate = startDate
+        ? `${startDate.getDate().toString().padStart(2, "0")}-${(
+            startDate.getMonth() + 1
+          )
+            .toString()
+            .padStart(2, "0")}-${startDate.getFullYear()}`
+        : null;
+      const formattedEndDate = endDate
+        ? `${endDate.getDate().toString().padStart(2, "0")}-${(
+            endDate.getMonth() + 1
+          )
+            .toString()
+            .padStart(2, "0")}-${endDate.getFullYear()}`
+        : null;
 
+      console.log("startDate", startDate, "endDate", endDate);
       console.log(
         "formattedStartDate",
         formattedStartDate,
@@ -101,7 +112,7 @@ const Sale = () => {
       }
 
       const response = await report.post(
-        "api/report/pdf/accumulated/day",
+        "api/report/pdf/sale",
         {
           startDate: formattedStartDate,
           endDate: formattedEndDate,
@@ -111,21 +122,44 @@ const Sale = () => {
         }
       );
 
-      const arrayBuffer = await response.data.arrayBuffer();
-
-      const blob = new Blob([arrayBuffer], { type: "application/pdf" });
+      const blob = new Blob([response.data], { type: "application/pdf" });
       const url = URL.createObjectURL(blob);
 
-      window.open(url, "_blank");
+      const fileName = `reporte-ventas-${new Date()
+        .toLocaleDateString("en-CA")
+        .split("/")
+        .join("-")}-${new Date()
+        .toLocaleTimeString("en-GB", { hour12: false })
+        .replace(/:/g, "-")}.pdf`;
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", fileName);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     } catch (error) {
-      console.error("Error al cargar los datos del informe", error);
+      console.error("Error al cargar el PDF", error);
     }
   };
 
+
   const openExcel = async () => {
     try {
-      const formattedStartDate = `${startDate?.day}-${startDate?.month.number}-${startDate?.year}`;
-      const formattedEndDate = `${endDate?.day}-${endDate?.month.number}-${endDate?.year}`;
+      const formattedStartDate = startDate
+        ? `${startDate.getDate().toString().padStart(2, "0")}-${(
+            startDate.getMonth() + 1
+          )
+            .toString()
+            .padStart(2, "0")}-${startDate.getFullYear()}`
+        : null;
+      const formattedEndDate = endDate
+        ? `${endDate.getDate().toString().padStart(2, "0")}-${(
+            endDate.getMonth() + 1
+          )
+            .toString()
+            .padStart(2, "0")}-${endDate.getFullYear()}`
+        : null;
 
       console.log(
         "formattedStartDate",
@@ -140,7 +174,7 @@ const Sale = () => {
       }
 
       const response = await report.post(
-        "api/report/excel/accumulated/day",
+        "api/report/excel/administrative",
         {
           startDate: formattedStartDate,
           endDate: formattedEndDate,
@@ -150,14 +184,26 @@ const Sale = () => {
         }
       );
 
-      const arrayBuffer = await response.data.arrayBuffer();
-
-      const blob = new Blob([arrayBuffer], {
+      const blob = new Blob([response.data], {
         type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       });
       const url = URL.createObjectURL(blob);
 
-      window.open(url, "_blank");
+      // Construir el nombre del archivo basado en la fecha y hora actual
+      const fileName = `reporte-ventas-${new Date()
+        .toLocaleDateString("en-CA")
+        .split("/")
+        .join("-")}-${new Date()
+        .toLocaleTimeString("en-GB", { hour12: false })
+        .replace(/:/g, "-")}.xlsx`;
+
+      // Crear un enlace y simular el clic para descargar el archivo
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", fileName);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     } catch (error) {
       console.error("Error al cargar los datos del informe", error);
     }

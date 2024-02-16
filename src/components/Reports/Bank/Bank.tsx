@@ -37,23 +37,7 @@ const Bank = () => {
   const [reportData, setReportData] = useState<any[]>([]);
   const openTable = async () => {
     try {
-      const formattedStartDate =
-        startDate?.day + "-" + startDate?.month.number + "-" + startDate?.year;
-      const formattedEndDate =
-        endDate?.day + "-" + endDate?.month.number + "-" + endDate?.year;
 
-      console.log(
-        "formattedStartDate",
-        formattedStartDate,
-        "formattedEndDate",
-        formattedEndDate
-      );
-
-      if (!formattedStartDate || !formattedEndDate) {
-        console.error("Las fechas no son válidas");
-        return;
-      }
-      
       const response = await report.get("api/report/table/bank");
 
       console.log(response.data); 
@@ -64,90 +48,11 @@ const Bank = () => {
   };
 
   const openPdf = async () => {
-    try {
-      const formattedStartDate =
-        startDate?.day + "-" + startDate?.month.number + "-" + startDate?.year;
-      const formattedEndDate =
-        endDate?.day + "-" + endDate?.month.number + "-" + endDate?.year;
-
-      console.log(
-        "formattedStartDate",
-        formattedStartDate,
-        "formattedEndDate",
-        formattedEndDate
-      );
-
-      if (!formattedStartDate || !formattedEndDate) {
-        console.error("Las fechas no son válidas");
-        return;
-      }
-
-      const response = await report.post(
-        "api/report/pdf/accumulated/day",
-        {
-          startDate: formattedStartDate,
-          endDate: formattedEndDate,
-        },
-        {
-          responseType: "blob",
-        }
-      );
-
-      const arrayBuffer = await response.data.arrayBuffer();
-
-      const blob = new Blob([arrayBuffer], { type: "application/pdf" });
-      const url = URL.createObjectURL(blob);
-
-      window.open(url, "_blank");
-    } catch (error) {
-      console.error("Error al cargar los datos del informe", error);
-    }
+    console.log('openPdf')
   };
 
   const openExcel = async () => {
-    try {
-      const formattedStartDate = `${startDate?.day}-${startDate?.month.number}-${startDate?.year}`;
-      const formattedEndDate = `${endDate?.day}-${endDate?.month.number}-${endDate?.year}`;
-
-      console.log(
-        "formattedStartDate",
-        formattedStartDate,
-        "formattedEndDate",
-        formattedEndDate
-      );
-
-      if (!formattedStartDate || !formattedEndDate) {
-        console.error("Las fechas no son válidas");
-        return;
-      }
-
-      const response = await report.post(
-        "api/report/excel/accumulated/day",
-        {
-          startDate: formattedStartDate,
-          endDate: formattedEndDate,
-        },
-        {
-          responseType: "blob", // Especificar que esperamos una respuesta de tipo blob
-        }
-      );
-
-      const arrayBuffer = await response.data.arrayBuffer();
-
-      const blob = new Blob([arrayBuffer], {
-        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-      });
-      const url = URL.createObjectURL(blob);
-
-      window.open(url, "_blank");
-    } catch (error) {
-      console.error("Error al cargar los datos del informe", error);
-    }
-  };
-
-  const handleDateChange = (date) => {
-    const formattedDate = format(date, "yyyy-MM-dd");
-    setStartDate(formattedDate);
+    console.log('openExcel')
   };
 
   console.log("dataAcumulateDAyay", reportData);

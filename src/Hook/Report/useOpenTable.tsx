@@ -3,7 +3,7 @@ import { useState } from 'react';
 const useOpenTable = (startDate, endDate, report, url) => {
   const [reportData, setReportData] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
 
   const openTable = async () => {
     try {
@@ -33,7 +33,7 @@ const useOpenTable = (startDate, endDate, report, url) => {
 
       if (!formattedStartDate || !formattedEndDate) {
         console.error('Las fechas no son válidas');
-        setError('Las fechas no son válidas');
+        setError(() => 'Las fechas no son válidas'); 
         return;
       }
 
@@ -46,7 +46,7 @@ const useOpenTable = (startDate, endDate, report, url) => {
       setReportData(response.data);
     } catch (error) {
       console.error('Error al cargar los datos del informe', error);
-      setError('Error al cargar los datos del informe');
+      setError(() => 'Error al cargar los datos del informe');
     } finally {
       setLoading(false);
     }

@@ -5,6 +5,7 @@ import {
   useSortBy,
   useGlobalFilter,
   usePagination,
+  TableState,
 } from "react-table";
 
 export const BasicTable = ({ data }: any) => {
@@ -39,7 +40,7 @@ export const BasicTable = ({ data }: any) => {
     {
       columns,
       data,
-      initialState: { pageSize: 10 }, // Puedes ajustar el número de filas por página aquí
+      initialState: { pageIndex: 0 } as TableState<object>, // Página inicial
     },
     useGlobalFilter,
     useSortBy,

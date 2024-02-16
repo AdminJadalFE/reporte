@@ -16,7 +16,6 @@ import es from "date-fns/locale/es";
 registerLocale("es", es);
 import "react-datepicker/dist/react-datepicker.css";
 
-
 import Select from "react-select";
 import axios from "axios";
 import { report } from "../../../Util/axios";
@@ -66,7 +65,7 @@ const AccumulatedDay = () => {
     );
   };
 
-  const { openExcel } = useOpenExcel(); 
+  const { openExcel } = useOpenExcel();
 
   const handleOpenExcel = async () => {
     await openExcel(
@@ -75,11 +74,6 @@ const AccumulatedDay = () => {
       "api/report/excel/invoice",
       "reporte-facturas"
     );
-  };
-
-  const handleDateChange = (date) => {
-    const formattedDate = format(date, "yyyy-MM-dd");
-    setStartDate(formattedDate);
   };
 
   console.log("dataAcumulateDAyay", reportData);

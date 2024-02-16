@@ -71,11 +71,6 @@ const Sale = () => {
     );
   };
 
-  const handleDateChange = (date) => {
-    const formattedDate = format(date, "yyyy-MM-dd");
-    setStartDate(formattedDate);
-  };
-
   console.log("dataAcumulateDAyay", reportData);
   return (
     <div>

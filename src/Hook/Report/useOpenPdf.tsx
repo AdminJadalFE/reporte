@@ -3,7 +3,7 @@ import axios from 'axios';
 import { report } from "../../Util/axios";
 const useOpenPdf = () => {
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
 
   const openPdf = async (startDate, endDate, url, fileName) => {
     try {

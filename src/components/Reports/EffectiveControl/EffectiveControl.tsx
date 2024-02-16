@@ -20,6 +20,9 @@ import Select from "react-select";
 import axios from "axios";
 import { report } from "../../../Util/axios";
 import { BasicTable } from "./DataTable/Basictable";
+import useOpenTable from "../../../Hook/Report/useOpenTable";
+import useOpenPdf from "../../../Hook/Report/useOpenPdf";
+import useOpenExcel from "../../../Hook/Report/useOpenExcel";
 
 const EffectiveControl = () => {
   const [dates, setDates] = useState<any>();
@@ -37,109 +40,39 @@ const EffectiveControl = () => {
 
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
 
-  const [reportData, setReportData] = useState<any[]>([]);
-  const openTable = async () => {
-    try {
-      const formattedStartDate = startDate
-        ? `${startDate.getDate().toString().padStart(2, "0")}-${(
-            startDate.getMonth() + 1
-          )
-            .toString()
-            .padStart(2, "0")}-${startDate.getFullYear()}`
-        : null;
-      const formattedEndDate = endDate
-        ? `${endDate.getDate().toString().padStart(2, "0")}-${(
-            endDate.getMonth() + 1
-          )
-            .toString()
-            .padStart(2, "0")}-${endDate.getFullYear()}`
-        : null;
+  //const [reportData, setReportData] = useState<any[]>([]);
 
-      console.log("startDate", startDate, "endDate", endDate);
-      console.log(
-        "formattedStartDate",
-        formattedStartDate,
-        "formattedEndDate",
-        formattedEndDate
-      );
+  const { openTable, reportData, loading, error } = useOpenTable(
+    startDate,
+    endDate,
+    report,
+    "api/report/table/accumulated/day"
+  );
 
-      if (!formattedStartDate || !formattedEndDate) {
-        console.error("Las fechas no son válidas");
-        return;
-      }
-
-      const response = await report.post("api/report/table/accumulated/day", {
-        startDate: formattedStartDate,
-        endDate: formattedEndDate,
-      });
-
-      console.log(response.data);
-      setReportData(response.data);
-    } catch (error) {
-      console.error("Error al cargar los datos del informe", error);
-    }
+  const handleOpenTable = async () => {
+    await openTable();
   };
 
-  const openPdf = async () => {
-    try {
-      const formattedStartDate = startDate
-        ? `${startDate.getDate().toString().padStart(2, "0")}-${(
-            startDate.getMonth() + 1
-          )
-            .toString()
-            .padStart(2, "0")}-${startDate.getFullYear()}`
-        : null;
-      const formattedEndDate = endDate
-        ? `${endDate.getDate().toString().padStart(2, "0")}-${(
-            endDate.getMonth() + 1
-          )
-            .toString()
-            .padStart(2, "0")}-${endDate.getFullYear()}`
-        : null;
+  const { openPdf } = useOpenPdf();
 
-      console.log("startDate", startDate, "endDate", endDate);
-      console.log(
-        "formattedStartDate",
-        formattedStartDate,
-        "formattedEndDate",
-        formattedEndDate
-      );
+  const handleOpenPdf = async () => {
+    await openPdf(
+      startDate,
+      endDate,
+      "api/report/pdf/effective/control/",
+      "reporte-control-efectivo"
+    );
+  };
 
-      if (!formattedStartDate || !formattedEndDate) {
-        console.error("Las fechas no son válidas");
-        return;
-      }
+  const { openExcel } = useOpenExcel();
 
-      const response = await report.post(
-        "api/report/pdf/effective/control/",
-        {
-          startDate: formattedStartDate,
-          endDate: formattedEndDate,
-        },
-        {
-          responseType: "blob",
-        }
-      );
-
-      const blob = new Blob([response.data], { type: "application/pdf" });
-      const url = URL.createObjectURL(blob);
-
-      const fileName = `reporte-facturas-${new Date()
-        .toLocaleDateString("en-CA")
-        .split("/")
-        .join("-")}-${new Date()
-        .toLocaleTimeString("en-GB", { hour12: false })
-        .replace(/:/g, "-")}.pdf`;
-
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", fileName);
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    } catch (error) {
-      console.error("Error al cargar el PDF", error);
-    }
+  const handleOpenExcel = async () => {
+    await openExcel(
+      startDate,
+      endDate,
+      "api/report/excel/invoice",
+      "reporte-control-efectivo"
+    );
   };
 
   return (
@@ -258,7 +191,7 @@ const EffectiveControl = () => {
                           color=""
                           type="button"
                           className="btn btn-primary btn-svgs btn-svg-white mt-4 ml-4 mr-4"
-                          onClick={() => openTable()}
+                          onClick={() => handleOpenTable()}
                         >
                           <svg
                             className="svg-icon"
@@ -285,7 +218,7 @@ const EffectiveControl = () => {
                           color=""
                           type="button"
                           className="btn btn-primary btn-svgs btn-svg-white mt-4 ml-4 mr-4 "
-                          onClick={() => openPdf()}
+                          onClick={() => handleOpenPdf()}
                         >
                           <svg
                             className="svg-icon"
@@ -307,7 +240,7 @@ const EffectiveControl = () => {
                           color=""
                           type="button"
                           className="btn btn-primary btn-svgs btn-svg-white mt-4 ml-4 mr-4 "
-                          onClick={() => openExcel()}
+                          onClick={() => handleOpenExcel()}
                         >
                           <svg
                             className="svg-icon"
@@ -346,7 +279,7 @@ const EffectiveControl = () => {
                   </div>
                 )}
               </Row>
-              <BasicTable data={reportData} />
+              {reportData && <BasicTable data={reportData} />}
             </CardBody>
           </Card>
         </Col>

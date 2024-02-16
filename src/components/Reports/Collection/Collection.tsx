@@ -20,6 +20,9 @@ import Select from "react-select";
 import axios from "axios";
 import { report } from "../../../Util/axios";
 import { BasicTable } from "./DataTable/Basictable";
+import useOpenTable from "../../../Hook/Report/useOpenTable";
+import useOpenPdf from "../../../Hook/Report/useOpenPdf";
+import useOpenExcel from "../../../Hook/Report/useOpenExcel";
 
 const Collection = () => {
   const [dates, setDates] = useState<any>();
@@ -37,114 +40,40 @@ const Collection = () => {
 
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
 
-  const [reportData, setReportData] = useState<any[]>([]);
+  //const [reportData, setReportData] = useState<any[]>([]);
 
-  const openTable = async () => {
-    try {
-      const formattedStartDate = startDate
-        ? `${startDate.getDate().toString().padStart(2, "0")}-${(
-            startDate.getMonth() + 1
-          )
-            .toString()
-            .padStart(2, "0")}-${startDate.getFullYear()}`
-        : null;
-      const formattedEndDate = endDate
-        ? `${endDate.getDate().toString().padStart(2, "0")}-${(
-            endDate.getMonth() + 1
-          )
-            .toString()
-            .padStart(2, "0")}-${endDate.getFullYear()}`
-        : null;
-
-      console.log("startDate", startDate, "endDate", endDate);
-      console.log(
-        "formattedStartDate",
-        formattedStartDate,
-        "formattedEndDate",
-        formattedEndDate
-      );
-
-      if (!formattedStartDate || !formattedEndDate) {
-        console.error("Las fechas no son válidas");
-        return;
-      }
-
-      const response = await report.post("api/report/table/accumulated/day", {
-        startDate: formattedStartDate,
-        endDate: formattedEndDate,
-      });
-
-      console.log(response.data);
-      setReportData(response.data);
-    } catch (error) {
-      console.error("Error al cargar los datos del informe", error);
-    }
+  const { openTable, reportData, loading, error } = useOpenTable(
+    startDate,
+    endDate,
+    report,
+    "api/report/table/accumulated/day"
+  );
+  
+  const handleOpenTable = async () => {
+    await openTable();
   };
 
+  const { openPdf } = useOpenPdf();
 
-  const openPdf = async () => {
-    try {
-      const formattedStartDate = startDate
-        ? `${startDate.getDate().toString().padStart(2, "0")}-${(
-            startDate.getMonth() + 1
-          )
-            .toString()
-            .padStart(2, "0")}-${startDate.getFullYear()}`
-        : null;
-      const formattedEndDate = endDate
-        ? `${endDate.getDate().toString().padStart(2, "0")}-${(
-            endDate.getMonth() + 1
-          )
-            .toString()
-            .padStart(2, "0")}-${endDate.getFullYear()}`
-        : null;
-
-      console.log("startDate", startDate, "endDate", endDate);
-      console.log(
-        "formattedStartDate",
-        formattedStartDate,
-        "formattedEndDate",
-        formattedEndDate
-      );
-
-      if (!formattedStartDate || !formattedEndDate) {
-        console.error("Las fechas no son válidas");
-        return;
-      }
-
-      const response = await report.post(
-        "api/report/pdf/collection",
-        {
-          startDate: formattedStartDate,
-          endDate: formattedEndDate,
-        },
-        {
-          responseType: "blob",
-        }
-      );
-
-      const blob = new Blob([response.data], { type: "application/pdf" });
-      const url = URL.createObjectURL(blob);
-
-      const fileName = `reporte-facturas-${new Date()
-        .toLocaleDateString("en-CA")
-        .split("/")
-        .join("-")}-${new Date()
-        .toLocaleTimeString("en-GB", { hour12: false })
-        .replace(/:/g, "-")}.pdf`;
-
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", fileName);
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    } catch (error) {
-      console.error("Error al cargar el PDF", error);
-    }
+  const handleOpenPdf = async () => {
+    await openPdf(
+      startDate,
+      endDate,
+      "api/report/pdf/invoice",
+      "reporte-cobranzas"
+    );
   };
 
+  const { openExcel } = useOpenExcel(); 
 
+  const handleOpenExcel = async () => {
+    await openExcel(
+      startDate,
+      endDate,
+      "api/report/excel/invoice",
+      "reporte-cobranzas"
+    );
+  };
   return (
     <div>
       <PageHeaders
@@ -261,7 +190,7 @@ const Collection = () => {
                           color=""
                           type="button"
                           className="btn btn-primary btn-svgs btn-svg-white mt-4 ml-4 mr-4"
-                          onClick={() => openTable()}
+                          onClick={() => handleOpenTable()}
                         >
                           <svg
                             className="svg-icon"
@@ -288,7 +217,7 @@ const Collection = () => {
                           color=""
                           type="button"
                           className="btn btn-primary btn-svgs btn-svg-white mt-4 ml-4 mr-4 "
-                          onClick={() => openPdf()}
+                          onClick={() => handleOpenPdf()}
                         >
                           <svg
                             className="svg-icon"
@@ -310,7 +239,7 @@ const Collection = () => {
                           color=""
                           type="button"
                           className="btn btn-primary btn-svgs btn-svg-white mt-4 ml-4 mr-4 "
-                          onClick={() => openExcel()}
+                          onClick={() => handleOpenPdf()}
                         >
                           <svg
                             className="svg-icon"
@@ -349,7 +278,7 @@ const Collection = () => {
                   </div>
                 )}
               </Row>
-              <BasicTable data={reportData} />
+              {reportData && <BasicTable data={reportData} />}
             </CardBody>
           </Card>
         </Col>

@@ -48,6 +48,7 @@ const Invoice = () => {
     report,
     "api/report/table/accumulated/day"
   );
+  
   const handleOpenTable = async () => {
     await openTable();
   };

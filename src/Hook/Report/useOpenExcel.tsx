@@ -46,10 +46,10 @@ const useOpenExcel = () => {
         type:
           "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       });
-      const url = URL.createObjectURL(blob);
+      const fileUrl = URL.createObjectURL(blob);
 
       const link = document.createElement("a");
-      link.href = url;
+      link.href = fileUrl;
       link.setAttribute("download", `${reportName}.xlsx`);
       document.body.appendChild(link);
       link.click();

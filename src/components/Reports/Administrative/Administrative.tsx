@@ -67,28 +67,143 @@ const Administrative = () => {
         console.error("Las fechas no son válidas");
         return;
       }
-      
-      const response = await report.post("api/report/accumulated/day/table", {
+
+      const response = await report.post("api/report/table/accumulated/day", {
         startDate: formattedStartDate,
         endDate: formattedEndDate,
       });
 
-      console.log(response.data); 
+      console.log(response.data);
       setReportData(response.data);
     } catch (error) {
       console.error("Error al cargar los datos del informe", error);
     }
   };
+
   const openPdf = async () => {
     try {
-      const response = await report.get("api/report/pdf/sale/day", {
-        responseType: "arraybuffer",
-      });
+      const formattedStartDate = startDate
+        ? `${startDate.getDate().toString().padStart(2, "0")}-${(
+            startDate.getMonth() + 1
+          )
+            .toString()
+            .padStart(2, "0")}-${startDate.getFullYear()}`
+        : null;
+      const formattedEndDate = endDate
+        ? `${endDate.getDate().toString().padStart(2, "0")}-${(
+            endDate.getMonth() + 1
+          )
+            .toString()
+            .padStart(2, "0")}-${endDate.getFullYear()}`
+        : null;
+
+      console.log("startDate", startDate, "endDate", endDate);
+      console.log(
+        "formattedStartDate",
+        formattedStartDate,
+        "formattedEndDate",
+        formattedEndDate
+      );
+
+      if (!formattedStartDate || !formattedEndDate) {
+        console.error("Las fechas no son válidas");
+        return;
+      }
+
+      const response = await report.post(
+        "api/report/pdf/administrative",
+        {
+          startDate: formattedStartDate,
+          endDate: formattedEndDate,
+        },
+        {
+          responseType: "blob",
+        }
+      );
+
       const blob = new Blob([response.data], { type: "application/pdf" });
-      const pdfUrl = URL.createObjectURL(blob);
-      setPdfUrl(pdfUrl);
+      const url = URL.createObjectURL(blob);
+
+      const fileName = `reporte-facturas-${new Date()
+        .toLocaleDateString("en-CA")
+        .split("/")
+        .join("-")}-${new Date()
+        .toLocaleTimeString("en-GB", { hour12: false })
+        .replace(/:/g, "-")}.pdf`;
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", fileName);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     } catch (error) {
       console.error("Error al cargar el PDF", error);
+    }
+  };
+
+  const openExcel = async () => {
+    try {
+      const formattedStartDate = startDate
+        ? `${startDate.getDate().toString().padStart(2, "0")}-${(
+            startDate.getMonth() + 1
+          )
+            .toString()
+            .padStart(2, "0")}-${startDate.getFullYear()}`
+        : null;
+      const formattedEndDate = endDate
+        ? `${endDate.getDate().toString().padStart(2, "0")}-${(
+            endDate.getMonth() + 1
+          )
+            .toString()
+            .padStart(2, "0")}-${endDate.getFullYear()}`
+        : null;
+
+      console.log(
+        "formattedStartDate",
+        formattedStartDate,
+        "formattedEndDate",
+        formattedEndDate
+      );
+
+      if (!formattedStartDate || !formattedEndDate) {
+        console.error("Las fechas no son válidas");
+        return;
+      }
+
+      const response = await report.post(
+        "api/report/excel/administrative",
+        {
+          startDate: formattedStartDate,
+          endDate: formattedEndDate,
+        },
+        {
+          responseType: "blob", // Especificar que esperamos una respuesta de tipo blob
+        }
+      );
+
+      const blob = new Blob([response.data], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      });
+      const url = URL.createObjectURL(blob);
+
+      // Construir el nombre del archivo basado en la fecha y hora actual
+      const fileName = `reporte-facturas-${new Date()
+        .toLocaleDateString("en-CA")
+        .split("/")
+        .join("-")}-${new Date()
+        .toLocaleTimeString("en-GB", { hour12: false })
+        .replace(/:/g, "-")}.xlsx`;
+
+      // Crear un enlace y simular el clic para descargar el archivo
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", fileName);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error("Error al cargar los datos del informe", error);
     }
   };
 
@@ -100,7 +215,6 @@ const Administrative = () => {
         name="Pages"
         fonticonsname="Empty"
       />
-
       <Row>
         <Col md="12">
           <Card>
@@ -200,7 +314,6 @@ const Administrative = () => {
                   <div className="mb-3 mt-3">
                     <Label className="form-label">Opciones:</Label>
                   </div>
-
                   <div className="wd-200 mg-b-30 mb-3 mt-3 d-flex justify-content-between">
                     <Row>
                       <Col lg="12">
@@ -279,7 +392,6 @@ const Administrative = () => {
                     </Row>
                   </div>
                 </Col>
-
                 {pdfUrl && (
                   <div className="pdf-viewer">
                     <object

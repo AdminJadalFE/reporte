@@ -52,7 +52,7 @@ const EffectiveControl = () => {
         return;
       }
       
-      const response = await report.post("api/report/accumulated/day/table", {
+      const response = await report.post("api/report/table/accumulated/day", {
         startDate: formattedStartDate,
         endDate: formattedEndDate,
       });

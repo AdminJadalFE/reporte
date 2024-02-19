@@ -24,6 +24,7 @@ import { LocalConvenienceStoreOutlined } from "@material-ui/icons";
 import useOpenTable from "../../../Hook/Report/useOpenTable";
 import useOpenPdf from "../../../Hook/Report/useOpenPdf";
 import useOpenExcel from "../../../Hook/Report/useOpenExcel";
+import Swal from "sweetalert2";
 
 const Invoice = () => {
   const [dates, setDates] = useState<any>();
@@ -40,6 +41,16 @@ const Invoice = () => {
 
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
 
+  const errorAlert = (errorMessage) => {
+    Swal.fire({
+      title: "Error",
+      text: errorMessage,
+      icon: "error",
+      confirmButtonText: "OK",
+      cancelButtonColor: "#4454c3",
+    });
+  };
+
   //const [reportData, setReportData] = useState<any[]>([]);
 
   const { openTable, reportData, loading, error } = useOpenTable(
@@ -48,14 +59,22 @@ const Invoice = () => {
     report,
     "api/report/table/accumulated/day"
   );
-  
+
   const handleOpenTable = async () => {
+    if (startDate == null || endDate == null) {
+      errorAlert("Seleccione las fechas desde y hasta.");
+      return;
+    }
     await openTable();
   };
 
   const { openPdf } = useOpenPdf();
 
   const handleOpenPdf = async () => {
+    if (startDate == null || endDate == null) {
+      errorAlert("Seleccione las fechas desde y hasta.");
+      return;
+    }
     await openPdf(
       startDate,
       endDate,
@@ -64,9 +83,13 @@ const Invoice = () => {
     );
   };
 
-  const { openExcel } = useOpenExcel(); 
+  const { openExcel } = useOpenExcel();
 
   const handleOpenExcel = async () => {
+    if (startDate == null || endDate == null) {
+      errorAlert("Seleccione las fechas desde y hasta.");
+      return;
+    }
     await openExcel(
       startDate,
       endDate,
@@ -104,7 +127,9 @@ const Invoice = () => {
                 </Col>
                 <Col lg="6">
                   <div className="mb-3">
-                    <label className="form-label">N° Documento (F002-0000123)</label>
+                    <label className="form-label">
+                      N° Documento (F002-0000123)
+                    </label>
                   </div>
                   <input
                     type="text"
@@ -135,7 +160,7 @@ const Invoice = () => {
                       </div>
                       <DatePicker
                         locale="es"
-                        format="DD/MM/YYYY"
+                        dateFormat="yyyy/MM/dd"
                         className="form-control"
                         placeholder="Desde"
                         selected={startDate}
@@ -171,7 +196,7 @@ const Invoice = () => {
                       </div>
                       <DatePicker
                         locale="es"
-                        format="DD/MM/YYYY"
+                        dateFormat="yyyy/MM/dd"
                         className="form-control"
                         placeholder="Hasta"
                         selected={endDate}

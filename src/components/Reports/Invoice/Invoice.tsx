@@ -104,12 +104,12 @@ const Invoice = () => {
                 </Col>
                 <Col lg="6">
                   <div className="mb-3">
-                    <label className="form-label">N° Documento</label>
+                    <label className="form-label">N° Documento (F002-0000123)</label>
                   </div>
                   <input
                     type="text"
                     className="form-control required mb-3"
-                    placeholder="documento"
+                    placeholder="F002-0000123"
                   />
                 </Col>
                 <Col lg="6">

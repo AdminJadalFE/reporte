@@ -19,7 +19,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import Select from "react-select";
 import axios from "axios";
 import { report } from "../../../Util/axios";
-import { BasicTable } from "./DataTable/Basictable";
+import { BasicTable } from "../Components/DataTable/Basictable";
 import useOpenTable from "../../../Hook/Report/useOpenTable";
 import useOpenPdf from "../../../Hook/Report/useOpenPdf";
 import useOpenExcel from "../../../Hook/Report/useOpenExcel";
@@ -74,6 +74,33 @@ const Collection = () => {
       "reporte-cobranzas"
     );
   };
+
+  const columns: any = React.useMemo(
+    () => [
+      {
+        Header: "Fecha",
+        accessor: "fecha",
+      },
+      {
+        Header: "Razón Social",
+        accessor: "84 OCT(produc)-Galones",
+      },
+      {
+        Header: "Consumo Cliente",
+        accessor: "84 OCT(produc)-Soles",
+      },
+      {
+        Header: "Pagos a Cuenta",
+        accessor: "90 OCT-Galones(produc)",
+      },      
+      {
+        Header: "Saldo Deudor",
+        accessor: "90 OCT-Galones(product)",
+      },                                         
+    ],
+    []
+  );
+
   return (
     <div>
       <PageHeaders
@@ -114,7 +141,7 @@ const Collection = () => {
                       </div>
                       <DatePicker
                         locale="es"
-                        format="DD/MM/YYYY"
+                        dateFormat="yyyy/MM/dd"
                         className="form-control"
                         placeholder="Desde"
                         selected={startDate}
@@ -150,7 +177,7 @@ const Collection = () => {
                       </div>
                       <DatePicker
                         locale="es"
-                        format="DD/MM/YYYY"
+                        dateFormat="yyyy/MM/dd"
                         className="form-control"
                         placeholder="Hasta"
                         selected={endDate}
@@ -278,7 +305,7 @@ const Collection = () => {
                   </div>
                 )}
               </Row>
-              {reportData && <BasicTable data={reportData} />}
+              {reportData && <BasicTable data={reportData} columns={columns}/>}
             </CardBody>
           </Card>
         </Col>

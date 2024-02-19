@@ -19,10 +19,10 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import Select from "react-select";
 import axios from "axios";
-import { StackedChart, BasicColumn } from "./ChartFunction/apexchart";
+import { StackedChart, BasicColumn } from "../Components/ChartFunction/apexchart";
 import { Fixedheader } from "./DataTable/Fixedheader";
 import { report } from "../../../Util/axios";
-import { BasicTable } from "./DataTable/Basictable";
+import { BasicTable } from "../Components/DataTable/Basictable";
 
 import useOpenTable from "../../../Hook/Report/useOpenTable";
 import useOpenPdf from "../../../Hook/Report/useOpenPdf";
@@ -68,7 +68,7 @@ const Statistical = () => {
     );
   };
 
-  const { openExcel } = useOpenExcel(); 
+  const { openExcel } = useOpenExcel();
 
   const handleOpenExcel = async () => {
     await openExcel(
@@ -78,6 +78,36 @@ const Statistical = () => {
       "reporte-estadistico"
     );
   };
+
+  const columns: any = React.useMemo(
+    () => [
+      {
+        Header: "Fecha",
+        accessor: "fecha",
+      },
+      {
+        Header: "PRODUCTO A",
+        accessor: "84 OCT(produc)-Galones",
+      },
+      {
+        Header: "PRODUCTO B",
+        accessor: "84 OCT(produc)-Soles",
+      },
+      {
+        Header: "PRODUCTO C",
+        accessor: "90 OCT-Galones(produc)",
+      },      
+      {
+        Header: "PRODUCTO D",
+        accessor: "90 OCT-Galones(product)",
+      },
+      {
+        Header: "TOTAL",
+        accessor: "95 OCT-Galones(produc)",
+      },                                    
+    ],
+    []
+  );
 
   return (
     <div>
@@ -119,7 +149,7 @@ const Statistical = () => {
                       </div>
                       <DatePicker
                         locale="es"
-                        format="DD/MM/YYYY"
+                        dateFormat="yyyy/MM/dd"
                         className="form-control"
                         placeholder="Desde"
                         selected={startDate}
@@ -155,7 +185,7 @@ const Statistical = () => {
                       </div>
                       <DatePicker
                         locale="es"
-                        format="DD/MM/YYYY"
+                        dateFormat="yyyy/MM/dd"
                         className="form-control"
                         placeholder="Hasta"
                         selected={endDate}
@@ -285,7 +315,7 @@ const Statistical = () => {
                   </div>
                 )}
               </Row>
-              {reportData && <BasicTable data={reportData} />}
+              {reportData && <BasicTable data={reportData} columns={columns} />}
               <Row>
                 <Col lg={6} md={12}>
                   <Card>

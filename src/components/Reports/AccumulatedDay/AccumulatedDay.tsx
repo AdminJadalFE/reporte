@@ -19,7 +19,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import Select from "react-select";
 import axios from "axios";
 import { report } from "../../../Util/axios";
-import { BasicTable } from "./DataTable/Basictable";
+import { BasicTable } from "../Components/DataTable/Basictable";
 import { format } from "date-fns";
 import useOpenTable from "../../../Hook/Report/useOpenTable";
 import useOpenPdf from "../../../Hook/Report/useOpenPdf";
@@ -76,6 +76,80 @@ const AccumulatedDay = () => {
     );
   };
 
+  const columns: any = React.useMemo(
+    () => [
+      {
+        Header: "Fecha",
+        accessor: "fecha",
+      },
+      {
+        Header: "84 OCT",
+        accessor: "84 OCT(produc)-Galones",
+      },
+      {
+        Header: "84 OCT",
+        accessor: "84 OCT(produc)-Soles",
+      },
+      {
+        Header: "90 OCT",
+        accessor: "90 OCT-Galones(produc)",
+      },      
+      {
+        Header: "90 OCT",
+        accessor: "90 OCT-Galones(product)",
+      },
+      {
+        Header: "95 OCT",
+        accessor: "95 OCT-Galones(produc)",
+      },      
+      {
+        Header: "95 OCT",
+        accessor: "95 OCT-Galones(product)",
+      },
+      {
+        Header: "97 OCT",
+        accessor: "97 OCT-Galones(produc)",
+      },      
+      {
+        Header: "97 OCT",
+        accessor: "97 OCT-Galones(product)",
+      },
+      {
+        Header: "REGULAR",
+        accessor: "REGULAR-Galones(produc)",
+      },      
+      {
+        Header: "REGULAR",
+        accessor: "REGULAR-Galones(product)",
+      },
+      {
+        Header: "PREMIUM",
+        accessor: "PREMIUM(produc)",
+      },      
+      {
+        Header: "PREMIUM",
+        accessor: "PREMIUM(product)",
+      },
+      {
+        Header: "GAS GLP",
+        accessor: "GAS GLP(Galones)",
+      },      
+      {
+        Header: "GAS GLP",
+        accessor: "GAS GLP(Soles)",
+      },
+      {
+        Header: "Total GAL",
+        accessor: "Total-Galones(delaFila)",
+      },      
+      {
+        Header: "Total SOL",
+        accessor: "Total-Soles(delaFila)",
+      },                                           
+    ],
+    []
+  );
+
   console.log("dataAcumulateDAyay", reportData);
   return (
     <div>
@@ -117,7 +191,7 @@ const AccumulatedDay = () => {
                       </div>
                       <DatePicker
                         locale="es"
-                        format="DD/MM/YYYY"
+                        dateFormat="yyyy/MM/dd"
                         className="form-control"
                         placeholder="Desde"
                         selected={startDate}
@@ -153,7 +227,7 @@ const AccumulatedDay = () => {
                       </div>
                       <DatePicker
                         locale="es"
-                        format="DD/MM/YYYY"
+                        dateFormat="yyyy/MM/dd"
                         className="form-control"
                         placeholder="Hasta"
                         selected={endDate}
@@ -281,7 +355,7 @@ const AccumulatedDay = () => {
                   </div>
                 )}
               </Row>
-              {reportData && <BasicTable data={reportData} />}
+              {reportData && <BasicTable data={reportData} columns={columns}/>}
             </CardBody>
           </Card>
         </Col>

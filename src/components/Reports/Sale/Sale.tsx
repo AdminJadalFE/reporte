@@ -19,7 +19,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import Select from "react-select";
 import axios from "axios";
 import { report } from "../../../Util/axios";
-import { BasicTable } from "./DataTable/Basictable";
+import { BasicTable } from "../Components/DataTable/Basictable";
 import { format } from "date-fns";
 import useOpenTable from "../../../Hook/Report/useOpenTable";
 import useOpenPdf from "../../../Hook/Report/useOpenPdf";
@@ -71,6 +71,46 @@ const Sale = () => {
     );
   };
 
+  const columns: any = React.useMemo(
+    () => [
+      {
+        Header: "Fecha",
+        accessor: "fecha",
+      },
+      {
+        Header: "T/D",
+        accessor: "T/D",
+      },
+      {
+        Header: "Nro.Docum.",
+        accessor: "Nro.Docum.",
+        Cell: ({ value }: any) => Number(value).toLocaleString(),
+      },
+      {
+        Header: "R.U.C.",
+        accessor: "R.U.C.",
+        Cell: ({ value }: any) => Number(value).toLocaleString(),
+      },
+      {
+        Header: "Cliente",
+        accessor: "Cliente",
+      },
+      {
+        Header: "Valor Venta",
+        accessor: "Valor Venta",
+      },
+      {
+        Header: "Impuesto",
+        accessor: "Impuesto",
+      },
+      {
+        Header: "Total",
+        accessor: "Total",
+      },
+    ],
+    []
+  );
+
   console.log("dataAcumulateDAyay", reportData);
   return (
     <div>
@@ -112,7 +152,7 @@ const Sale = () => {
                       </div>
                       <DatePicker
                         locale="es"
-                        format="DD/MM/YYYY"
+                        dateFormat="yyyy/MM/dd"
                         className="form-control"
                         placeholder="Desde"
                         selected={startDate}
@@ -148,7 +188,7 @@ const Sale = () => {
                       </div>
                       <DatePicker
                         locale="es"
-                        format="DD/MM/YYYY"
+                        dateFormat="yyyy/MM/dd"
                         className="form-control"
                         placeholder="Hasta"
                         selected={endDate}
@@ -276,7 +316,7 @@ const Sale = () => {
                   </div>
                 )}
               </Row>
-              {reportData && <BasicTable data={reportData} />}
+              {reportData && <BasicTable data={reportData} columns={columns} />}
             </CardBody>
           </Card>
         </Col>

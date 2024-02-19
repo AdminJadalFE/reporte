@@ -14,7 +14,7 @@ import DatePicker from "react-multi-date-picker";
 import Select from "react-select";
 import axios from "axios";
 import { report } from "../../../Util/axios";
-import { BasicTable } from "./DataTable/Basictable";
+import { BasicTable } from "../Components/DataTable/Basictable";
 import { es } from "date-fns/locale";
 import { format } from "date-fns";
 
@@ -55,7 +55,37 @@ const Bank = () => {
     console.log('openExcel')
   };
 
-  console.log("dataAcumulateDAyay", reportData);
+
+  const columns: any = React.useMemo(
+    () => [
+      {
+        Header: "codigo",
+        accessor: "codigo",
+      },
+      {
+        Header: "nombre",
+        accessor: "nombre",
+      },
+      {
+        Header: "direccion",
+        accessor: "direccion",
+      },
+      {
+        Header: "R.U.C.",
+        accessor: "R.U.C.",
+      },      
+      {
+        Header: "telefono 01",
+        accessor: "telefono 01",
+      },
+      {
+        Header: "telefono 02",
+        accessor: "telefono 02",
+      },                                 
+    ],
+    []
+  );
+
   return (
     <div>
       <PageHeaders
@@ -173,7 +203,7 @@ const Bank = () => {
                   </div>
                 )}
               </Row>
-              <BasicTable data={reportData} />
+              {reportData && <BasicTable data={reportData} columns={columns}/>}
             </CardBody>
           </Card>
         </Col>

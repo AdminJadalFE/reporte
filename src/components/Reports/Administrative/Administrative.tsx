@@ -19,7 +19,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import Select from "react-select";
 import axios from "axios";
 import { report } from "../../../Util/axios";
-import { BasicTable } from "./DataTable/Basictable";
+import { BasicTable } from "../Components/DataTable/Basictable";
 import useOpenTable from "../../../Hook/Report/useOpenTable";
 import useOpenPdf from "../../../Hook/Report/useOpenPdf";
 import useOpenExcel from "../../../Hook/Report/useOpenExcel";
@@ -75,6 +75,56 @@ const Administrative = () => {
     );
   };
 
+  const columns: any = React.useMemo(
+    () => [
+      {
+        Header: "F. Trabajo",
+        accessor: "fecha",
+      },
+      {
+        Header: "CONTADO",
+        accessor: "84 OCT(produc)-Galones",
+      },
+      {
+        Header: "CRÉDITO",
+        accessor: "84 OCT(produc)-Soles",
+      },
+      {
+        Header: "DEPÓSITOS (S)",
+        accessor: "90 OCT-Galones(produc)",
+      },      
+      {
+        Header: "BOLETA",
+        accessor: "90 OCT-Galones(product)",
+      },
+      {
+        Header: "EFÉCTIVO (C)",
+        accessor: "95 OCT-Galones(produc)1",
+      },      
+      {
+        Header: "TARJETA (C)",
+        accessor: "95 OCT-Galones(product)2",
+      },
+      {
+        Header: "TRANSF. (C)",
+        accessor: "95 OCT-Galones(product)3",
+      },      
+      {
+        Header: "NTA. CREDITO (C)",
+        accessor: "95 OCT-Galones(product)4",
+      },
+      {
+        Header: "BANCA (C)",
+        accessor: "95 OCT-Galones(product)5",
+      },
+      {
+        Header: "TOTAL (C)",
+        accessor: "95 OCT-Galones(product)6",
+      },                                            
+    ],
+    []
+  );
+
   return (
     <div>
       <PageHeaders
@@ -114,8 +164,7 @@ const Administrative = () => {
                       </div>
                       <DatePicker
                         locale="es"
-                        format="DD/MM/YYYY"
-                        className="form-control"
+                        dateFormat="yyyy/MM/dd"                        className="form-control"
                         placeholder="Desde"
                         selected={startDate}
                         onChange={(startDate) => {
@@ -150,8 +199,7 @@ const Administrative = () => {
                       </div>
                       <DatePicker
                         locale="es"
-                        format="DD/MM/YYYY"
-                        className="form-control"
+                        dateFormat="yyyy/MM/dd"                        className="form-control"
                         placeholder="Hasta"
                         selected={endDate}
                         onChange={(endDate) => setEndDate(endDate)}
@@ -276,7 +324,7 @@ const Administrative = () => {
                   </div>
                 )}
               </Row>
-              {reportData && <BasicTable data={reportData} />}
+              {reportData && <BasicTable data={reportData} columns={columns}/>}
             </CardBody>
           </Card>
         </Col>

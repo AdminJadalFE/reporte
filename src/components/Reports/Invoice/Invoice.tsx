@@ -19,7 +19,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import Select from "react-select";
 import axios from "axios";
 import { report } from "../../../Util/axios";
-import { BasicTable } from "./DataTable/Basictable";
+import { BasicTable } from "../Components/DataTable/Basictable";
 import { LocalConvenienceStoreOutlined } from "@material-ui/icons";
 import useOpenTable from "../../../Hook/Report/useOpenTable";
 import useOpenPdf from "../../../Hook/Report/useOpenPdf";
@@ -97,6 +97,52 @@ const Invoice = () => {
       "reporte-facturas"
     );
   };
+
+  const columns: any = React.useMemo(
+    () => [
+      {
+        Header: "Tipo doc.",
+        accessor: "fecha",
+      },
+      {
+        Header: "N° doc.",
+        accessor: "84 OCT(produc)-Galones",
+      },
+      {
+        Header: "Producto",
+        accessor: "84 OCT(produc)-Soles",
+      },
+      {
+        Header: "Cantidad",
+        accessor: "90 OCT-Galones(produc)",
+      },      
+      {
+        Header: "Precio",
+        accessor: "90 OCT-Galones(product)",
+      },
+      {
+        Header: "Dscto",
+        accessor: "95 OCT-Galones(produc)",
+      },      
+      {
+        Header: "Total",
+        accessor: "95 OCT-Galones(product)",
+      },
+      {
+        Header: "TOTAL",
+        accessor: "97 OCT-Galones(produc)",
+      },      
+      {
+        Header: "Fecha Emisión",
+        accessor: "97 OCT-Galones(product)",
+      },
+      {
+        Header: "Situación",
+        accessor: "REGULAR-Galones(produc)",
+      },                                     
+    ],
+    []
+  );
 
   return (
     <div>
@@ -324,7 +370,7 @@ const Invoice = () => {
                   </div>
                 )}
               </Row>
-              {reportData && <BasicTable data={reportData} />}
+              {reportData && <BasicTable data={reportData} columns={columns}/>}
             </CardBody>
           </Card>
         </Col>

@@ -233,7 +233,7 @@ const GlobalFilter = ({ filter, setFilter }: any) => {
         value={filter || ""}
         onChange={(e) => setFilter(e.target.value)}
         className="form-control mb-4"
-        placeholder="Search..."
+        placeholder="Buscar..."
         style={{ fontSize: "10px" }} // Reduce el tamaño de la fuente del filtro global
       />
     </span>

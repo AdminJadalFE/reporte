@@ -24,6 +24,7 @@ import { format } from "date-fns";
 import useOpenTable from "../../../Hook/Report/useOpenTable";
 import useOpenPdf from "../../../Hook/Report/useOpenPdf";
 import useOpenExcel from "../../../Hook/Report/useOpenExcel";
+import Swal from "sweetalert2";
 
 const AccumulatedDay = () => {
   const [dates, setDates] = useState<any>();
@@ -39,6 +40,16 @@ const AccumulatedDay = () => {
     { value: "Cuarto", label: "Cuarto" },
   ];
 
+  const errorAlert = (errorMessage) => {
+    Swal.fire({
+      title: "Error",
+      text: errorMessage,
+      icon: "error",
+      confirmButtonText: "OK",
+      cancelButtonColor: "#4454c3",
+    });
+  };
+
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
 
   //const [reportData, setReportData] = useState<any[]>([]);
@@ -51,12 +62,20 @@ const AccumulatedDay = () => {
   );
 
   const handleOpenTable = async () => {
+    if (startDate == null || endDate == null) {
+      errorAlert("Seleccione las fechas desde y hasta.");
+      return;
+    }    
     await openTable();
   };
 
   const { openPdf } = useOpenPdf();
 
   const handleOpenPdf = async () => {
+    if (startDate == null || endDate == null) {
+      errorAlert("Seleccione las fechas desde y hasta.");
+      return;
+    }        
     await openPdf(
       startDate,
       endDate,
@@ -68,6 +87,10 @@ const AccumulatedDay = () => {
   const { openExcel } = useOpenExcel();
 
   const handleOpenExcel = async () => {
+    if (startDate == null || endDate == null) {
+      errorAlert("Seleccione las fechas desde y hasta.");
+      return;
+    }        
     await openExcel(
       startDate,
       endDate,
@@ -93,7 +116,7 @@ const AccumulatedDay = () => {
       {
         Header: "90 OCT",
         accessor: "90 OCT-Galones(produc)",
-      },      
+      },
       {
         Header: "90 OCT",
         accessor: "90 OCT-Galones(product)",
@@ -101,7 +124,7 @@ const AccumulatedDay = () => {
       {
         Header: "95 OCT",
         accessor: "95 OCT-Galones(produc)",
-      },      
+      },
       {
         Header: "95 OCT",
         accessor: "95 OCT-Galones(product)",
@@ -109,7 +132,7 @@ const AccumulatedDay = () => {
       {
         Header: "97 OCT",
         accessor: "97 OCT-Galones(produc)",
-      },      
+      },
       {
         Header: "97 OCT",
         accessor: "97 OCT-Galones(product)",
@@ -117,7 +140,7 @@ const AccumulatedDay = () => {
       {
         Header: "REGULAR",
         accessor: "REGULAR-Galones(produc)",
-      },      
+      },
       {
         Header: "REGULAR",
         accessor: "REGULAR-Galones(product)",
@@ -125,7 +148,7 @@ const AccumulatedDay = () => {
       {
         Header: "PREMIUM",
         accessor: "PREMIUM(produc)",
-      },      
+      },
       {
         Header: "PREMIUM",
         accessor: "PREMIUM(product)",
@@ -133,7 +156,7 @@ const AccumulatedDay = () => {
       {
         Header: "GAS GLP",
         accessor: "GAS GLP(Galones)",
-      },      
+      },
       {
         Header: "GAS GLP",
         accessor: "GAS GLP(Soles)",
@@ -141,11 +164,11 @@ const AccumulatedDay = () => {
       {
         Header: "Total GAL",
         accessor: "Total-Galones(delaFila)",
-      },      
+      },
       {
         Header: "Total SOL",
         accessor: "Total-Soles(delaFila)",
-      },                                           
+      },
     ],
     []
   );
@@ -267,7 +290,7 @@ const AccumulatedDay = () => {
                           color=""
                           type="button"
                           className="btn btn-primary btn-svgs btn-svg-white mt-4 ml-4 mr-4"
-                          onClick={() => openTable()}
+                          onClick={() => handleOpenTable()}
                         >
                           <svg
                             className="svg-icon"
@@ -355,7 +378,7 @@ const AccumulatedDay = () => {
                   </div>
                 )}
               </Row>
-              {reportData && <BasicTable data={reportData} columns={columns}/>}
+              {reportData && <BasicTable data={reportData} columns={columns} />}
             </CardBody>
           </Card>
         </Col>

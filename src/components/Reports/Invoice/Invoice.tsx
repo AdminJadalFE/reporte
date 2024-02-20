@@ -115,7 +115,7 @@ const Invoice = () => {
       {
         Header: "Cantidad",
         accessor: "90 OCT-Galones(produc)",
-      },      
+      },
       {
         Header: "Precio",
         accessor: "90 OCT-Galones(product)",
@@ -123,7 +123,7 @@ const Invoice = () => {
       {
         Header: "Dscto",
         accessor: "95 OCT-Galones(produc)",
-      },      
+      },
       {
         Header: "Total",
         accessor: "95 OCT-Galones(product)",
@@ -131,7 +131,7 @@ const Invoice = () => {
       {
         Header: "TOTAL",
         accessor: "97 OCT-Galones(produc)",
-      },      
+      },
       {
         Header: "Fecha Emisión",
         accessor: "97 OCT-Galones(product)",
@@ -139,7 +139,7 @@ const Invoice = () => {
       {
         Header: "Situación",
         accessor: "REGULAR-Galones(produc)",
-      },                                     
+      },
     ],
     []
   );
@@ -370,7 +370,7 @@ const Invoice = () => {
                   </div>
                 )}
               </Row>
-              {reportData && <BasicTable data={reportData} columns={columns}/>}
+              {reportData && <BasicTable data={reportData} columns={columns} />}
             </CardBody>
           </Card>
         </Col>

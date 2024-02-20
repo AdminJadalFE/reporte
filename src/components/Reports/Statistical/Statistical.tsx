@@ -19,10 +19,15 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import Select from "react-select";
 import axios from "axios";
-import { StackedChart, BasicColumn } from "../Components/ChartFunction/apexchart";
+import {
+  StackedChart,
+  BasicColumn,
+} from "../Components/ChartFunction/apexchart";
 import { Fixedheader } from "./DataTable/Fixedheader";
 import { report } from "../../../Util/axios";
 import { BasicTable } from "../Components/DataTable/Basictable";
+
+import Swal from "sweetalert2";
 
 import useOpenTable from "../../../Hook/Report/useOpenTable";
 import useOpenPdf from "../../../Hook/Report/useOpenPdf";
@@ -44,6 +49,16 @@ const Statistical = () => {
 
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
 
+  const errorAlert = (errorMessage) => {
+    Swal.fire({
+      title: "Error",
+      text: errorMessage,
+      icon: "error",
+      confirmButtonText: "OK",
+      cancelButtonColor: "#4454c3",
+    });
+  };
+
   //  const [reportData, setReportData] = useState<any[]>([]);
 
   const { openTable, reportData, loading, error } = useOpenTable(
@@ -54,12 +69,20 @@ const Statistical = () => {
   );
 
   const handleOpenTable = async () => {
-    await openTable();
+    if (startDate == null || endDate == null) {
+      errorAlert("Seleccione las fechas desde y hasta.");
+      return;
+    }
+    await openTable();    
   };
 
   const { openPdf } = useOpenPdf();
 
   const handleOpenPdf = async () => {
+    if (startDate == null || endDate == null) {
+      errorAlert("Seleccione las fechas desde y hasta.");
+      return;
+    }
     await openPdf(
       startDate,
       endDate,
@@ -71,6 +94,10 @@ const Statistical = () => {
   const { openExcel } = useOpenExcel();
 
   const handleOpenExcel = async () => {
+    if (startDate == null || endDate == null) {
+      errorAlert("Seleccione las fechas desde y hasta.");
+      return;
+    }
     await openExcel(
       startDate,
       endDate,
@@ -96,7 +123,7 @@ const Statistical = () => {
       {
         Header: "PRODUCTO C",
         accessor: "90 OCT-Galones(produc)",
-      },      
+      },
       {
         Header: "PRODUCTO D",
         accessor: "90 OCT-Galones(product)",
@@ -104,7 +131,7 @@ const Statistical = () => {
       {
         Header: "TOTAL",
         accessor: "95 OCT-Galones(produc)",
-      },                                    
+      },
     ],
     []
   );

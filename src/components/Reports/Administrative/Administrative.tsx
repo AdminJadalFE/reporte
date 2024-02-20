@@ -23,6 +23,7 @@ import { BasicTable } from "../Components/DataTable/Basictable";
 import useOpenTable from "../../../Hook/Report/useOpenTable";
 import useOpenPdf from "../../../Hook/Report/useOpenPdf";
 import useOpenExcel from "../../../Hook/Report/useOpenExcel";
+import Swal from "sweetalert2";
 
 const Administrative = () => {
   const [dates, setDates] = useState<any>();
@@ -40,6 +41,16 @@ const Administrative = () => {
 
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
 
+  const errorAlert = (errorMessage) => {
+    Swal.fire({
+      title: "Error",
+      text: errorMessage,
+      icon: "error",
+      confirmButtonText: "OK",
+      cancelButtonColor: "#4454c3",
+    });
+  };
+
   //const [reportData, setReportData] = useState<any[]>([]);
 
   const { openTable, reportData, loading, error } = useOpenTable(
@@ -50,12 +61,20 @@ const Administrative = () => {
   );
 
   const handleOpenTable = async () => {
+    if (startDate == null || endDate == null) {
+      errorAlert("Seleccione las fechas desde y hasta.");
+      return;
+    }
     await openTable();
   };
 
   const { openPdf } = useOpenPdf();
 
   const handleOpenPdf = async () => {
+    if (startDate == null || endDate == null) {
+      errorAlert("Seleccione las fechas desde y hasta.");
+      return;
+    }
     await openPdf(
       startDate,
       endDate,
@@ -64,9 +83,13 @@ const Administrative = () => {
     );
   };
 
-  const { openExcel } = useOpenExcel(); 
+  const { openExcel } = useOpenExcel();
 
   const handleOpenExcel = async () => {
+    if (startDate == null || endDate == null) {
+      errorAlert("Seleccione las fechas desde y hasta.");
+      return;
+    }
     await openExcel(
       startDate,
       endDate,
@@ -92,7 +115,7 @@ const Administrative = () => {
       {
         Header: "DEPÓSITOS (S)",
         accessor: "90 OCT-Galones(produc)",
-      },      
+      },
       {
         Header: "BOLETA",
         accessor: "90 OCT-Galones(product)",
@@ -100,7 +123,7 @@ const Administrative = () => {
       {
         Header: "EFÉCTIVO (C)",
         accessor: "95 OCT-Galones(produc)1",
-      },      
+      },
       {
         Header: "TARJETA (C)",
         accessor: "95 OCT-Galones(product)2",
@@ -108,7 +131,7 @@ const Administrative = () => {
       {
         Header: "TRANSF. (C)",
         accessor: "95 OCT-Galones(product)3",
-      },      
+      },
       {
         Header: "NTA. CREDITO (C)",
         accessor: "95 OCT-Galones(product)4",
@@ -120,7 +143,7 @@ const Administrative = () => {
       {
         Header: "TOTAL (C)",
         accessor: "95 OCT-Galones(product)6",
-      },                                            
+      },
     ],
     []
   );
@@ -164,7 +187,8 @@ const Administrative = () => {
                       </div>
                       <DatePicker
                         locale="es"
-                        dateFormat="yyyy/MM/dd"                        className="form-control"
+                        dateFormat="yyyy/MM/dd"
+                        className="form-control"
                         placeholder="Desde"
                         selected={startDate}
                         onChange={(startDate) => {
@@ -199,7 +223,8 @@ const Administrative = () => {
                       </div>
                       <DatePicker
                         locale="es"
-                        dateFormat="yyyy/MM/dd"                        className="form-control"
+                        dateFormat="yyyy/MM/dd"
+                        className="form-control"
                         placeholder="Hasta"
                         selected={endDate}
                         onChange={(endDate) => setEndDate(endDate)}
@@ -324,7 +349,7 @@ const Administrative = () => {
                   </div>
                 )}
               </Row>
-              {reportData && <BasicTable data={reportData} columns={columns}/>}
+              {reportData && <BasicTable data={reportData} columns={columns} />}
             </CardBody>
           </Card>
         </Col>

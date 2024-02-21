@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Card,
   CardBody,
@@ -17,7 +17,6 @@ registerLocale("es", es);
 import "react-datepicker/dist/react-datepicker.css";
 
 import Select from "react-select";
-import axios from "axios";
 import { report } from "../../../Util/axios";
 import { BasicTable } from "../Components/DataTable/Basictable";
 import { format } from "date-fns";
@@ -65,7 +64,7 @@ const AccumulatedDay = () => {
     if (startDate == null || endDate == null) {
       errorAlert("Seleccione las fechas desde y hasta.");
       return;
-    }    
+    }
     await openTable();
   };
 
@@ -75,7 +74,7 @@ const AccumulatedDay = () => {
     if (startDate == null || endDate == null) {
       errorAlert("Seleccione las fechas desde y hasta.");
       return;
-    }        
+    }
     await openPdf(
       startDate,
       endDate,
@@ -90,7 +89,7 @@ const AccumulatedDay = () => {
     if (startDate == null || endDate == null) {
       errorAlert("Seleccione las fechas desde y hasta.");
       return;
-    }        
+    }
     await openExcel(
       startDate,
       endDate,
@@ -98,6 +97,22 @@ const AccumulatedDay = () => {
       "reporte-facturas"
     );
   };
+
+  const [locales, setLocales] = useState([]);
+  const [selectedLocal, setSelectedLocal] = useState<any>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await report.get("api/local/");
+        setLocales(response.data); 
+      } catch (error) {
+        console.error("Error fetching locales:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const columns: any = React.useMemo(
     () => [
@@ -268,11 +283,14 @@ const AccumulatedDay = () => {
                   </div>
                   <div className="wd-200 mg-b-30">
                     <Select
-                      defaultValue={countryOption}
-                      onChange={setCountryOption}
-                      options={Countryoptions}
-                      placeholder="Local"
+                      value={selectedLocal}
+                      onChange={setSelectedLocal}
+                      options={locales.map((local) => ({
+                        value: local.name,
+                        label: local.name,
+                      }))}
                       classNamePrefix="Search"
+                      placeholder="Seleccione..."
                     />
                   </div>
                 </Col>

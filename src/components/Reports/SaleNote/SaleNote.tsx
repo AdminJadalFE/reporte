@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Card,
   CardBody,
@@ -8,6 +8,7 @@ import {
   Row,
   Label,
   Button,
+  Input,
 } from "reactstrap";
 import { PageHeaders } from "../../../Shared/Prism/Prism";
 
@@ -17,6 +18,7 @@ registerLocale("es", es);
 import "react-datepicker/dist/react-datepicker.css";
 
 import Select from "react-select";
+import axios from "axios";
 import { report } from "../../../Util/axios";
 import { BasicTable } from "../Components/DataTable/Basictable";
 import { format } from "date-fns";
@@ -25,7 +27,7 @@ import useOpenPdf from "../../../Hook/Report/useOpenPdf";
 import useOpenExcel from "../../../Hook/Report/useOpenExcel";
 import Swal from "sweetalert2";
 
-const AccumulatedDay = () => {
+const SaleNote = () => {
   const [dates, setDates] = useState<any>();
   const [countryOption, setCountryOption] = useState<any>(null);
 
@@ -39,6 +41,8 @@ const AccumulatedDay = () => {
     { value: "Cuarto", label: "Cuarto" },
   ];
 
+  const [pdfUrl, setPdfUrl] = useState<string | null>(null);
+
   const errorAlert = (errorMessage) => {
     Swal.fire({
       title: "Error",
@@ -48,8 +52,6 @@ const AccumulatedDay = () => {
       cancelButtonColor: "#4454c3",
     });
   };
-
-  const [pdfUrl, setPdfUrl] = useState<string | null>(null);
 
   //const [reportData, setReportData] = useState<any[]>([]);
 
@@ -75,12 +77,7 @@ const AccumulatedDay = () => {
       errorAlert("Seleccione las fechas desde y hasta.");
       return;
     }
-    await openPdf(
-      startDate,
-      endDate,
-      "api/report/pdf/accumulated/day",
-      "reporte-acumulado-diario"
-    );
+    await openPdf(startDate, endDate, "api/report/pdf/sale", "reporte-venta");
   };
 
   const { openExcel } = useOpenExcel();
@@ -94,25 +91,9 @@ const AccumulatedDay = () => {
       startDate,
       endDate,
       "api/report/excel/invoice",
-      "reporte-facturas"
+      "reporte-venta"
     );
   };
-
-  const [locales, setLocales] = useState([]);
-  const [selectedLocal, setSelectedLocal] = useState<any>(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await report.get("api/local/");
-        setLocales(response.data);
-      } catch (error) {
-        console.error("Error fetching locales:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
 
   const columns: any = React.useMemo(
     () => [
@@ -121,68 +102,34 @@ const AccumulatedDay = () => {
         accessor: "fecha",
       },
       {
-        Header: "84 OCT",
-        accessor: "84 OCT(produc)-Galones",
+        Header: "T/D",
+        accessor: "T/D",
       },
       {
-        Header: "84 OCT",
-        accessor: "84 OCT(produc)-Soles",
+        Header: "Nro.Docum.",
+        accessor: "Nro.Docum.",
+        Cell: ({ value }: any) => Number(value).toLocaleString(),
       },
       {
-        Header: "90 OCT",
-        accessor: "90 OCT-Galones(produc)",
+        Header: "R.U.C.",
+        accessor: "R.U.C.",
+        Cell: ({ value }: any) => Number(value).toLocaleString(),
       },
       {
-        Header: "90 OCT",
-        accessor: "90 OCT-Galones(product)",
+        Header: "Cliente",
+        accessor: "Cliente",
       },
       {
-        Header: "95 OCT",
-        accessor: "95 OCT-Galones(produc)",
+        Header: "Valor Venta",
+        accessor: "Valor Venta",
       },
       {
-        Header: "95 OCT",
-        accessor: "95 OCT-Galones(product)",
+        Header: "Impuesto",
+        accessor: "Impuesto",
       },
       {
-        Header: "97 OCT",
-        accessor: "97 OCT-Galones(produc)",
-      },
-      {
-        Header: "97 OCT",
-        accessor: "97 OCT-Galones(product)",
-      },
-      {
-        Header: "REGULAR",
-        accessor: "REGULAR-Galones(produc)",
-      },
-      {
-        Header: "REGULAR",
-        accessor: "REGULAR-Galones(product)",
-      },
-      {
-        Header: "PREMIUM",
-        accessor: "PREMIUM(produc)",
-      },
-      {
-        Header: "PREMIUM",
-        accessor: "PREMIUM(product)",
-      },
-      {
-        Header: "GAS GLP",
-        accessor: "GAS GLP(Galones)",
-      },
-      {
-        Header: "GAS GLP",
-        accessor: "GAS GLP(Soles)",
-      },
-      {
-        Header: "Total GAL",
-        accessor: "Total-Galones(delaFila)",
-      },
-      {
-        Header: "Total SOL",
-        accessor: "Total-Soles(delaFila)",
+        Header: "Total",
+        accessor: "Total",
       },
     ],
     []
@@ -192,7 +139,7 @@ const AccumulatedDay = () => {
   return (
     <div>
       <PageHeaders
-        title="Reporte Acumulado por Día"
+        title="Reporte Notas de Venta"
         home="Home"
         name="Pages"
         fonticonsname="Empty"
@@ -277,21 +224,93 @@ const AccumulatedDay = () => {
                 </Col>
               </Row>
               <Row>
-                <Col lg="6">
+                <Col lg="4">
                   <div className="mb-3 mt-3">
-                    <Label className="form-label">Selecciona un Local: </Label>
+                    <Label className="form-label">
+                      Selecciona un Cliente:{" "}
+                    </Label>
                   </div>
                   <div className="wd-200 mg-b-30">
                     <Select
-                      value={selectedLocal}
-                      onChange={setSelectedLocal}
-                      options={locales.map((local) => ({
-                        value: local.name,
-                        label: local.name,
-                      }))}
+                      defaultValue={countryOption}
+                      onChange={setCountryOption}
+                      options={Countryoptions}
+                      placeholder="Cliente"
                       classNamePrefix="Search"
-                      placeholder="Seleccione..."
                     />
+                  </div>
+                </Col>
+              </Row>
+              <Row>
+                <Col lg="12">
+                  <div className="mb-3 mt-3 d-flex flex-row">
+                  <div className="custom-controls-stacked m-3">
+                      <Label className="custom-control custom-radio custom-control-md">
+                        <Input
+                          type="radio"
+                          className="custom-control-input"
+                          name="example-radios1"
+                          value="option5"
+                          defaultChecked
+                        />
+                        <span className="custom-control-label custom-control-label-md">
+                          Todos
+                        </span>
+                      </Label>
+                    </div>
+                    <div className="custom-controls-stacked m-3">
+                    <Label className="custom-control custom-radio custom-control-md">
+                      <Input
+                        type="radio"
+                        className="custom-control-input"
+                        name="example-radios1"
+                        value="option1"
+                        defaultChecked
+                      />
+                      <span className="custom-control-label custom-control-label-md">
+                        Por Facturar
+                      </span>
+                    </Label>
+                  </div>                    
+                    <div className="custom-controls-stacked m-3">
+                      <Label className="custom-control custom-radio custom-control-md">
+                        <Input
+                          type="radio"
+                          className="custom-control-input"
+                          name="example-radios1"
+                          value="option2"
+                        />
+                        <span className="custom-control-label custom-control-label-md">
+                          Vales vs Factura
+                        </span>
+                      </Label>
+                    </div>
+                    <div className="custom-controls-stacked m-3">
+                      <Label className="custom-control custom-radio custom-control-md">
+                        <Input
+                          type="radio"
+                          className="custom-control-input"
+                          name="example-radios1"
+                          value="option2"
+                        />
+                        <span className="custom-control-label custom-control-label-md">
+                          Detalle
+                        </span>
+                      </Label>
+                    </div>
+                    <div className="custom-controls-stacked m-3">
+                      <Label className="custom-control custom-radio custom-control-md">
+                        <Input
+                          type="radio"
+                          className="custom-control-input"
+                          name="example-radios1"
+                          value="option2"
+                        />
+                        <span className="custom-control-label custom-control-label-md">
+                          Totales x día
+                        </span>
+                      </Label>
+                    </div>
                   </div>
                 </Col>
               </Row>
@@ -405,8 +424,8 @@ const AccumulatedDay = () => {
   );
 };
 
-AccumulatedDay.propTypes = {};
+SaleNote.propTypes = {};
 
-AccumulatedDay.defaultProps = {};
+SaleNote.defaultProps = {};
 
-export default AccumulatedDay;
+export default SaleNote;

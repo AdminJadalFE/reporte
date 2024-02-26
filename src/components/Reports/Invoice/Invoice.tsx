@@ -57,7 +57,7 @@ const Invoice = () => {
     startDate,
     endDate,
     report,
-    "api/report/table/accumulated/day"
+    "api/report/table/invoice"
   );
 
   const handleOpenTable = async () => {
@@ -102,43 +102,31 @@ const Invoice = () => {
     () => [
       {
         Header: "Tipo doc.",
-        accessor: "fecha",
+        accessor: "document_type",
       },
       {
         Header: "N° doc.",
-        accessor: "84 OCT(produc)-Galones",
+        accessor: "document_number",
       },
       {
-        Header: "Producto",
-        accessor: "84 OCT(produc)-Soles",
+        Header: "Cliente",
+        accessor: "name_client",
+      },
+      {
+        Header: "Descuento",
+        accessor: "discount",
       },
       {
         Header: "Cantidad",
-        accessor: "90 OCT-Galones(produc)",
+        accessor: "total_amount",
       },
       {
-        Header: "Precio",
-        accessor: "90 OCT-Galones(product)",
-      },
-      {
-        Header: "Dscto",
-        accessor: "95 OCT-Galones(produc)",
-      },
-      {
-        Header: "Total",
-        accessor: "95 OCT-Galones(product)",
-      },
-      {
-        Header: "TOTAL",
-        accessor: "97 OCT-Galones(produc)",
-      },
-      {
-        Header: "Fecha Emisión",
-        accessor: "97 OCT-Galones(product)",
+        Header: "fecha de emisión",
+        accessor: "broadcast_date",
       },
       {
         Header: "Situación",
-        accessor: "REGULAR-Galones(produc)",
+        accessor: "situacion",
       },
     ],
     []

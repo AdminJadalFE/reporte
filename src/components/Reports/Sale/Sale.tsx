@@ -58,7 +58,7 @@ const Sale = () => {
     startDate,
     endDate,
     report,
-    "api/report/table/accumulated/day"
+    "api/report/table/sale"
   );
 
   const handleOpenTable = async () => {
@@ -89,7 +89,7 @@ const Sale = () => {
     await openExcel(
       startDate,
       endDate,
-      "api/report/excel/invoice",
+      "api/report/excel/sale",
       "reporte-venta"
     );
   };
@@ -98,37 +98,36 @@ const Sale = () => {
     () => [
       {
         Header: "Fecha",
-        accessor: "fecha",
+        accessor: "date",
       },
       {
         Header: "T/D",
-        accessor: "T/D",
+        accessor: "document_type",
       },
       {
         Header: "Nro.Docum.",
-        accessor: "Nro.Docum.",
-        Cell: ({ value }: any) => Number(value).toLocaleString(),
+        accessor: "document_number",
       },
       {
         Header: "R.U.C.",
-        accessor: "R.U.C.",
-        Cell: ({ value }: any) => Number(value).toLocaleString(),
+        accessor: "ruc",
+        // Cell: ({ value }: any) => Number(value).toLocaleString(),
       },
       {
         Header: "Cliente",
-        accessor: "Cliente",
+        accessor: "client_name",
       },
       {
         Header: "Valor Venta",
-        accessor: "Valor Venta",
+        accessor: "sale_valor",
       },
       {
         Header: "Impuesto",
-        accessor: "Impuesto",
+        accessor: "tax",
       },
       {
         Header: "Total",
-        accessor: "Total",
+        accessor: "total",
       },
     ],
     []

@@ -93,7 +93,7 @@ const AccumulatedDay = () => {
     await openExcel(
       startDate,
       endDate,
-      "api/report/excel/invoice",
+      "api/report/excel/accumulated/day",
       "reporte-facturas"
     );
   };
@@ -118,63 +118,23 @@ const AccumulatedDay = () => {
     () => [
       {
         Header: "Fecha",
-        accessor: "fecha",
+        accessor: "sale_date_v",
       },
       {
-        Header: "84 OCT",
-        accessor: "84 OCT(produc)-Galones",
+        Header: "id_local",
+        accessor: "id_local_v",
       },
       {
-        Header: "84 OCT",
-        accessor: "84 OCT(produc)-Soles",
+        Header: "product_name_v",
+        accessor: "product_name_v",
       },
       {
-        Header: "90 OCT",
-        accessor: "90 OCT-Galones(produc)",
+        Header: "quantity_v",
+        accessor: "quantity_v",
       },
       {
-        Header: "90 OCT",
-        accessor: "90 OCT-Galones(product)",
-      },
-      {
-        Header: "95 OCT",
-        accessor: "95 OCT-Galones(produc)",
-      },
-      {
-        Header: "95 OCT",
-        accessor: "95 OCT-Galones(product)",
-      },
-      {
-        Header: "97 OCT",
-        accessor: "97 OCT-Galones(produc)",
-      },
-      {
-        Header: "97 OCT",
-        accessor: "97 OCT-Galones(product)",
-      },
-      {
-        Header: "REGULAR",
-        accessor: "REGULAR-Galones(produc)",
-      },
-      {
-        Header: "REGULAR",
-        accessor: "REGULAR-Galones(product)",
-      },
-      {
-        Header: "PREMIUM",
-        accessor: "PREMIUM(produc)",
-      },
-      {
-        Header: "PREMIUM",
-        accessor: "PREMIUM(product)",
-      },
-      {
-        Header: "GAS GLP",
-        accessor: "GAS GLP(Galones)",
-      },
-      {
-        Header: "GAS GLP",
-        accessor: "GAS GLP(Soles)",
+        Header: "total_amount_v",
+        accessor: "total_amount_v",
       },
       {
         Header: "Total GAL",

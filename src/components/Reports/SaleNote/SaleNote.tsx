@@ -8,6 +8,7 @@ import {
   Row,
   Label,
   Button,
+  Input,
 } from "reactstrap";
 import { PageHeaders } from "../../../Shared/Prism/Prism";
 
@@ -20,12 +21,13 @@ import Select from "react-select";
 import axios from "axios";
 import { report } from "../../../Util/axios";
 import { BasicTable } from "../Components/DataTable/Basictable";
+import { format } from "date-fns";
 import useOpenTable from "../../../Hook/Report/useOpenTable";
 import useOpenPdf from "../../../Hook/Report/useOpenPdf";
 import useOpenExcel from "../../../Hook/Report/useOpenExcel";
 import Swal from "sweetalert2";
 
-const Administrative = () => {
+const SaleNote = () => {
   const [dates, setDates] = useState<any>();
   const [countryOption, setCountryOption] = useState<any>(null);
 
@@ -75,12 +77,7 @@ const Administrative = () => {
       errorAlert("Seleccione las fechas desde y hasta.");
       return;
     }
-    await openPdf(
-      startDate,
-      endDate,
-      "api/report/pdf/administrative",
-      "reporte-facturas"
-    );
+    await openPdf(startDate, endDate, "api/report/pdf/sale", "reporte-venta");
   };
 
   const { openExcel } = useOpenExcel();
@@ -94,68 +91,60 @@ const Administrative = () => {
       startDate,
       endDate,
       "api/report/excel/invoice",
-      "reporte-administrativo"
+      "reporte-venta"
     );
   };
 
   const columns: any = React.useMemo(
     () => [
       {
-        Header: "F. Trabajo",
+        Header: "Fecha",
         accessor: "fecha",
       },
       {
-        Header: "CONTADO",
-        accessor: "84 OCT(produc)-Galones",
+        Header: "T/D",
+        accessor: "T/D",
       },
       {
-        Header: "CRÉDITO",
-        accessor: "84 OCT(produc)-Soles",
+        Header: "Nro.Docum.",
+        accessor: "Nro.Docum.",
+        Cell: ({ value }: any) => Number(value).toLocaleString(),
       },
       {
-        Header: "DEPÓSITOS (S)",
-        accessor: "90 OCT-Galones(produc)",
+        Header: "R.U.C.",
+        accessor: "R.U.C.",
+        Cell: ({ value }: any) => Number(value).toLocaleString(),
       },
       {
-        Header: "BOLETA",
-        accessor: "90 OCT-Galones(product)",
+        Header: "Cliente",
+        accessor: "Cliente",
       },
       {
-        Header: "EFÉCTIVO (C)",
-        accessor: "95 OCT-Galones(produc)1",
+        Header: "Valor Venta",
+        accessor: "Valor Venta",
       },
       {
-        Header: "TARJETA (C)",
-        accessor: "95 OCT-Galones(product)2",
+        Header: "Impuesto",
+        accessor: "Impuesto",
       },
       {
-        Header: "TRANSF. (C)",
-        accessor: "95 OCT-Galones(product)3",
-      },
-      {
-        Header: "NTA. CREDITO (C)",
-        accessor: "95 OCT-Galones(product)4",
-      },
-      {
-        Header: "BANCA (C)",
-        accessor: "95 OCT-Galones(product)5",
-      },
-      {
-        Header: "TOTAL (C)",
-        accessor: "95 OCT-Galones(product)6",
+        Header: "Total",
+        accessor: "Total",
       },
     ],
     []
   );
 
+  console.log("dataAcumulateDAyay", reportData);
   return (
     <div>
       <PageHeaders
-        title="Reporte Administrativo"
+        title="Reporte Notas de Venta"
         home="Home"
         name="Pages"
         fonticonsname="Empty"
       />
+
       <Row>
         <Col md="12">
           <Card>
@@ -235,18 +224,93 @@ const Administrative = () => {
                 </Col>
               </Row>
               <Row>
-                <Col lg="6">
+                <Col lg="4">
                   <div className="mb-3 mt-3">
-                    <Label className="form-label">Selecciona un Local: </Label>
+                    <Label className="form-label">
+                      Selecciona un Cliente:{" "}
+                    </Label>
                   </div>
                   <div className="wd-200 mg-b-30">
                     <Select
                       defaultValue={countryOption}
                       onChange={setCountryOption}
                       options={Countryoptions}
-                      placeholder="Country"
+                      placeholder="Cliente"
                       classNamePrefix="Search"
                     />
+                  </div>
+                </Col>
+              </Row>
+              <Row>
+                <Col lg="12">
+                  <div className="mb-3 mt-3 d-flex flex-row">
+                  <div className="custom-controls-stacked m-3">
+                      <Label className="custom-control custom-radio custom-control-md">
+                        <Input
+                          type="radio"
+                          className="custom-control-input"
+                          name="example-radios1"
+                          value="option5"
+                          defaultChecked
+                        />
+                        <span className="custom-control-label custom-control-label-md">
+                          Todos
+                        </span>
+                      </Label>
+                    </div>
+                    <div className="custom-controls-stacked m-3">
+                    <Label className="custom-control custom-radio custom-control-md">
+                      <Input
+                        type="radio"
+                        className="custom-control-input"
+                        name="example-radios1"
+                        value="option1"
+                        defaultChecked
+                      />
+                      <span className="custom-control-label custom-control-label-md">
+                        Por Facturar
+                      </span>
+                    </Label>
+                  </div>                    
+                    <div className="custom-controls-stacked m-3">
+                      <Label className="custom-control custom-radio custom-control-md">
+                        <Input
+                          type="radio"
+                          className="custom-control-input"
+                          name="example-radios1"
+                          value="option2"
+                        />
+                        <span className="custom-control-label custom-control-label-md">
+                          Vales vs Factura
+                        </span>
+                      </Label>
+                    </div>
+                    <div className="custom-controls-stacked m-3">
+                      <Label className="custom-control custom-radio custom-control-md">
+                        <Input
+                          type="radio"
+                          className="custom-control-input"
+                          name="example-radios1"
+                          value="option2"
+                        />
+                        <span className="custom-control-label custom-control-label-md">
+                          Detalle
+                        </span>
+                      </Label>
+                    </div>
+                    <div className="custom-controls-stacked m-3">
+                      <Label className="custom-control custom-radio custom-control-md">
+                        <Input
+                          type="radio"
+                          className="custom-control-input"
+                          name="example-radios1"
+                          value="option2"
+                        />
+                        <span className="custom-control-label custom-control-label-md">
+                          Totales x día
+                        </span>
+                      </Label>
+                    </div>
                   </div>
                 </Col>
               </Row>
@@ -255,6 +319,7 @@ const Administrative = () => {
                   <div className="mb-3 mt-3">
                     <Label className="form-label">Opciones:</Label>
                   </div>
+
                   <div className="wd-200 mg-b-30 mb-3 mt-3 d-flex justify-content-between">
                     <Row>
                       <Col lg="12">
@@ -333,6 +398,7 @@ const Administrative = () => {
                     </Row>
                   </div>
                 </Col>
+
                 {pdfUrl && (
                   <div className="pdf-viewer">
                     <object
@@ -358,8 +424,8 @@ const Administrative = () => {
   );
 };
 
-Administrative.propTypes = {};
+SaleNote.propTypes = {};
 
-Administrative.defaultProps = {};
+SaleNote.defaultProps = {};
 
-export default Administrative;
+export default SaleNote;

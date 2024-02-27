@@ -178,6 +178,7 @@ const Sale = lazy(() => import("../../components/Reports/Sale/Sale"));
 const Bank = lazy(() => import("../../components/Reports/Bank/Bank")); 
 const Collection = lazy(() => import("../../components/Reports/Collection/Collection")); 
 const PrettyCash = lazy(() => import("../../components/Reports/PrettyCash/PrettyCash")); 
+const SaleNote = lazy(() => import("../../components/Reports/SaleNote/SaleNote")); 
 
 export const Routing = () => {
 
@@ -444,7 +445,10 @@ export const Routing = () => {
           </Route>    
           <Route>
             <Route path={`${import.meta.env.BASE_URL}report/pretty/cash`} element={<PrettyCash />} />
-          </Route>                                                                                                              
+          </Route>
+          <Route>
+            <Route path={`${import.meta.env.BASE_URL}report/sale/note`} element={<SaleNote />} />
+          </Route>                                                                                                                            
         </Route>
         <Route path={`${import.meta.env.BASE_URL}`} element={<Custompages />}>
 

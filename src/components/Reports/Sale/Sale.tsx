@@ -19,11 +19,12 @@ import "react-datepicker/dist/react-datepicker.css";
 import Select from "react-select";
 import axios from "axios";
 import { report } from "../../../Util/axios";
-import { BasicTable } from "./DataTable/Basictable";
+import { BasicTable } from "../Components/DataTable/Basictable";
 import { format } from "date-fns";
 import useOpenTable from "../../../Hook/Report/useOpenTable";
 import useOpenPdf from "../../../Hook/Report/useOpenPdf";
 import useOpenExcel from "../../../Hook/Report/useOpenExcel";
+import Swal from "sweetalert2";
 
 const Sale = () => {
   const [dates, setDates] = useState<any>();
@@ -41,35 +42,96 @@ const Sale = () => {
 
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
 
+  const errorAlert = (errorMessage) => {
+    Swal.fire({
+      title: "Error",
+      text: errorMessage,
+      icon: "error",
+      confirmButtonText: "OK",
+      cancelButtonColor: "#4454c3",
+    });
+  };
+
   //const [reportData, setReportData] = useState<any[]>([]);
 
   const { openTable, reportData, loading, error } = useOpenTable(
     startDate,
     endDate,
     report,
-    "api/report/table/accumulated/day"
+    "api/report/table/sale"
   );
 
   const handleOpenTable = async () => {
+    if (startDate == null || endDate == null) {
+      errorAlert("Seleccione las fechas desde y hasta.");
+      return;
+    }    
     await openTable();
   };
 
   const { openPdf } = useOpenPdf();
 
   const handleOpenPdf = async () => {
+    if (startDate == null || endDate == null) {
+      errorAlert("Seleccione las fechas desde y hasta.");
+      return;
+    }
     await openPdf(startDate, endDate, "api/report/pdf/sale", "reporte-venta");
   };
 
   const { openExcel } = useOpenExcel();
 
   const handleOpenExcel = async () => {
+    if (startDate == null || endDate == null) {
+      errorAlert("Seleccione las fechas desde y hasta.");
+      return;
+    }
     await openExcel(
       startDate,
       endDate,
-      "api/report/excel/invoice",
+      "api/report/excel/sale",
       "reporte-venta"
     );
   };
+
+  const columns: any = React.useMemo(
+    () => [
+      {
+        Header: "Fecha",
+        accessor: "date",
+      },
+      {
+        Header: "T/D",
+        accessor: "document_type",
+      },
+      {
+        Header: "Nro.Docum.",
+        accessor: "document_number",
+      },
+      {
+        Header: "R.U.C.",
+        accessor: "ruc",
+        // Cell: ({ value }: any) => Number(value).toLocaleString(),
+      },
+      {
+        Header: "Cliente",
+        accessor: "client_name",
+      },
+      {
+        Header: "Valor Venta",
+        accessor: "sale_valor",
+      },
+      {
+        Header: "Impuesto",
+        accessor: "tax",
+      },
+      {
+        Header: "Total",
+        accessor: "total",
+      },
+    ],
+    []
+  );
 
   console.log("dataAcumulateDAyay", reportData);
   return (
@@ -112,7 +174,7 @@ const Sale = () => {
                       </div>
                       <DatePicker
                         locale="es"
-                        format="DD/MM/YYYY"
+                        dateFormat="yyyy/MM/dd"
                         className="form-control"
                         placeholder="Desde"
                         selected={startDate}
@@ -148,7 +210,7 @@ const Sale = () => {
                       </div>
                       <DatePicker
                         locale="es"
-                        format="DD/MM/YYYY"
+                        dateFormat="yyyy/MM/dd"
                         className="form-control"
                         placeholder="Hasta"
                         selected={endDate}
@@ -276,7 +338,7 @@ const Sale = () => {
                   </div>
                 )}
               </Row>
-              {reportData && <BasicTable data={reportData} />}
+              {reportData && <BasicTable data={reportData} columns={columns} />}
             </CardBody>
           </Card>
         </Col>

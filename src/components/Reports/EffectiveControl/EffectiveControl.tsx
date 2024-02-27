@@ -10,24 +10,20 @@ import {
   Button,
 } from "reactstrap";
 import { PageHeaders } from "../../../Shared/Prism/Prism";
-
 import DatePicker, { registerLocale } from "react-datepicker";
 import es from "date-fns/locale/es";
 registerLocale("es", es);
 import "react-datepicker/dist/react-datepicker.css";
-
 import Select from "react-select";
-import axios from "axios";
 import { report } from "../../../Util/axios";
-import { BasicTable } from "./DataTable/Basictable";
+import { BasicTable } from "../Components/DataTable/Basictable";
 import useOpenTable from "../../../Hook/Report/useOpenTable";
 import useOpenPdf from "../../../Hook/Report/useOpenPdf";
 import useOpenExcel from "../../../Hook/Report/useOpenExcel";
+import Swal from "sweetalert2";
 
 const EffectiveControl = () => {
-  const [dates, setDates] = useState<any>();
   const [countryOption, setCountryOption] = useState<any>(null);
-
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
 
@@ -40,6 +36,16 @@ const EffectiveControl = () => {
 
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
 
+  const errorAlert = (errorMessage) => {
+    Swal.fire({
+      title: "Error",
+      text: errorMessage,
+      icon: "error",
+      confirmButtonText: "OK",
+      cancelButtonColor: "#4454c3",
+    });
+  };
+
   //const [reportData, setReportData] = useState<any[]>([]);
 
   const { openTable, reportData, loading, error } = useOpenTable(
@@ -50,12 +56,20 @@ const EffectiveControl = () => {
   );
 
   const handleOpenTable = async () => {
+    if (startDate == null || endDate == null) {
+      errorAlert("Seleccione las fechas desde y hasta.");
+      return;
+    }    
     await openTable();
   };
 
   const { openPdf } = useOpenPdf();
 
   const handleOpenPdf = async () => {
+    if (startDate == null || endDate == null) {
+      errorAlert("Seleccione las fechas desde y hasta.");
+      return;
+    }    
     await openPdf(
       startDate,
       endDate,
@@ -67,6 +81,10 @@ const EffectiveControl = () => {
   const { openExcel } = useOpenExcel();
 
   const handleOpenExcel = async () => {
+    if (startDate == null || endDate == null) {
+      errorAlert("Seleccione las fechas desde y hasta.");
+      return;
+    }    
     await openExcel(
       startDate,
       endDate,
@@ -74,6 +92,68 @@ const EffectiveControl = () => {
       "reporte-control-efectivo"
     );
   };
+
+  const columns: any = React.useMemo(
+    () => [
+      {
+        Header: "Fecha",
+        accessor: "fecha",
+      },
+      {
+        Header: "Combust.(VP)",
+        accessor: "84 OCT(produc)-Galones",
+      },
+      {
+        Header: "Productos(VP)",
+        accessor: "84 OCT(produc)-Soles",
+      },
+      {
+        Header: "Pag.Cta|Pag.Adel(OI)",
+        accessor: "90 OCT-Galones(produc)",
+      },      
+      {
+        Header: "Otros(OI)",
+        accessor: "90 OCT-Galones(product)",
+      },
+      {
+        Header: "Tienda Lucosa(OI)",
+        accessor: "95 OCT-Galones(produc)",
+      },      
+      {
+        Header: "Total Ingresos del Dia",
+        accessor: "95 OCT-Galones(product)",
+      },
+      {
+        Header: "Efectivo del Dia(Teórico)",
+        accessor: "97 OCT-Galones(produc)",
+      },      
+      {
+        Header: "Efectivo del Día(Físico)",
+        accessor: "97 OCT-Galones(product)",
+      },
+      {
+        Header: "Dif. Vta Día Liq. Día",
+        accessor: "REGULAR-Galones(produc)",
+      },      
+      {
+        Header: "Efectivo Anterior",
+        accessor: "REGULAR-Galones(product)",
+      },
+      {
+        Header: "Efect. Día + Efect. Anter.",
+        accessor: "PREMIUM(produc)",
+      },      
+      {
+        Header: "TOTAL DEPÓSITO",
+        accessor: "PREMIUM(product)",
+      },
+      {
+        Header: "Depositos Pendientes Caja Fuerte",
+        accessor: "GAS GLP(Galones)",
+      },                                          
+    ],
+    []
+  );
 
   return (
     <div>
@@ -115,7 +195,7 @@ const EffectiveControl = () => {
                       </div>
                       <DatePicker
                         locale="es"
-                        format="DD/MM/YYYY"
+                        dateFormat="yyyy/MM/dd"
                         className="form-control"
                         placeholder="Desde"
                         selected={startDate}
@@ -151,7 +231,7 @@ const EffectiveControl = () => {
                       </div>
                       <DatePicker
                         locale="es"
-                        format="DD/MM/YYYY"
+                        dateFormat="yyyy/MM/dd"
                         className="form-control"
                         placeholder="Hasta"
                         selected={endDate}
@@ -279,7 +359,7 @@ const EffectiveControl = () => {
                   </div>
                 )}
               </Row>
-              {reportData && <BasicTable data={reportData} />}
+              {reportData && <BasicTable data={reportData} columns={columns} />}
             </CardBody>
           </Card>
         </Col>

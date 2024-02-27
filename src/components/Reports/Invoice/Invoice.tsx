@@ -19,11 +19,12 @@ import "react-datepicker/dist/react-datepicker.css";
 import Select from "react-select";
 import axios from "axios";
 import { report } from "../../../Util/axios";
-import { BasicTable } from "./DataTable/Basictable";
+import { BasicTable } from "../Components/DataTable/Basictable";
 import { LocalConvenienceStoreOutlined } from "@material-ui/icons";
 import useOpenTable from "../../../Hook/Report/useOpenTable";
 import useOpenPdf from "../../../Hook/Report/useOpenPdf";
 import useOpenExcel from "../../../Hook/Report/useOpenExcel";
+import Swal from "sweetalert2";
 
 const Invoice = () => {
   const [dates, setDates] = useState<any>();
@@ -40,22 +41,40 @@ const Invoice = () => {
 
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
 
+  const errorAlert = (errorMessage) => {
+    Swal.fire({
+      title: "Error",
+      text: errorMessage,
+      icon: "error",
+      confirmButtonText: "OK",
+      cancelButtonColor: "#4454c3",
+    });
+  };
+
   //const [reportData, setReportData] = useState<any[]>([]);
 
   const { openTable, reportData, loading, error } = useOpenTable(
     startDate,
     endDate,
     report,
-    "api/report/table/accumulated/day"
+    "api/report/table/invoice"
   );
-  
+
   const handleOpenTable = async () => {
+    if (startDate == null || endDate == null) {
+      errorAlert("Seleccione las fechas desde y hasta.");
+      return;
+    }
     await openTable();
   };
 
   const { openPdf } = useOpenPdf();
 
   const handleOpenPdf = async () => {
+    if (startDate == null || endDate == null) {
+      errorAlert("Seleccione las fechas desde y hasta.");
+      return;
+    }
     await openPdf(
       startDate,
       endDate,
@@ -64,9 +83,13 @@ const Invoice = () => {
     );
   };
 
-  const { openExcel } = useOpenExcel(); 
+  const { openExcel } = useOpenExcel();
 
   const handleOpenExcel = async () => {
+    if (startDate == null || endDate == null) {
+      errorAlert("Seleccione las fechas desde y hasta.");
+      return;
+    }
     await openExcel(
       startDate,
       endDate,
@@ -74,6 +97,40 @@ const Invoice = () => {
       "reporte-facturas"
     );
   };
+
+  const columns: any = React.useMemo(
+    () => [
+      {
+        Header: "Tipo doc.",
+        accessor: "document_type",
+      },
+      {
+        Header: "N° doc.",
+        accessor: "document_number",
+      },
+      {
+        Header: "Cliente",
+        accessor: "name_client",
+      },
+      {
+        Header: "Descuento",
+        accessor: "discount",
+      },
+      {
+        Header: "Cantidad",
+        accessor: "total_amount",
+      },
+      {
+        Header: "fecha de emisión",
+        accessor: "broadcast_date",
+      },
+      {
+        Header: "Situación",
+        accessor: "situacion",
+      },
+    ],
+    []
+  );
 
   return (
     <div>
@@ -104,12 +161,14 @@ const Invoice = () => {
                 </Col>
                 <Col lg="6">
                   <div className="mb-3">
-                    <label className="form-label">N° Documento</label>
+                    <label className="form-label">
+                      N° Documento (F002-0000123)
+                    </label>
                   </div>
                   <input
                     type="text"
                     className="form-control required mb-3"
-                    placeholder="documento"
+                    placeholder="F002-0000123"
                   />
                 </Col>
                 <Col lg="6">
@@ -135,7 +194,7 @@ const Invoice = () => {
                       </div>
                       <DatePicker
                         locale="es"
-                        format="DD/MM/YYYY"
+                        dateFormat="yyyy/MM/dd"
                         className="form-control"
                         placeholder="Desde"
                         selected={startDate}
@@ -171,7 +230,7 @@ const Invoice = () => {
                       </div>
                       <DatePicker
                         locale="es"
-                        format="DD/MM/YYYY"
+                        dateFormat="yyyy/MM/dd"
                         className="form-control"
                         placeholder="Hasta"
                         selected={endDate}
@@ -299,7 +358,7 @@ const Invoice = () => {
                   </div>
                 )}
               </Row>
-              {reportData && <BasicTable data={reportData} />}
+              {reportData && <BasicTable data={reportData} columns={columns} />}
             </CardBody>
           </Card>
         </Col>

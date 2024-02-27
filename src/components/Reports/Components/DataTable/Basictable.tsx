@@ -8,33 +8,9 @@ import {
   TableState,
 } from "react-table";
 
-export const BasicTable = ({ data }: any) => {
+export const BasicTable = ({ data, columns }: any) => {
   console.log('basicTable data', data);
-  const columns: any = React.useMemo(
-    () => [
-      {
-        Header: "Fecha",
-        accessor: "fecha",
-      },
-      {
-        Header: "Razón Social",
-        accessor: "84 OCT(produc)-Galones",
-      },
-      {
-        Header: "Consumo Cliente",
-        accessor: "84 OCT(produc)-Soles",
-      },
-      {
-        Header: "Pagos a Cuenta",
-        accessor: "90 OCT-Galones(produc)",
-      },      
-      {
-        Header: "Saldo Deudor",
-        accessor: "90 OCT-Galones(product)",
-      },                                         
-    ],
-    []
-  );
+
 
   const tableInstance: any = useTable(
     {
@@ -97,7 +73,7 @@ export const BasicTable = ({ data }: any) => {
                     className="bg-primary text-white"
                     {...column.getHeaderProps(column.getSortByToggleProps())}
                     // className={column.className}
-                    // style={{ padding: "1px", fontSize: "9px"}}
+                    //  style={{ padding: "1px", fontSize: "9px"}}
                   >
                     <span className="tabletitle">
                       {column.render("Header")}
@@ -150,7 +126,7 @@ export const BasicTable = ({ data }: any) => {
             onClick={() => gotoPage(0)}
             disabled={!canPreviousPage}
           >
-            {" Previous "}
+            {" Anterior "}
           </Button>
           <Button
             color=""
@@ -198,7 +174,7 @@ export const BasicTable = ({ data }: any) => {
             onClick={() => gotoPage(pageCount - 1)}
             disabled={!canNextPage}
           >
-            {" Next "}
+            {" Próximo "}
           </Button>
         </span>
       </div>
@@ -213,7 +189,7 @@ const GlobalFilter = ({ filter, setFilter }: any) => {
         value={filter || ""}
         onChange={(e) => setFilter(e.target.value)}
         className="form-control mb-4"
-        placeholder="Search..."
+        placeholder="Buscar..."
         style={{ fontSize: "10px" }} // Reduce el tamaño de la fuente del filtro global
       />
     </span>

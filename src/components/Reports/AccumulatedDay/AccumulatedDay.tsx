@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Card,
   CardBody,
@@ -17,13 +17,13 @@ registerLocale("es", es);
 import "react-datepicker/dist/react-datepicker.css";
 
 import Select from "react-select";
-import axios from "axios";
 import { report } from "../../../Util/axios";
-import { BasicTable } from "./DataTable/Basictable";
+import { BasicTable } from "../Components/DataTable/Basictable";
 import { format } from "date-fns";
 import useOpenTable from "../../../Hook/Report/useOpenTable";
 import useOpenPdf from "../../../Hook/Report/useOpenPdf";
 import useOpenExcel from "../../../Hook/Report/useOpenExcel";
+import Swal from "sweetalert2";
 
 const AccumulatedDay = () => {
   const [dates, setDates] = useState<any>();
@@ -39,6 +39,16 @@ const AccumulatedDay = () => {
     { value: "Cuarto", label: "Cuarto" },
   ];
 
+  const errorAlert = (errorMessage) => {
+    Swal.fire({
+      title: "Error",
+      text: errorMessage,
+      icon: "error",
+      confirmButtonText: "OK",
+      cancelButtonColor: "#4454c3",
+    });
+  };
+
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
 
   //const [reportData, setReportData] = useState<any[]>([]);
@@ -51,12 +61,20 @@ const AccumulatedDay = () => {
   );
 
   const handleOpenTable = async () => {
+    if (startDate == null || endDate == null) {
+      errorAlert("Seleccione las fechas desde y hasta.");
+      return;
+    }
     await openTable();
   };
 
   const { openPdf } = useOpenPdf();
 
   const handleOpenPdf = async () => {
+    if (startDate == null || endDate == null) {
+      errorAlert("Seleccione las fechas desde y hasta.");
+      return;
+    }
     await openPdf(
       startDate,
       endDate,
@@ -68,13 +86,67 @@ const AccumulatedDay = () => {
   const { openExcel } = useOpenExcel();
 
   const handleOpenExcel = async () => {
+    if (startDate == null || endDate == null) {
+      errorAlert("Seleccione las fechas desde y hasta.");
+      return;
+    }
     await openExcel(
       startDate,
       endDate,
-      "api/report/excel/invoice",
+      "api/report/excel/accumulated/day",
       "reporte-facturas"
     );
   };
+
+  const [locales, setLocales] = useState([]);
+  const [selectedLocal, setSelectedLocal] = useState<any>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await report.get("api/local/");
+        setLocales(response.data);
+      } catch (error) {
+        console.error("Error fetching locales:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const columns: any = React.useMemo(
+    () => [
+      {
+        Header: "Fecha",
+        accessor: "sale_date_v",
+      },
+      {
+        Header: "id_local",
+        accessor: "id_local_v",
+      },
+      {
+        Header: "product_name_v",
+        accessor: "product_name_v",
+      },
+      {
+        Header: "quantity_v",
+        accessor: "quantity_v",
+      },
+      {
+        Header: "total_amount_v",
+        accessor: "total_amount_v",
+      },
+      {
+        Header: "Total GAL",
+        accessor: "Total-Galones(delaFila)",
+      },
+      {
+        Header: "Total SOL",
+        accessor: "Total-Soles(delaFila)",
+      },
+    ],
+    []
+  );
 
   console.log("dataAcumulateDAyay", reportData);
   return (
@@ -117,7 +189,7 @@ const AccumulatedDay = () => {
                       </div>
                       <DatePicker
                         locale="es"
-                        format="DD/MM/YYYY"
+                        dateFormat="yyyy/MM/dd"
                         className="form-control"
                         placeholder="Desde"
                         selected={startDate}
@@ -153,7 +225,7 @@ const AccumulatedDay = () => {
                       </div>
                       <DatePicker
                         locale="es"
-                        format="DD/MM/YYYY"
+                        dateFormat="yyyy/MM/dd"
                         className="form-control"
                         placeholder="Hasta"
                         selected={endDate}
@@ -171,11 +243,14 @@ const AccumulatedDay = () => {
                   </div>
                   <div className="wd-200 mg-b-30">
                     <Select
-                      defaultValue={countryOption}
-                      onChange={setCountryOption}
-                      options={Countryoptions}
-                      placeholder="Local"
+                      value={selectedLocal}
+                      onChange={setSelectedLocal}
+                      options={locales.map((local) => ({
+                        value: local.name,
+                        label: local.name,
+                      }))}
                       classNamePrefix="Search"
+                      placeholder="Seleccione..."
                     />
                   </div>
                 </Col>
@@ -193,7 +268,7 @@ const AccumulatedDay = () => {
                           color=""
                           type="button"
                           className="btn btn-primary btn-svgs btn-svg-white mt-4 ml-4 mr-4"
-                          onClick={() => openTable()}
+                          onClick={() => handleOpenTable()}
                         >
                           <svg
                             className="svg-icon"
@@ -281,7 +356,7 @@ const AccumulatedDay = () => {
                   </div>
                 )}
               </Row>
-              {reportData && <BasicTable data={reportData} />}
+              {reportData && <BasicTable data={reportData} columns={columns} />}
             </CardBody>
           </Card>
         </Col>

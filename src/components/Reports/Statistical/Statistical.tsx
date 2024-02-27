@@ -23,7 +23,6 @@ import {
   StackedChart,
   BasicColumn,
 } from "../Components/ChartFunction/apexchart";
-import { Fixedheader } from "./DataTable/Fixedheader";
 import { report } from "../../../Util/axios";
 import { BasicTable } from "../Components/DataTable/Basictable";
 

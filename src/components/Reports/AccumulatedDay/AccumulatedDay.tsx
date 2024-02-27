@@ -98,7 +98,12 @@ const AccumulatedDay = () => {
     );
   };
 
-  const [locales, setLocales] = useState([]);
+  interface Local {
+    name: string;
+    // otras propiedades si las hay
+  }
+
+  const [locales, setLocales] = useState<Local[]>([]);
   const [selectedLocal, setSelectedLocal] = useState<any>(null);
 
   useEffect(() => {

@@ -42,6 +42,8 @@ const PrettyCash = () => {
 
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
 
+  const company = localStorage.getItem('company');
+  
   const errorAlert = (errorMessage) => {
     Swal.fire({
       title: "Error",
@@ -57,6 +59,7 @@ const PrettyCash = () => {
   const { openTable, reportData, loading, error } = useOpenTable(
     startDate,
     endDate,
+    company,    
     report,
     "api/report/table/accumulated/day"
   );

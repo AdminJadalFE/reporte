@@ -47,12 +47,15 @@ const Profitability = () => {
       cancelButtonColor: "#4454c3",
     });
   };
+
+  const company = localStorage.getItem('company');
     
   //const [reportData, setReportData] = useState<any[]>([]);
 
   const { openTable, reportData, loading, error } = useOpenTable(
     startDate,
     endDate,
+    company,    
     report,
     "api/report/table/accumulated/day"
   );

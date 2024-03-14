@@ -39,6 +39,8 @@ const AccumulatedDay = () => {
     { value: "Cuarto", label: "Cuarto" },
   ];
 
+  const company = localStorage.getItem('company');
+
   const errorAlert = (errorMessage) => {
     Swal.fire({
       title: "Error",
@@ -56,6 +58,7 @@ const AccumulatedDay = () => {
   const { openTable, reportData, loading, error } = useOpenTable(
     startDate,
     endDate,
+    company,
     report,
     "api/report/table/accumulated/day"
   );

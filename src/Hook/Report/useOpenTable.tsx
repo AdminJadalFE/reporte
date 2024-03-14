@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const useOpenTable = (startDate, endDate, report, url) => {
+const useOpenTable = (startDate, endDate, company, report, url) => {
   const [reportData, setReportData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -40,6 +40,7 @@ const useOpenTable = (startDate, endDate, report, url) => {
       const response = await report.post(url, {
         startDate: formattedStartDate,
         endDate: formattedEndDate,
+        company: company
       });
 
       console.log(response.data);

@@ -92,6 +92,7 @@ const Sale = () => {
     await openExcel(
       startDate,
       endDate,
+      company,
       "api/report/excel/sale",
       "reporte-venta"
     );

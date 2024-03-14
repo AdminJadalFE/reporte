@@ -97,6 +97,7 @@ const AccumulatedDay = () => {
     await openExcel(
       startDate,
       endDate,
+      company,
       "api/report/excel/accumulated/day",
       "reporte-facturas"
     );

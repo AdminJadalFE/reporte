@@ -93,6 +93,7 @@ const SaleNote = () => {
     await openExcel(
       startDate,
       endDate,
+      company,
       "api/report/excel/invoice",
       "reporte-venta"
     );

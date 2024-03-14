@@ -97,6 +97,7 @@ const Invoice = () => {
     await openExcel(
       startDate,
       endDate,
+      company,      
       "api/report/excel/invoice",
       "reporte-facturas"
     );

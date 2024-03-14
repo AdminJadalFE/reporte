@@ -1,8 +1,7 @@
-import { useState } from "react";
 import { report } from "../../Util/axios";
 
 const useOpenExcel = () => {
-  const openExcel = async (startDate, endDate, url, reportName) => {
+  const openExcel = async (startDate, endDate, company, url, reportName) => {
     try {
       const formattedStartDate = startDate
         ? `${startDate.getDate().toString().padStart(2, "0")}-${(
@@ -36,6 +35,7 @@ const useOpenExcel = () => {
         {
           startDate: formattedStartDate,
           endDate: formattedEndDate,
+          company: company,
         },
         {
           responseType: "blob",

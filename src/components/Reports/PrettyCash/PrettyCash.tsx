@@ -82,6 +82,7 @@ const PrettyCash = () => {
     await openPdf(
       startDate,
       endDate,
+      company,
       "api/report/pdf/pretty/cash/",
       "reporte-caja-chica"
     );

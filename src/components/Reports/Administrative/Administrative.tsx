@@ -81,6 +81,7 @@ const Administrative = () => {
     await openPdf(
       startDate,
       endDate,
+      company,
       "api/report/pdf/administrative",
       "reporte-facturas"
     );

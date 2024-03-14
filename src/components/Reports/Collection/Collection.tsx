@@ -42,7 +42,7 @@ const Collection = () => {
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
 
   const company = localStorage.getItem('company');
-  
+
   const errorAlert = (errorMessage) => {
     Swal.fire({
       title: "Error",
@@ -81,6 +81,7 @@ const Collection = () => {
     await openPdf(
       startDate,
       endDate,
+      company,
       "api/report/pdf/invoice",
       "reporte-cobranzas"
     );

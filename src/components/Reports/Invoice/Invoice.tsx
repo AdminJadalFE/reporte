@@ -81,6 +81,7 @@ const Invoice = () => {
     await openPdf(
       startDate,
       endDate,
+      company,
       "api/report/pdf/invoice",
       "reporte-facturas"
     );

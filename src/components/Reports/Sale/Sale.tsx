@@ -79,7 +79,7 @@ const Sale = () => {
       errorAlert("Seleccione las fechas desde y hasta.");
       return;
     }
-    await openPdf(startDate, endDate, "api/report/pdf/sale", "reporte-venta");
+    await openPdf(startDate, endDate, company, "api/report/pdf/sale", "reporte-venta");
   };
 
   const { openExcel } = useOpenExcel();

@@ -76,6 +76,7 @@ const EffectiveControl = () => {
     await openPdf(
       startDate,
       endDate,
+      company,
       "api/report/pdf/effective/control/",
       "reporte-control-efectivo"
     );

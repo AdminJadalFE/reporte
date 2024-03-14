@@ -88,6 +88,7 @@ const Statistical = () => {
     await openPdf(
       startDate,
       endDate,
+      company,
       "api/report/pdf/statistical",
       "reporte-estadistico"
     );

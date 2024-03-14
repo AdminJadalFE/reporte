@@ -78,6 +78,7 @@ const Profitability = () => {
     await openPdf(
       startDate,
       endDate,
+      company,
       "api/report/pdf/invoice",
       "reporte-rentabilidad"
     );

@@ -81,6 +81,7 @@ const AccumulatedDay = () => {
     await openPdf(
       startDate,
       endDate,
+      company,
       "api/report/pdf/accumulated/day",
       "reporte-acumulado-diario"
     );

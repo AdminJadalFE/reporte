@@ -44,7 +44,7 @@ const SaleNote = () => {
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
 
   const company = localStorage.getItem('company');
-  
+
   const errorAlert = (errorMessage) => {
     Swal.fire({
       title: "Error",
@@ -80,7 +80,7 @@ const SaleNote = () => {
       errorAlert("Seleccione las fechas desde y hasta.");
       return;
     }
-    await openPdf(startDate, endDate, "api/report/pdf/sale", "reporte-venta");
+    await openPdf(startDate, endDate, company, "api/report/pdf/sale", "reporte-venta");
   };
 
   const { openExcel } = useOpenExcel();

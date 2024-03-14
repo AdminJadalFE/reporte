@@ -5,7 +5,7 @@ const useOpenPdf = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const openPdf = async (startDate, endDate, url, fileName) => {
+  const openPdf = async (startDate, endDate, company, url, fileName) => {
     try {
       setLoading(true);
       const formattedStartDate = startDate
@@ -42,6 +42,7 @@ const useOpenPdf = () => {
         {
           startDate: formattedStartDate,
           endDate: formattedEndDate,
+          company: company 
         },
         {
           responseType: 'blob',

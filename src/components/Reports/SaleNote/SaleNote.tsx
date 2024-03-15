@@ -62,7 +62,7 @@ const SaleNote = () => {
     endDate,
     company,    
     report,
-    "api/report/table/accumulated/day"
+    "api/report/table/sale/note"
   );
 
   const handleOpenTable = async () => {

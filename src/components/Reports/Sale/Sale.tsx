@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import {
   Card,
   CardBody,
@@ -33,17 +33,32 @@ const Sale = () => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
 
-  const Countryoptions = [
-    { value: "Principal", label: "Principal" },
-    { value: "Secundario", label: "Secundario" },
-    { value: "Tercer", label: "Tercer" },
-    { value: "Cuarto", label: "Cuarto" },
-  ];
-
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
 
-  const company = localStorage.getItem('company');
+  const company = localStorage.getItem("company");
+
+  interface Local {
+    name: string;
+    // otras propiedades si las hay
+  }
+
+  const [locales, setLocales] = useState<Local[]>([]);
+  const [selectedLocal, setSelectedLocal] = useState<any>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await report.post("api/local/", { company: company });
+        setLocales(response.data);
+      } catch (error) {
+        console.error("Error fetching locales:", error);
+      }
+    };
   
+    fetchData();
+  }, [company]);
+  
+
   const errorAlert = (errorMessage) => {
     Swal.fire({
       title: "Error",
@@ -59,7 +74,7 @@ const Sale = () => {
   const { openTable, reportData, loading, error } = useOpenTable(
     startDate,
     endDate,
-    company,    
+    company,
     report,
     "api/report/table/sale"
   );
@@ -68,7 +83,7 @@ const Sale = () => {
     if (startDate == null || endDate == null) {
       errorAlert("Seleccione las fechas desde y hasta.");
       return;
-    }    
+    }
     await openTable();
   };
 
@@ -79,7 +94,13 @@ const Sale = () => {
       errorAlert("Seleccione las fechas desde y hasta.");
       return;
     }
-    await openPdf(startDate, endDate, company, "api/report/pdf/sale", "reporte-venta");
+    await openPdf(
+      startDate,
+      endDate,
+      company,
+      "api/report/pdf/sale",
+      "reporte-venta"
+    );
   };
 
   const { openExcel } = useOpenExcel();
@@ -232,11 +253,14 @@ const Sale = () => {
                   </div>
                   <div className="wd-200 mg-b-30">
                     <Select
-                      defaultValue={countryOption}
-                      onChange={setCountryOption}
-                      options={Countryoptions}
-                      placeholder="Local"
+                      value={selectedLocal}
+                      onChange={setSelectedLocal}
+                      options={locales.map((local) => ({
+                        value: local.name,
+                        label: local.name,
+                      }))}
                       classNamePrefix="Search"
+                      placeholder="Seleccione..."
                     />
                   </div>
                 </Col>

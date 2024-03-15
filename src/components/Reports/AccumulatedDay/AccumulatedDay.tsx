@@ -114,16 +114,16 @@ const AccumulatedDay = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await report.get("api/local/");
+        const response = await report.post("api/local/", { company: company });
         setLocales(response.data);
       } catch (error) {
         console.error("Error fetching locales:", error);
       }
     };
-
+  
     fetchData();
-  }, []);
-
+  }, [company]);
+  
   const columns: any = React.useMemo(
     () => [
       {

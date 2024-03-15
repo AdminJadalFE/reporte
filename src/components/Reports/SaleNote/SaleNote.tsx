@@ -99,11 +99,15 @@ const SaleNote = () => {
     );
   };
 
+  console.log('reportData',reportData);
   const columns: any = React.useMemo(
     () => [
       {
         Header: "Fecha",
-        accessor: "fecha",
+        accessor: (row: any) => {
+          const salesData = JSON.parse(row.sales_per_client);
+          return salesData[0]?.date;
+        },
       },
       {
         Header: "T/D",
@@ -111,8 +115,11 @@ const SaleNote = () => {
       },
       {
         Header: "Nro.Docum.",
-        accessor: "Nro.Docum.",
-        Cell: ({ value }: any) => Number(value).toLocaleString(),
+        accessor: (row: any) => {
+          const salesData = JSON.parse(row.sales_per_client);
+          return salesData[0]?.sales[0]?.sale_document;
+        },
+        Cell: ({ value }: any) => value.toLocaleString(),
       },
       {
         Header: "R.U.C.",
@@ -121,11 +128,15 @@ const SaleNote = () => {
       },
       {
         Header: "Cliente",
-        accessor: "Cliente",
+        accessor: "client",
       },
       {
         Header: "Valor Venta",
-        accessor: "Valor Venta",
+        accessor: (row: any) => {
+          const salesData = JSON.parse(row.sales_per_client);
+          return salesData[0]?.sales[0]?.total_sale; // Accede a la propiedad 'total_sale' del primer elemento del arreglo 'sales'
+        },
+        Cell: ({ value }: any) => Number(value).toLocaleString(),
       },
       {
         Header: "Impuesto",

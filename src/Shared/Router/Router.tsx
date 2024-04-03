@@ -179,6 +179,9 @@ const Bank = lazy(() => import("../../components/Reports/Bank/Bank"));
 const Collection = lazy(() => import("../../components/Reports/Collection/Collection")); 
 const PrettyCash = lazy(() => import("../../components/Reports/PrettyCash/PrettyCash")); 
 const SaleNote = lazy(() => import("../../components/Reports/SaleNote/SaleNote")); 
+const PeriodsSire = lazy(() => import("../../components/Sire/Periods/Periods")); 
+const PurchasesSire = lazy(() => import("../../components/Sire/Purchases/Purchases")); 
+const SalesSire = lazy(() => import("../../components/Sire/Sales/Sales")); 
 
 export const Routing = () => {
 
@@ -448,7 +451,18 @@ export const Routing = () => {
           </Route>
           <Route>
             <Route path={`${import.meta.env.BASE_URL}report/sale/note`} element={<SaleNote />} />
-          </Route>                                                                                                                            
+          </Route>
+
+          //SIRE
+          <Route>
+            <Route path={`${import.meta.env.BASE_URL}sire/periods`} element={<PeriodsSire />} />
+          </Route>
+          <Route>
+            <Route path={`${import.meta.env.BASE_URL}sire/purchases`} element={<PurchasesSire />} />
+          </Route>      
+          <Route>
+            <Route path={`${import.meta.env.BASE_URL}sire/sales`} element={<SalesSire />} />
+          </Route>                                      
         </Route>
         <Route path={`${import.meta.env.BASE_URL}`} element={<Custompages />}>
 

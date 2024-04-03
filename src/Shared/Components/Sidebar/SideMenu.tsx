@@ -1356,7 +1356,41 @@ export const MENUITEMS: menu[] = [
         ],
       },
     ],
-  },        
+  },
+  {
+    Items: [
+      {
+        title: "SIRE",
+        icon: <svg className="side-menu__icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>,
+        type: "sub",
+        selected: false,
+        active: false,
+        children: [
+          {
+            path: `${import.meta.env.BASE_URL}report/invoice`,
+            type: "link",
+            active: false,
+            selected: false,
+            title: "Anexos",
+          },
+          {
+            path: `${import.meta.env.BASE_URL}report/administrative`,
+            type: "link",
+            active: false,
+            selected: false,
+            title: "Compras",
+          },
+          {
+            path: `${import.meta.env.BASE_URL}report/statistical`,
+            type: "link",
+            active: false,
+            selected: false,
+            title: "Ventas",
+          },                                                                     
+        ],
+      },
+    ],
+  },           
   {
     Items: [
       {

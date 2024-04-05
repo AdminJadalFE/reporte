@@ -124,7 +124,7 @@ const Sales = () => {
         <Col md="12">
           <Card>
             <CardHeader>
-              <CardTitle>SIRE VENTAS</CardTitle>
+              <CardTitle>Datos de Ventas del SIRE</CardTitle>
             </CardHeader>
             <CardBody>
               <Row>
@@ -133,48 +133,78 @@ const Sales = () => {
                     <Label className="form-label">Opciones:</Label>
                   </div>
 
+                 
+
                   <Row>
-                    <Col md="4">
-                      <div className="mb-3">
-                        <Label className="form-label">
-                          Período Tributario <span className="text-red">*</span>
-                        </Label>
-                        <Select
-                          value={selectedPeriod}
-                          onChange={(selectedOption) =>
-                            setSelectedPeriod(selectedOption)
-                          }
-                          options={periodOptions}
-                          placeholder="Selecciona un período"
-                          classNamePrefix="Search"
-                        />
-                      </div>
-                    </Col>
-                    <Col lg="4">
-                      <Button
-                        color=""
-                        type="button"
-                        className="btn btn-primary btn-svgs btn-svg-white mt-4 ml-4 mr-4"
-                        onClick={generarTicket}
-                      >
-                        <svg
-                          className="svg-icon"
-                          xmlns="http://www.w3.org/2000/svg"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          width="24"
-                        >
-                          <path d="M0 0h24v24H0V0z" fill="none"></path>
-                          <path
-                            d="M13 4H6v16h12V9h-5V4zm3 14H8v-2h8v2zm0-6v2H8v-2h8z"
-                            opacity=".3"
-                          ></path>
-                          <path d="M8 16h8v2H8zm0-4h8v2H8zm6-10H6c-1.1 0-2 .9-2 2v16c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"></path>
-                        </svg>
-                        <span className="btn-svg-text">GENERAR TICKET</span>
-                      </Button>
-                    </Col>
-                  </Row>
+  <Col md="4">
+    <div className="mb-3">
+      <Label className="form-label">
+        Período Tributario <span className="text-red">*</span>
+      </Label>
+      <Select
+        value={selectedPeriod}
+        onChange={(selectedOption) =>
+          setSelectedPeriod(selectedOption)
+        }
+        options={periodOptions}
+        placeholder="Selecciona un período"
+        classNamePrefix="Search"
+      />
+    </div>
+  </Col>
+  <Col lg="4">
+    <div className="d-flex align-items-end mt-3">
+      <Button
+        color=""
+        type="button"
+        className="btn btn-primary btn-svgs btn-svg-white mt-4 mx-2"
+        onClick={generarTicket}
+      >
+        <svg
+          className="svg-icon"
+          xmlns="http://www.w3.org/2000/svg"
+          height="24"
+          viewBox="0 0 24 24"
+          width="24"
+        >
+          <path d="M0 0h24v24H0V0z" fill="none"></path>
+          <path
+            d="M13 4H6v16h12V9h-5V4zm3 14H8v-2h8v2zm0-6v2H8v-2h8z"
+            opacity=".3"
+          ></path>
+          <path d="M8 16h8v2H8zm0-4h8v2H8zm6-10H6c-1.1 0-2 .9-2 2v16c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"></path>
+        </svg>
+        <span className="btn-svg-text">GENERAR TICKET</span>
+      </Button>
+      <Button
+        color=""
+        type="button"
+        className="btn btn-primary btn-svgs btn-svg-white mt-4 mx-2"
+        onClick={generarTicket}
+      >
+        <svg
+          className="svg-icon"
+          xmlns="http://www.w3.org/2000/svg"
+          height="24"
+          viewBox="0 0 24 24"
+          width="24"
+        >
+          <path d="M0 0h24v24H0V0z" fill="none"></path>
+          <path
+            d="M13 4H6v16h12V9h-5V4zm3 14H8v-2h8v2zm0-6v2H8v-2h8z"
+            opacity=".3"
+          ></path>
+          <path d="M8 16h8v2H8zm0-4h8v2H8zm6-10H6c-1.1 0-2 .9-2 2v16c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"></path>
+        </svg>
+        <span className="btn-svg-text">VER TICKETS DEL PERÍODO</span>
+      </Button>
+    </div>
+  </Col>
+</Row>
+
+
+                  
+
                   <Row>
                     <Col md="3">
                       <div className="mb-3 mt-3">

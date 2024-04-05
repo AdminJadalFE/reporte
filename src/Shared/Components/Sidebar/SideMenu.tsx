@@ -1367,21 +1367,21 @@ export const MENUITEMS: menu[] = [
         active: false,
         children: [
           {
-            path: `${import.meta.env.BASE_URL}report/invoice`,
+            path: `${import.meta.env.BASE_URL}sire/periods`,
             type: "link",
             active: false,
             selected: false,
             title: "Anexos",
           },
           {
-            path: `${import.meta.env.BASE_URL}report/administrative`,
+            path: `${import.meta.env.BASE_URL}sire/purchases`,
             type: "link",
             active: false,
             selected: false,
             title: "Compras",
           },
           {
-            path: `${import.meta.env.BASE_URL}report/statistical`,
+            path: `${import.meta.env.BASE_URL}sire/sales`,
             type: "link",
             active: false,
             selected: false,

@@ -88,7 +88,7 @@ const Purchases = () => {
   return (
     <div>
       <PageHeaders
-        title="Reporte de Bancos"
+        title="SIRE Compras"
         home="Home"
         name="Pages"
         fonticonsname="Empty"
@@ -98,7 +98,7 @@ const Purchases = () => {
         <Col md="12">
           <Card>
             <CardHeader>
-              <CardTitle>Listado de Bancos</CardTitle>
+              <CardTitle>Datos de Compras del SIRE</CardTitle>
             </CardHeader>
             <CardBody>
               <Row>

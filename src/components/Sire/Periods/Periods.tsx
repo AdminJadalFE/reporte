@@ -20,7 +20,8 @@ const Periods = () => {
   const [selectedPeriod, setSelectedPeriod] = useState(null);
   const [ticketsData, setTicketsData] = useState([]);
   const [ticketNumber, setTicketNumber] = useState("");
-  const [downloading, setDownloading] = useState(false); // Estado para controlar la visibilidad del spinner
+  const [selectedTicket, setSelectedTicket] = useState(null);
+  const [downloading, setDownloading] = useState(false);
 
   useEffect(() => {
     const fetchPeriodsData = async () => {
@@ -72,26 +73,30 @@ const Periods = () => {
     setTicketNumber(event.target.value);
   };
 
+  const handleTicketSelection = (ticket) => {
+    setSelectedTicket(ticket);
+    setTicketNumber(ticket.numTicket);
+  };
+
   const handleDownloadTxt = async () => {
     try {
-      setDownloading(true); // Mostrar spinner cuando comience la descarga
+      setDownloading(true);
 
       const response = await axios.post(
         "http://127.0.0.1:8000/api/sire/download/txt",
         { ticket: ticketNumber },
-        { responseType: 'blob' }
+        { responseType: "blob" }
       );
 
-      const blob = new Blob([response.data], { type: 'text/plain' });
-      const link = document.createElement('a');
+      const blob = new Blob([response.data], { type: "text/plain" });
+      const link = document.createElement("a");
       link.href = window.URL.createObjectURL(blob);
       link.download = `SIRE_${ticketNumber}.txt`;
       link.click();
-      
     } catch (error) {
       console.error("Error downloading txt file:", error);
     } finally {
-      setDownloading(false); // Ocultar spinner cuando finalice la descarga
+      setDownloading(false);
     }
   };
 
@@ -117,7 +122,7 @@ const Periods = () => {
                     <Label className="form-label">Opciones:</Label>
                   </div>
 
-                  <div className="wd-200 mg-b-30 mb-3 mt-3 d-flex justify-content-between">
+                  <div className="wd-300 mg-b-30 mb-3 mt-3 d-flex justify-content-between">
                     <Row>
                       <Col md="6">
                         <div className="mb-3">
@@ -141,7 +146,7 @@ const Periods = () => {
                         <div className="col-lg">
                           <Label className="form-label">Ingrese el Ticket:</Label>
                           <Input
-                            className="form-control mb-4"
+                            className="form-control"
                             placeholder="Ticket"
                             type="text"
                             value={ticketNumber}
@@ -155,9 +160,9 @@ const Periods = () => {
                           type="button"
                           className="btn btn-primary btn-svgs btn-svg-white mt-4 ml-4 mr-4"
                           onClick={handleDownloadTxt}
-                          disabled={downloading} // Deshabilitar el botón mientras se descarga el archivo
+                          disabled={downloading}
                         >
-                          {downloading && ( // Mostrar spinner si está descargando
+                          {downloading && (
                             <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                           )}
                           <svg
@@ -190,6 +195,7 @@ const Periods = () => {
                         <th>Período Tributario</th>
                         <th>Número de Ticket</th>
                         <th>Fecha de Inicio del Proceso</th>
+                        <th>Seleccionar</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -198,7 +204,15 @@ const Periods = () => {
                           <td>{ticket.id}</td>
                           <td>{ticket.perTributario}</td>
                           <td>{ticket.numTicket}</td>
-                          <td>{ticket.fecInicioProceso}</td>
+                          <td>{ticket.fecInicioProceso.substring(0, 10)}</td>
+                          <td>
+                            <Button
+                              color="primary"
+                              onClick={() => handleTicketSelection(ticket)}
+                            >
+                              Seleccionar
+                            </Button>
+                          </td>
                         </tr>
                       ))}
                     </tbody>

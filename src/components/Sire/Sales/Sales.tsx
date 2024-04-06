@@ -24,11 +24,12 @@ const Sales = () => {
   const [selectedPeriod, setSelectedPeriod] = useState(null);
   const [ticketValue, setTicketValue] = useState(null);
   const [estadoProceso, setEstadoProceso] = useState(null);
-  const [ticketData, setTicketData] = useState([]);
   const [modal, setModal] = useState(false);
   const [selectedTicket, setSelectedTicket] = useState(null); // Estado para almacenar el ticket seleccionado
+  const [jadalData, setJadalData] = useState([]);
 
   const [ticketsData, setTicketsData] = useState([]);
+  const [ticketData, setTicketData] = useState({ sire: [], jadal: [] }); // Inicializar como un objeto vacío
 
   const toggle = () => {
     setModal(!modal);
@@ -36,7 +37,6 @@ const Sales = () => {
   };
 
   useEffect(() => {
-    // Función para obtener los períodos tributarios desde la API
     const fetchPeriodsData = async () => {
       try {
         const response = await axios.get(
@@ -114,30 +114,58 @@ const Sales = () => {
 
   const mostrarData = async () => {
     try {
-      const response = await axios.post("http://127.0.0.1:8000/api/sire/data", {
+      const responseSire = await axios.post("http://127.0.0.1:8000/api/sire/data", {
         ticket: ticketValue ? ticketValue.numTicket : null,
       });
-      console.log("Data del ticket:", response.data);
-      const processedData = processData(response.data);
-      setTicketData(processedData);
+      console.log("Data del ticket SIRE:", responseSire.data);
+  
+      const responseJadal = await axios.post(
+        "http://127.0.0.1:8000/api/sire/data/jadal"
+      );
+      console.log('Data del ticket Jadal:', responseJadal.data);
+  
+      // Procesar datos de SIRE
+      const processedDataSire = processDataSire(responseSire.data);
+      console.log('Processed data SIRE:', processedDataSire);
+  
+      // Procesar datos de Jadal
+      const processedDataJadal = processDataJadal(responseJadal.data);
+      
+      console.log('Processed data Jadal:', processedDataJadal);
+  
+      // Establecer el estado ticketData con los datos procesados
+      setTicketData({ sire: processedDataSire, jadal: processedDataJadal });
     } catch (error) {
       console.error("Error fetching ticket data:", error);
     }
   };
-
-  const processData = (data) => {
-    const rows = data.split("\n");
-    const headers = rows[0].split("|"); 
-
+  const processDataSire = (data) => {
+    const rows = data.split("\n"); // Dividir la cadena por saltos de línea
+    const headers = rows[0].split("|"); // Obtener los encabezados separando por '|'
+  
+    // Eliminar el primer elemento (encabezados) de la matriz de filas
     const rowData = rows.slice(1).map((row) => {
-      const columns = row.split("|"); 
+      const columns = row.split("|"); // Dividir la fila por '|'
       return headers.reduce((acc, header, index) => {
-        acc[header] = columns[index];
+        acc[header] = columns[index]; // Asignar el valor de cada columna al encabezado correspondiente
         return acc;
       }, {});
     });
-
+  
     return rowData;
+  };
+  
+  const processDataJadal = (data) => {
+    console.log("Data antes del mapeo:", data);
+    const processedDataJadal = data.map((item) => ({
+      "Fecha de emisión": item.fechaEmision || "",
+      "Tipo CP/Doc.": item.tipoCP || "",
+      "Serie del CDP": item.SerieCDP || "",
+      "Nro CP o Doc. Nro Inicial (Rango)": item.nroDocInicial || "",
+      "Total CP": item.imp_total || "",
+    }));
+    console.log("Data después del mapeo:", processedDataJadal);
+    return processedDataJadal;
   };
 
   const handleTicketSelection = (ticket) => {
@@ -358,33 +386,53 @@ const Sales = () => {
                     </Col>
                   </Row>
                   <Row>
-                    {ticketData && ticketData.length > 0 && (
-                      <div className="mt-4">
-                        <h3>Data del Ticket</h3>
-                        <Table className="table table-bordered table-hover mb-0">
-                          <thead>
-                            <tr>
-                              {Object.keys(ticketData[0]).map(
-                                (header, index) => (
-                                  <th key={index}>{header}</th>
-                                )
+
+
+
+                  {ticketData && (ticketData.sire.length > 0 || ticketData.jadal.length > 0) && (
+                    <div className="mt-4">
+                      <h3>Data del Ticket</h3>
+                      <Table className="table table-bordered table-hover mb-0">
+                        <thead>
+                          <tr>
+                            {/* Encabezados para los datos de SIRE */}
+                            {Object.keys(ticketData.sire[0]).map((header, index) => (
+                              <th key={index}>{header}</th>
+                              ))}
+                              <th>Fuente</th>
+                            {/* Encabezados para los datos de Jadal */}
+                            {Object.keys(ticketData.jadal[0]).map((header, index) => (
+                              <th key={index}>{header}</th>
+                            ))}
+                              <th>Fuente </th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {/* Renderizar filas combinadas de SIRE y Jadal */}
+                          {ticketData.sire.map((row, rowIndex) => (
+                            <tr key={rowIndex}>
+                              {/* Datos de SIRE */}
+                              {Object.values(row).map((value, columnIndex) => (
+                                <td key={columnIndex}>{value}</td>
+                              ))}
+                              {/* Datos de Jadal */}
+                              {ticketData.jadal[rowIndex] && Object.values(ticketData.jadal[rowIndex]).map((value, columnIndex) => (
+                                <td key={columnIndex}>{value}</td>
+                              ))}
+                              <td>JADAL</td>
+                              {/* Si hay menos columnas en Jadal que en SIRE, rellenar con celdas vacías */}
+                              {ticketData.jadal[rowIndex] && ticketData.sire[0].length > ticketData.jadal[0].length && (
+                                new Array(ticketData.sire[0].length - ticketData.jadal[0].length).fill(null).map((_, index) => (
+                                  <td key={index}></td>
+                                ))
                               )}
                             </tr>
-                          </thead>
-                          <tbody>
-                            {ticketData.map((row, rowIndex) => (
-                              <tr key={rowIndex}>
-                                {Object.values(row).map(
-                                  (value, columnIndex) => (
-                                    <td key={columnIndex}>{value}</td>
-                                  )
-                                )}
-                              </tr>
-                            ))}
-                          </tbody>
-                        </Table>
-                      </div>
-                    )}
+                          ))}
+                        </tbody>
+                      </Table>
+                    </div>
+                  )}
+
                   </Row>
                 </Col>
               </Row>

@@ -28,6 +28,7 @@ const Sales = () => {
   const [selectedTicket, setSelectedTicket] = useState(null);
   const [ticketsData, setTicketsData] = useState([]);
   const [ticketData, setTicketData] = useState({ sire: [], jadal: [] });
+  const [highlightedRows, setHighlightedRows] = useState([]);
 
   const toggle = () => {
     setModal(!modal);
@@ -68,7 +69,7 @@ const Sales = () => {
   const periodOptions = periodsData.flatMap((period) =>
     period.lisPeriodos.map((item) => ({
       value: item.perTributario,
-      label: `${item.perTributario.substring(0, 4)}-${item.perTributario.substring(4)}`,
+      label: item.perTributario ? `${item.perTributario.substring(0, 4)}-${item.perTributario.substring(4)}` : "",
     }))
   );
 
@@ -132,6 +133,11 @@ const Sales = () => {
     const rows = data.split("\n");
     const headers = rows[0].split("|");
   
+    // Eliminar la última línea si está vacía
+    if (rows[rows.length - 1] === '') {
+      rows.pop();
+    }
+  
     const rowData = rows.slice(1).map((row) => {
       const columns = row.split("|");
       return headers.reduce((acc, header, index) => {
@@ -140,7 +146,10 @@ const Sales = () => {
       }, {});
     });
   
-    return rowData;
+    // Ordenar los datos por el número de CP en orden ascendente
+    const sortedData = rowData.sort((a, b) => parseInt(a['NRO CP O DOC. NRO INICIAL (RANGO)']) - parseInt(b['NRO CP O DOC. NRO INICIAL (RANGO)']));
+  
+    return sortedData;
   };
   
 
@@ -264,7 +273,7 @@ const Sales = () => {
                                     <td>{ticket.id}</td>
                                     <td>{ticket.perTributario}</td>
                                     <td>{ticket.numTicket}</td>
-                                    <td>{ticket.fecInicioProceso.substring(0, 10)}</td>
+                                    <td>{ticket.fecInicioProceso ? ticket.fecInicioProceso.substring(0, 10) : ''}</td>
                                     <td>
                                       <Button
                                         color="primary"
@@ -372,20 +381,30 @@ const Sales = () => {
                               {Object.keys(ticketData.sire[0]).map((header, index) => (
                                 <th key={index}>{header}</th>
                               ))}
-                              <th>Fuente</th>
                             </tr>
                           </thead>
                           <tbody>
                             {/* Renderizar filas de SIRE */}
-                            {ticketData.sire.map((row, rowIndex) => (
-                              <tr key={rowIndex}>
-                                {/* Datos de SIRE */}
-                                {Object.values(row).map((value, columnIndex) => (
-                                  <td key={columnIndex}>{value}</td>
-                                ))}
-                                <td>SIRE</td>
-                              </tr>
-                            ))}
+                            {ticketData.sire.map((row, rowIndex) => {
+                              // Compara la fila actual con la siguiente para detectar repetición
+                              const nextRow = ticketData.sire[rowIndex + 1];
+                              const isRepeated = nextRow && Object.keys(row).every(key => row[key] === nextRow[key]);
+
+                              // Marca ambas filas si hay repetición
+                              if (isRepeated) {
+                                setHighlightedRows([rowIndex, rowIndex + 1]);
+                              }
+
+                              // Aplica un estilo condicional a estas filas en la tabla
+                              return (
+                                <tr key={rowIndex} style={{ backgroundColor: highlightedRows.includes(rowIndex) ? 'pink' : 'inherit' }}>
+                                  {/* Datos de SIRE */}
+                                  {Object.values(row).map((value, columnIndex) => (
+                                    <td key={columnIndex}>{value}</td>
+                                  ))}
+                                </tr>
+                              );
+                            })}
                           </tbody>
                         </Table>
                       </div>

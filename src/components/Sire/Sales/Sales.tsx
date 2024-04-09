@@ -27,8 +27,7 @@ const Sales = () => {
   const [modal, setModal] = useState(false);
   const [selectedTicket, setSelectedTicket] = useState(null);
   const [ticketsData, setTicketsData] = useState([]);
-  const [ticketData, setTicketData] = useState({ sire: [], jadal: [] });
-  const [highlightedRows, setHighlightedRows] = useState([]);
+  const [ticketData, setTicketData] = useState([]);
 
   const toggle = () => {
     setModal(!modal);
@@ -114,44 +113,18 @@ const Sales = () => {
         ticket: ticketValue ? ticketValue.numTicket : null,
       });
       console.log("Data del ticket SIRE:", responseSire.data);
-  
-      const responseJadal = await axios.post(
-        "http://127.0.0.1:8000/api/sire/data/jadal"
-      );
-      console.log('Data del ticket Jadal:', responseJadal.data);
-  
-      const processedDataSireCompare = processDataSire(responseSire.data);
-      console.log('Processed data SIRE:', processedDataSireCompare);
-  
-      setTicketData({ sire: processedDataSireCompare });
+
+
+      // Unir y ordenar la data de SIRE y JADAL por fecha
+      const mergedData = [...responseSire.data];
+      
+      console.log('Merged and sorted data:', mergedData);
+
+      setTicketData(mergedData);
     } catch (error) {
       console.error("Error fetching ticket data:", error);
     }
   };
-
-  const processDataSire = (data) => {
-    const rows = data.split("\n");
-    const headers = rows[0].split("|");
-  
-    // Eliminar la última línea si está vacía
-    if (rows[rows.length - 1] === '') {
-      rows.pop();
-    }
-  
-    const rowData = rows.slice(1).map((row) => {
-      const columns = row.split("|");
-      return headers.reduce((acc, header, index) => {
-        acc[header] = columns[index];
-        return acc;
-      }, {});
-    });
-  
-    // Ordenar los datos por el número de CP en orden ascendente
-    const sortedData = rowData.sort((a, b) => parseInt(a['NRO CP O DOC. NRO INICIAL (RANGO)']) - parseInt(b['NRO CP O DOC. NRO INICIAL (RANGO)']));
-  
-    return sortedData;
-  };
-  
 
   const handleTicketSelection = (ticket) => {
     setSelectedTicket(ticket); 
@@ -371,40 +344,25 @@ const Sales = () => {
                   </Row>
 
                   <Row>
-                    {ticketData.sire.length > 0 && (
+                    {ticketData.length > 0 && (
                       <div className="mt-4">
                         <h3>Data del Ticket</h3>
-                        <Table className="table table-bordered table-hover mb-0">
+                        <Table className="table table-hover table-bordered">
                           <thead>
                             <tr>
-                              {/* Encabezados para los datos de SIRE */}
-                              {Object.keys(ticketData.sire[0]).map((header, index) => (
-                                <th key={index}>{header}</th>
+                              {Object.keys(ticketData[0]).map((key) => (
+                                <th key={key}>{key}</th>
                               ))}
                             </tr>
                           </thead>
                           <tbody>
-                            {/* Renderizar filas de SIRE */}
-                            {ticketData.sire.map((row, rowIndex) => {
-                              // Compara la fila actual con la siguiente para detectar repetición
-                              const nextRow = ticketData.sire[rowIndex + 1];
-                              const isRepeated = nextRow && Object.keys(row).every(key => row[key] === nextRow[key]);
-
-                              // Marca ambas filas si hay repetición
-                              if (isRepeated) {
-                                setHighlightedRows([rowIndex, rowIndex + 1]);
-                              }
-
-                              // Aplica un estilo condicional a estas filas en la tabla
-                              return (
-                                <tr key={rowIndex} style={{ backgroundColor: highlightedRows.includes(rowIndex) ? 'pink' : 'inherit' }}>
-                                  {/* Datos de SIRE */}
-                                  {Object.values(row).map((value, columnIndex) => (
-                                    <td key={columnIndex}>{value}</td>
-                                  ))}
-                                </tr>
-                              );
-                            })}
+                            {ticketData.map((row, index) => (
+                              <tr key={index}>
+                                {Object.values(row).map((value, index) => (
+                                  <td key={index}>{value}</td>
+                                ))}
+                              </tr>
+                            ))}
                           </tbody>
                         </Table>
                       </div>

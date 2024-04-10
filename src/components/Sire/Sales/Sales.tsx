@@ -345,6 +345,15 @@ const Sales = () => {
                     </Col>
                   </Row>
                   <Row>
+                  <div className="mt-4">
+                    <h3>Leyenda</h3>
+                    <Button style={{ backgroundColor: "#ff6961" }}>0</Button> <span>Si el documento solo está en SIRE o JADAL.</span>
+                    <Button style={{ backgroundColor: "#5dc460" }}>1</Button> <span>Si el documento está en SIRE y JADAL.</span>
+                    <Button style={{ backgroundColor: "#c8ca66" }}>2</Button> <span>Si el documento está con fecha distinta.</span>
+                    <Button style={{ backgroundColor: "#6a9eda" }}>3</Button> <span>Si el documento está con montos distintos.</span>
+                  </div>
+                </Row>
+                  <Row>
                     {ticketData.length > 0 && (
                       <div className="mt-4">
                         <h3>Data del Ticket</h3>
@@ -365,7 +374,16 @@ const Sales = () => {
                               <tr key={index}>
                                 {Object.entries(row).map(([key, value], index) => {
                                   if (key !== "id") {
-                                    return <td key={index} style={{ backgroundColor: row.INDICADOR === '1' ? "#77dd77" : (row.INDICADOR === '2' ? "#fdfd96" : "#ff6961") }}>{value}</td>;
+                                    const backgroundColor =
+                                      row.INDICADOR === '1'
+                                        ? "#5dc460"
+                                        : row.INDICADOR === '2'
+                                        ? "#c8ca66"
+                                        : row.INDICADOR === '3'
+                                        ? "#6a9eda"
+                                        : "#ff6961";
+                        
+                                    return <td key={index} style={{ backgroundColor }}>{value}</td>;
                                   }
                                   return null;
                                 })}

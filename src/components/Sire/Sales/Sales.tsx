@@ -344,30 +344,30 @@ const Sales = () => {
                   </Row>
 
                   <Row>
-                    {ticketData.length > 0 && (
-                      <div className="mt-4">
-                        <h3>Data del Ticket</h3>
-                        <Table className="table table-hover table-bordered">
-                          <thead>
-                            <tr>
-                              {Object.keys(ticketData[0]).map((key) => (
-                                <th key={key}>{key}</th>
+                  {ticketData.length > 0 && (
+                    <div className="mt-4">
+                      <h3>Data del Ticket</h3>
+                      <Table className="table table-hover table-bordered">
+                        <thead>
+                          <tr>
+                            {Object.keys(ticketData[0]).map((key) => (
+                              <th key={key}>{key}</th>
+                            ))}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {ticketData.map((row, index) => (
+                            <tr key={index} style={{ backgroundColor: row.INDICADOR === "1" ? "transparent" : "red" }}>
+                              {Object.values(row).map((value, index) => (
+                                <td key={index}>{value}</td>
                               ))}
                             </tr>
-                          </thead>
-                          <tbody>
-                            {ticketData.map((row, index) => (
-                              <tr key={index}>
-                                {Object.values(row).map((value, index) => (
-                                  <td key={index}>{value}</td>
-                                ))}
-                              </tr>
-                            ))}
-                          </tbody>
-                        </Table>
-                      </div>
-                    )}
-                  </Row>
+                          ))}
+                        </tbody>
+                      </Table>
+                    </div>
+                  )}
+                </Row>
                 </Col>
               </Row>
             </CardBody>

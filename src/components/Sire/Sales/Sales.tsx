@@ -81,6 +81,7 @@ const Sales = () => {
             fecha: selectedPeriod.value,
           }
         );
+        console.log('selectedPeriodselectedPeriodselectedPeriodselectedPeriodselectedPeriod',selectedPeriod);
         console.log("Response from ticket endpoint:", response.data);
         setTicketValue(response.data);
         consultarEstadoProceso(response.data.numTicket);
@@ -111,6 +112,7 @@ const Sales = () => {
     try {
       const responseSire = await axios.post("http://127.0.0.1:8000/api/sire/compare", {
         ticket: ticketValue ? ticketValue.numTicket : null,
+        fecha_jadal: selectedPeriod ? selectedPeriod.value : null ,
       });
       console.log("Data del ticket SIRE:", responseSire.data);
 
@@ -342,32 +344,38 @@ const Sales = () => {
                       </div>
                     </Col>
                   </Row>
-
                   <Row>
-                  {ticketData.length > 0 && (
-                    <div className="mt-4">
-                      <h3>Data del Ticket</h3>
-                      <Table className="table table-hover table-bordered">
-                        <thead>
-                          <tr>
-                            {Object.keys(ticketData[0]).map((key) => (
-                              <th key={key}>{key}</th>
-                            ))}
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {ticketData.map((row, index) => (
-                            <tr key={index} style={{ backgroundColor: row.INDICADOR === "1" ? "transparent" : "red" }}>
-                              {Object.values(row).map((value, index) => (
-                                <td key={index}>{value}</td>
-                              ))}
+                    {ticketData.length > 0 && (
+                      <div className="mt-4">
+                        <h3>Data del Ticket</h3>
+                        <Table className="table table-hover table-bordered">
+                          <thead>
+                            <tr>
+                              {Object.keys(ticketData[0]).map((key) => {
+                                // Excluir la columna "id"
+                                if (key !== "id") {
+                                  return <th key={key}>{key}</th>;
+                                }
+                                return null;
+                              })}
                             </tr>
-                          ))}
-                        </tbody>
-                      </Table>
-                    </div>
-                  )}
-                </Row>
+                          </thead>
+                          <tbody>
+                            {ticketData.map((row, index) => (
+                              <tr key={index}>
+                                {Object.entries(row).map(([key, value], index) => {
+                                  if (key !== "id") {
+                                    return <td key={index} style={{ backgroundColor: row.INDICADOR === '1' ? "#77dd77" : (row.INDICADOR === '2' ? "#fdfd96" : "#ff6961") }}>{value}</td>;
+                                  }
+                                  return null;
+                                })}
+                              </tr>
+                            ))}
+                          </tbody>
+                        </Table>
+                      </div>
+                    )}
+                  </Row>
                 </Col>
               </Row>
             </CardBody>

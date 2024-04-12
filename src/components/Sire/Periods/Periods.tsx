@@ -14,6 +14,7 @@ import {
 import { PageHeaders } from "../../../Shared/Prism/Prism";
 import Select from "react-select";
 import axios from "axios";
+import { sire } from "../../../Util/axios";
 
 interface Period {
   value: string;
@@ -39,9 +40,7 @@ const Periods = () => {
   useEffect(() => {
     const fetchPeriodsData = async () => {
       try {
-        const response = await axios.get(
-          "http://127.0.0.1:8000/api/sire/periods"
-        );
+        const response = await sire.get("/periods");
         setPeriodsData(response.data);
       } catch (error) {
         console.error("Error fetching periods data:", error);
@@ -53,9 +52,7 @@ const Periods = () => {
 
   const fetchTickets = async () => {
     try {
-      const response = await axios.get(
-        `http://127.0.0.1:8000/api/sire/tickets`
-      );
+      const response = await sire.get("/tickets");
       const filteredTickets = selectedPeriod
         ? response.data.filter(
             (ticket: Ticket) => ticket.perTributario === selectedPeriod.value
@@ -97,11 +94,7 @@ const Periods = () => {
     try {
       setDownloading(true);
 
-      const response = await axios.post(
-        "http://127.0.0.1:8000/api/sire/download/txt",
-        { ticket: ticketNumber },
-        { responseType: "blob" }
-      );
+      const response = await sire.post("/download/txt", { ticket: ticketNumber }, { responseType: "blob" });
 
       const blob = new Blob([response.data], { type: "text/plain" });
       const link = document.createElement("a");

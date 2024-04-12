@@ -19,6 +19,7 @@ import { PageHeaders } from "../../../Shared/Prism/Prism";
 import axios from "axios";
 import Select, { ActionMeta } from "react-select";
 import { ChangeEvent } from "react";
+import { sire } from "../../../Util/axios";
 
 interface Period {
   value: string;
@@ -52,9 +53,7 @@ const Sales = () => {
   useEffect(() => {
     const fetchPeriodsData = async () => {
       try {
-        const response = await axios.get(
-          "http://127.0.0.1:8000/api/sire/periods"
-        );
+        const response = await sire.get("/periods");
         setPeriodsData(response.data);
       } catch (error) {
         console.error("Error fetching periods data:", error);
@@ -66,9 +65,7 @@ const Sales = () => {
 
   const fetchTickets = async () => {
     try {
-      const response = await axios.get(
-        `http://127.0.0.1:8000/api/sire/tickets`
-      );
+      const response = await sire.get("/tickets");
       const filteredTickets = selectedPeriod
         ? response.data.filter(
             (ticket: Ticket) => ticket.perTributario === selectedPeriod.value
@@ -95,12 +92,9 @@ const Sales = () => {
   const generarTicket = async () => {
     if (selectedPeriod) {
       try {
-        const response = await axios.post(
-          "http://127.0.0.1:8000/api/sire/ticket",
-          {
-            fecha: selectedPeriod.value,
-          }
-        );
+        const response = await sire.post("/ticket", {
+          fecha: selectedPeriod.value,
+        });
         console.log("Response from ticket endpoint:", response.data);
         setTicketValue(response.data);
         consultarEstadoProceso(response.data.numTicket);
@@ -114,12 +108,9 @@ const Sales = () => {
 
   const consultarEstadoProceso = async (numTicket: string) => {
     try {
-      const response = await axios.post(
-        "http://127.0.0.1:8000/api/sire/check/ticket",
-        {
-          ticket: numTicket,
-        }
-      );
+      const response = await sire.post("/check/ticket", {
+        ticket: numTicket,
+      });
       console.log("Estado del proceso:", response.data);
       setEstadoProceso(response.data.registros[0].desEstadoProceso);
     } catch (error) {
@@ -129,13 +120,10 @@ const Sales = () => {
 
   const mostrarData = async () => {
     try {
-      const responseSire = await axios.post(
-        "http://127.0.0.1:8000/api/sire/compare",
-        {
-          ticket: ticketValue ? ticketValue.numTicket : null,
-          fecha_jadal: selectedPeriod ? selectedPeriod.value : null,
-        }
-      );
+      const responseSire = await sire.post("/compare", {
+        ticket: ticketValue ? ticketValue.numTicket : null,
+        fecha_jadal: selectedPeriod ? selectedPeriod.value : null,
+      });
       console.log("Data del ticket SIRE:", responseSire.data);
 
       const mergedData = [...responseSire.data];

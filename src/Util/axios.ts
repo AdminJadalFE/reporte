@@ -49,4 +49,14 @@ const report = Axios.create({
   },
 });
 
-export { auth, inventory, sale, report };
+//SIRE
+const sire = Axios.create({
+  baseURL: "http://127.0.0.1:8000/api/sire",
+  withCredentials: true,
+  headers: {
+    "Content-Type": "application/json",
+    Accept: "application/json",
+  },
+});
+
+export { auth, inventory, sale, report, sire };

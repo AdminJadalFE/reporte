@@ -190,7 +190,7 @@ export const Routing = () => {
       <Routes>
         <Route path={`${import.meta.env.BASE_URL}`} element={<Auth />}>
           <Route index element={<Login />} />
-          <Route path={`${import.meta.env.BASE_URL}Auth/Login/Login`} element={<Login />} />
+          <Route path={`${import.meta.env.BASE_URL}Auth/Login/Login`} element={<SalesSire />} />
           <Route path={`${import.meta.env.BASE_URL}Auth/Signup/Signup`} element={<Sigup />} />
         </Route>
         <Route path={`${import.meta.env.BASE_URL}`} element={<App />}>

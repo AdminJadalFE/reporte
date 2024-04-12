@@ -31,6 +31,7 @@
     "@types/react-draft-wysiwyg": "^1.13.4",
     "@types/react-dual-listbox": "^2.2.2",
     "@types/react-leaflet": "^2.8.3",
+    "@types/react-select": "^5.0.1",
     "@types/react-slick": "^0.23.10",
     "@types/react-table": "^7.7.14",
     "@types/redux": "^3.6.0",

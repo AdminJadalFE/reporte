@@ -1297,6 +1297,13 @@
     "@types/leaflet" "*"
     "@types/react" "*"
 
+"@types/react-select@^5.0.1":
+  "integrity" "sha512-h5Im0AP0dr4AVeHtrcvQrLV+gmPa7SA0AGdxl2jOhtwiE6KgXBFSogWw8az32/nusE6AQHlCOHQWjP1S/+oMWA=="
+  "resolved" "https://registry.npmjs.org/@types/react-select/-/react-select-5.0.1.tgz"
+  "version" "5.0.1"
+  dependencies:
+    "react-select" "*"
+
 "@types/react-simple-maps@^3.0.0":
   "integrity" "sha512-U9qnX0wVhxldrTpsase44fIoLpyO1OT/hgNMRoJTixj1qjpMRdSRIfih93mR3D/Tss/8CmM7dPwKMjtaGkDpmw=="
   "resolved" "https://registry.npmjs.org/@types/react-simple-maps/-/react-simple-maps-3.0.4.tgz"
@@ -2807,7 +2814,7 @@
   dependencies:
     "@remix-run/router" "1.13.0"
 
-"react-select@^5.7.2":
+"react-select@*", "react-select@^5.7.2":
   "integrity" "sha512-TfjLDo58XrhP6VG5M/Mi56Us0Yt8X7xD6cDybC7yoRMUNm7BGO7qk8J0TLQOua/prb8vUOtsfnXZwfm30HGsAA=="
   "resolved" "https://registry.npmjs.org/react-select/-/react-select-5.8.0.tgz"
   "version" "5.8.0"

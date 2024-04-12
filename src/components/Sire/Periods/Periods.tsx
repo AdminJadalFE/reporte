@@ -15,12 +15,25 @@ import { PageHeaders } from "../../../Shared/Prism/Prism";
 import Select from "react-select";
 import axios from "axios";
 
+interface Period {
+  value: string;
+  label: string;
+  lisPeriodos: any[];
+}
+
+interface Ticket {
+  id: number;
+  perTributario: string;
+  numTicket: string;
+  fecInicioProceso: string;
+}
+
 const Periods = () => {
-  const [periodsData, setPeriodsData] = useState([]);
-  const [selectedPeriod, setSelectedPeriod] = useState(null);
-  const [ticketsData, setTicketsData] = useState([]);
+  const [periodsData, setPeriodsData] = useState<Period[]>([]);
+  const [selectedPeriod, setSelectedPeriod] = useState<Period | null>(null);
+  const [ticketsData, setTicketsData] = useState<Ticket[]>([]);
   const [ticketNumber, setTicketNumber] = useState("");
-  const [selectedTicket, setSelectedTicket] = useState(null);
+  const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
   const [downloading, setDownloading] = useState(false);
 
   useEffect(() => {
@@ -45,7 +58,7 @@ const Periods = () => {
       );
       const filteredTickets = selectedPeriod
         ? response.data.filter(
-            (ticket) => ticket.perTributario === selectedPeriod.value
+            (ticket: Ticket) => ticket.perTributario === selectedPeriod.value
           )
         : response.data;
       setTicketsData(filteredTickets);
@@ -62,18 +75,20 @@ const Periods = () => {
     fetchTickets();
   }, [selectedPeriod]);
 
-  const periodOptions = periodsData.flatMap((period) =>
-    period.lisPeriodos.map((item) => ({
+  const periodOptions: Period[] = periodsData.flatMap((period) =>
+    period.lisPeriodos.map((item: any) => ({
       value: item.perTributario,
       label: item.perTributario,
+      lisPeriodos: item.lisPeriodos // Add the lisPeriodos property here
     }))
   );
+  
 
-  const handleTicketNumberChange = (event) => {
+  const handleTicketNumberChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTicketNumber(event.target.value);
   };
 
-  const handleTicketSelection = (ticket) => {
+  const handleTicketSelection = (ticket: Ticket) => {
     setSelectedTicket(ticket);
     setTicketNumber(ticket.numTicket);
   };
@@ -204,7 +219,7 @@ const Periods = () => {
                           <td>{ticket.id}</td>
                           <td>{ticket.perTributario}</td>
                           <td>{ticket.numTicket}</td>
-                          <td>{ticket.fecInicioProceso.substring(0, 10)}</td>
+                          <td>{ticket.fecInicioProceso && ticket.fecInicioProceso.substring(0, 10)}</td>
                           <td>
                             <Button
                               color="primary"

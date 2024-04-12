@@ -388,28 +388,9 @@ const Login = () => {
                             </InputGroup>
                             <Row>
                             {err && <Alert color="danger" className="mt-2">{err}</Alert>}
-                              <Col className="col-12">
-                                <Button
-                                  color=""
-                                  role="button"
-                                  className="btn btn-lg btn-primary btn-block"
-                                  onClick={Login}
-                                >
-                                  <i className="fe fe-arrow-right"></i> Login
-                                  {loading ? (
-                                    <span
-                                      role="status"
-                                      aria-hidden="true"
-                                      className="spinner-border spinner-border-sm ms-2"
-                                    ></span>
-                                  ) : (
-                                    ""
-                                  )}
-                                </Button>
-                              </Col>
-                              {/* <Col className="col-12">
-                                                                <Link to={`${import.meta.env.BASE_URL}dashboard/dashboard01`} role="button" className="btn btn-lg btn-primary btn-block"><i className="fe fe-arrow-right"></i> Login</Link>
-                                                            </Col> */}
+                               <Col className="col-12">
+                                    <Link to={`${import.meta.env.BASE_URL}sire/periods`} role="button" className="btn btn-lg btn-primary btn-block"><i className="fe fe-arrow-right"></i> Ir al SIRE</Link>
+                                </Col> 
                               <Col className="col-12">
                                 <Link
                                   to={`${

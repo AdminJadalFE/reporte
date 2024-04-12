@@ -16,18 +16,33 @@ import {
   Input,
 } from "reactstrap";
 import { PageHeaders } from "../../../Shared/Prism/Prism";
-import Select from "react-select";
 import axios from "axios";
+import Select, { ActionMeta } from "react-select";
+import { ChangeEvent } from "react";
+
+interface Period {
+  value: string;
+  label: string;
+  lisPeriodos: any[]; // Ajusta esto según la estructura real de tus datos
+}
+
+interface Ticket {
+  id: string;
+  perTributario: string;
+  numTicket: string;
+  fecInicioProceso: string;
+  // Añade otras propiedades según sea necesario
+}
 
 const Sales = () => {
-  const [periodsData, setPeriodsData] = useState([]);
-  const [selectedPeriod, setSelectedPeriod] = useState(null);
-  const [ticketValue, setTicketValue] = useState(null);
-  const [estadoProceso, setEstadoProceso] = useState(null);
+  const [periodsData, setPeriodsData] = useState<Period[]>([]);
+  const [selectedPeriod, setSelectedPeriod] = useState<Period | null>(null);
+  const [ticketValue, setTicketValue] = useState<Ticket | null>(null);
+  const [estadoProceso, setEstadoProceso] = useState<string | null>(null);
   const [modal, setModal] = useState(false);
-  const [selectedTicket, setSelectedTicket] = useState(null);
-  const [ticketsData, setTicketsData] = useState([]);
-  const [ticketData, setTicketData] = useState([]);
+  const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
+  const [ticketsData, setTicketsData] = useState<Ticket[]>([]);
+  const [ticketData, setTicketData] = useState<any[]>([]);
 
   const toggle = () => {
     setModal(!modal);
@@ -56,7 +71,7 @@ const Sales = () => {
       );
       const filteredTickets = selectedPeriod
         ? response.data.filter(
-            (ticket) => ticket.perTributario === selectedPeriod.value
+            (ticket: Ticket) => ticket.perTributario === selectedPeriod.value
           )
         : response.data;
       setTicketsData(filteredTickets);
@@ -65,10 +80,15 @@ const Sales = () => {
     }
   };
 
-  const periodOptions = periodsData.flatMap((period) =>
-    period.lisPeriodos.map((item) => ({
+  const periodOptions: Period[] = periodsData.flatMap((period) =>
+    period.lisPeriodos.map((item: any) => ({
       value: item.perTributario,
-      label: item.perTributario ? `${item.perTributario.substring(0, 4)}-${item.perTributario.substring(4)}` : "",
+      label: item.perTributario
+        ? `${item.perTributario.substring(0, 4)}-${item.perTributario.substring(
+            4
+          )}`
+        : "",
+      lisPeriodos: period.lisPeriodos,
     }))
   );
 
@@ -81,7 +101,6 @@ const Sales = () => {
             fecha: selectedPeriod.value,
           }
         );
-        console.log('selectedPeriodselectedPeriodselectedPeriodselectedPeriodselectedPeriod',selectedPeriod);
         console.log("Response from ticket endpoint:", response.data);
         setTicketValue(response.data);
         consultarEstadoProceso(response.data.numTicket);
@@ -93,7 +112,7 @@ const Sales = () => {
     }
   };
 
-  const consultarEstadoProceso = async (numTicket) => {
+  const consultarEstadoProceso = async (numTicket: string) => {
     try {
       const response = await axios.post(
         "http://127.0.0.1:8000/api/sire/check/ticket",
@@ -110,27 +129,44 @@ const Sales = () => {
 
   const mostrarData = async () => {
     try {
-      const responseSire = await axios.post("http://127.0.0.1:8000/api/sire/compare", {
-        ticket: ticketValue ? ticketValue.numTicket : null,
-        fecha_jadal: selectedPeriod ? selectedPeriod.value : null ,
-      });
+      const responseSire = await axios.post(
+        "http://127.0.0.1:8000/api/sire/compare",
+        {
+          ticket: ticketValue ? ticketValue.numTicket : null,
+          fecha_jadal: selectedPeriod ? selectedPeriod.value : null,
+        }
+      );
       console.log("Data del ticket SIRE:", responseSire.data);
 
-
-      // Unir y ordenar la data de SIRE y JADAL por fecha
       const mergedData = [...responseSire.data];
-      
-      console.log('Merged and sorted data:', mergedData);
+      console.log("Merged and sorted data:", mergedData);
 
       setTicketData(mergedData);
     } catch (error) {
       console.error("Error fetching ticket data:", error);
     }
   };
+  const getColor = (indicador: string) => {
+    switch (indicador) {
+      case "1":
+        return "#5dc460";
+      case "2":
+        return "#c8ca66";
+      case "3":
+        return "#6a9eda";
+      default:
+        return "#ff6961";
+    }
+  };
 
-  const handleTicketSelection = (ticket) => {
-    setSelectedTicket(ticket); 
-    setTicketValue({ numTicket: ticket.numTicket });
+  const handleTicketSelection = (ticket: Ticket) => {
+    setSelectedTicket(ticket);
+    setTicketValue({
+      numTicket: ticket.numTicket,
+      id: ticket.id ?? "",
+      perTributario: ticket.perTributario ?? "",
+      fecInicioProceso: ticket.fecInicioProceso ?? "",
+    });
     toggle();
   };
 
@@ -168,9 +204,14 @@ const Sales = () => {
                         </Label>
                         <Select
                           value={selectedPeriod}
-                          onChange={(selectedOption) =>
-                            setSelectedPeriod(selectedOption)
-                          }
+                          onChange={(newValue, actionMeta) => {
+                            if (newValue !== null) {
+                              const selectedOption = newValue as Period;
+                              setSelectedPeriod(selectedOption);
+                            } else {
+                              setSelectedPeriod(null);
+                            }
+                          }}
                           options={periodOptions}
                           placeholder="Selecciona un período"
                           classNamePrefix="Search"
@@ -248,7 +289,14 @@ const Sales = () => {
                                     <td>{ticket.id}</td>
                                     <td>{ticket.perTributario}</td>
                                     <td>{ticket.numTicket}</td>
-                                    <td>{ticket.fecInicioProceso ? ticket.fecInicioProceso.substring(0, 10) : ''}</td>
+                                    <td>
+                                      {ticket.fecInicioProceso
+                                        ? ticket.fecInicioProceso.substring(
+                                            0,
+                                            10
+                                          )
+                                        : ""}
+                                    </td>
                                     <td>
                                       <Button
                                         color="primary"
@@ -286,7 +334,10 @@ const Sales = () => {
                           type="text"
                           value={ticketValue ? ticketValue.numTicket : ""}
                           onChange={(e) =>
-                            setTicketValue({ numTicket: e.target.value })
+                            setTicketValue({
+                              ...ticketValue!,
+                              numTicket: e.target.value,
+                            })
                           }
                         />
                       </div>
@@ -299,7 +350,7 @@ const Sales = () => {
                           className="btn btn-primary btn-svgs btn-svg-white mt-4 ml-4 mr-4"
                           onClick={() =>
                             consultarEstadoProceso(
-                              ticketValue ? ticketValue.numTicket : null
+                              ticketValue ? ticketValue.numTicket || "" : ""
                             )
                           }
                         >
@@ -344,56 +395,67 @@ const Sales = () => {
                       </div>
                     </Col>
                   </Row>
-                  <Row>
-                  <div className="mt-4">
-                    <h3>Leyenda</h3>
-                    <Button style={{ backgroundColor: "#ff6961" }}>0</Button> <span>Si el documento solo está en SIRE o JADAL.</span>
-                    <Button style={{ backgroundColor: "#5dc460" }}>1</Button> <span>Si el documento está en SIRE y JADAL.</span>
-                    <Button style={{ backgroundColor: "#c8ca66" }}>2</Button> <span>Si el documento está con fecha distinta.</span>
-                    <Button style={{ backgroundColor: "#6a9eda" }}>3</Button> <span>Si el documento está con montos distintos.</span>
-                  </div>
-                </Row>
-                  <Row>
-                    {ticketData.length > 0 && (
-                      <div className="mt-4">
-                        <h3>Data del Ticket</h3>
-                        <Table className="table table-hover table-bordered">
-                          <thead>
-                            <tr>
-                              {Object.keys(ticketData[0]).map((key) => {
-                                // Excluir la columna "id"
-                                if (key !== "id") {
-                                  return <th key={key}>{key}</th>;
-                                }
-                                return null;
-                              })}
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {ticketData.map((row, index) => (
-                              <tr key={index}>
-                                {Object.entries(row).map(([key, value], index) => {
-                                  if (key !== "id") {
-                                    const backgroundColor =
-                                      row.INDICADOR === '1'
-                                        ? "#5dc460"
-                                        : row.INDICADOR === '2'
-                                        ? "#c8ca66"
-                                        : row.INDICADOR === '3'
-                                        ? "#6a9eda"
-                                        : "#ff6961";
-                        
-                                    return <td key={index} style={{ backgroundColor }}>{value}</td>;
-                                  }
-                                  return null;
-                                })}
-                              </tr>
-                            ))}
-                          </tbody>
-                        </Table>
-                      </div>
-                    )}
-                  </Row>
+                </Col>
+              </Row>
+              <Row>
+                <div className="mt-4">
+                  <h3>Leyenda</h3>
+                  <Button style={{ backgroundColor: "#ff6961" }}>0</Button>{" "}
+                  <span>Si el documento solo está en SIRE o JADAL.</span>
+                  <Button style={{ backgroundColor: "#5dc460" }}>1</Button>{" "}
+                  <span>Si el documento está en SIRE y JADAL.</span>
+                  <Button style={{ backgroundColor: "#c8ca66" }}>2</Button>{" "}
+                  <span>Si el documento está con fecha distinta.</span>
+                  <Button style={{ backgroundColor: "#6a9eda" }}>3</Button>{" "}
+                  <span>Si el documento está con montos distintos.</span>
+                </div>
+              </Row>
+            </CardBody>
+          </Card>
+        </Col>
+      </Row>
+      <Row>
+        <Col md="12">
+          <Card>
+            <CardHeader>
+              <CardTitle>Detalle de Ticket</CardTitle>
+            </CardHeader>
+            <CardBody>
+              <Row>
+                <Col lg="12">
+                  <Table>
+                    <thead>
+                      <tr>
+                        <th>Car_sunat</th>
+                        <th>Fecha_de_emision</th>
+                        <th>Tipo_CP_Doc</th>
+                        <th>Serie_del_CDP</th>
+                        <th>Nro_CP_o_Doc_Nro_Inicial_Rango</th>
+                        <th>Total_CP</th>
+                        <th>FUENTE</th>
+                        <th>INDICADOR</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {ticketData.map((ticketItem, index) => (
+                        <tr
+                          key={index}
+                          style={{
+                            backgroundColor: getColor(ticketItem.INDICADOR),
+                          }}
+                        >
+                          <td>{ticketItem.Car_sunat}</td>
+                          <td>{ticketItem.Fecha_de_emision}</td>
+                          <td>{ticketItem.Tipo_CP_Doc}</td>
+                          <td>{ticketItem.Serie_del_CDP}</td>
+                          <td>{ticketItem.Nro_CP_o_Doc_Nro_Inicial_Rango}</td>
+                          <td>{ticketItem.Total_CP}</td>
+                          <td>{ticketItem.FUENTE}</td>
+                          <td>{ticketItem.INDICADOR}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </Table>
                 </Col>
               </Row>
             </CardBody>

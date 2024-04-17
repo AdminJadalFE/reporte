@@ -51,7 +51,7 @@ const report = Axios.create({
 
 //SIRE
 const sire = Axios.create({
-  baseURL: "http://127.0.0.1:8000/api/sire",
+  baseURL: "http://report-ms-laravel.test/api/sire",
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",

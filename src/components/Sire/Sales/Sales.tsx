@@ -20,6 +20,7 @@ import axios from "axios";
 import Select, { ActionMeta } from "react-select";
 import { ChangeEvent } from "react";
 import { sire } from "../../../Util/axios";
+import Swal from 'sweetalert2';
 
 interface Period {
   value: string;
@@ -44,6 +45,7 @@ const Sales = () => {
   const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
   const [ticketsData, setTicketsData] = useState<Ticket[]>([]);
   const [ticketData, setTicketData] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false); 
 
   const toggle = () => {
     setModal(!modal);
@@ -120,6 +122,29 @@ const Sales = () => {
 
   const mostrarData = async () => {
     try {
+
+    // Verificar si se ha seleccionado un período
+    if (!selectedPeriod) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Debes seleccionar un período antes de mostrar los datos',
+      });
+      return;
+    }
+
+    // Verificar si el estado del ticket está Terminado
+    if (estadoProceso !== 'Terminado') {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'El estado del ticket debe estar Terminado para mostrar los datos',
+      });
+      return;
+    }
+
+    setLoading(true);
+
       const responseSire = await sire.post("/compare", {
         ticket: ticketValue ? ticketValue.numTicket : null,
         fecha_jadal: selectedPeriod ? selectedPeriod.value : null,
@@ -130,6 +155,9 @@ const Sales = () => {
       console.log("Merged and sorted data:", mergedData);
 
       setTicketData(mergedData);
+      
+      // Detener el estado de carga
+      setLoading(false);
     } catch (error) {
       console.error("Error fetching ticket data:", error);
     }
@@ -372,14 +400,16 @@ const Sales = () => {
                     </Col>
                     <Col lg="3">
                       <div className="d-flex align-items-end mt-5">
-                        <Button
-                          color=""
-                          type="button"
-                          className="btn btn-primary btn-svgs btn-svg-white mt-4 ml-4 mr-4"
-                          onClick={mostrarData}
-                        >
-                          Mostrar Data
-                        </Button>
+                      <Button
+                      color=""
+                      type="button"
+                      className={`btn btn-primary ${loading ? 'btn-loading' : ''}`}
+                      disabled={loading}
+                      onClick={mostrarData}
+                    >
+                      {loading ? 'Cargando...' : 'Mostrar Data'}
+                    </Button>
+                    
                       </div>
                     </Col>
                   </Row>

@@ -20,6 +20,7 @@ import axios from "axios";
 import Select, { ActionMeta } from "react-select";
 import { ChangeEvent } from "react";
 import { sire } from "../../../Util/axios";
+import{Fixedheader} from "../Component/Fixedheader"
 import Swal from 'sweetalert2';
 
 interface Period {
@@ -436,44 +437,12 @@ const Sales = () => {
         <Col md="12">
           <Card>
             <CardHeader>
-              <CardTitle>Detalle de Ticket</CardTitle>
+              <CardTitle>Data SIRE JADAL</CardTitle>
             </CardHeader>
             <CardBody>
               <Row>
                 <Col lg="12">
-                  <Table>
-                    <thead>
-                      <tr>
-                        <th>Car_sunat</th>
-                        <th>Fecha_de_emision</th>
-                        <th>Tipo_CP_Doc</th>
-                        <th>Serie_del_CDP</th>
-                        <th>Nro_CP_o_Doc_Nro_Inicial_Rango</th>
-                        <th>Total_CP</th>
-                        <th>FUENTE</th>
-                        <th>INDICADOR</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {ticketData.map((ticketItem, index) => (
-                        <tr
-                          key={index}
-                          style={{
-                            backgroundColor: getColor(ticketItem.INDICADOR),
-                          }}
-                        >
-                          <td>{ticketItem.Car_sunat}</td>
-                          <td>{ticketItem.Fecha_de_emision}</td>
-                          <td>{ticketItem.Tipo_CP_Doc}</td>
-                          <td>{ticketItem.Serie_del_CDP}</td>
-                          <td>{ticketItem.Nro_CP_o_Doc_Nro_Inicial_Rango}</td>
-                          <td>{ticketItem.Total_CP}</td>
-                          <td>{ticketItem.FUENTE}</td>
-                          <td>{ticketItem.INDICADOR}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </Table>
+                  <Fixedheader ticketData={ticketData} />     
                 </Col>
               </Row>
             </CardBody>

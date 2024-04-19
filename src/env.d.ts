@@ -1,16 +1,17 @@
 interface ImportMetaEnv {
-    readonly BASE_URL: string
-  }
-  
-  interface ImportMeta {
-    readonly env: ImportMetaEnv
-  }
+  readonly BASE_URL: string;
+  VITE_BASE_URL: string;
+}
 
-module '*.jpg' ;
-module '*.png' ;
-module '*.svg' ;
+interface ImportMeta {
+  readonly env: ImportMetaEnv;
+}
 
-module '*react-usa-map' ;
-module 'react-hook-form';
+module "*.jpg";
+module "*.png";
+module "*.svg";
+
+module "*react-usa-map";
+module "react-hook-form";
 
 // BASE_URL = (process.env.NODE_ENV === 'production') ? "/" : "/dashtic-ts/preview/";

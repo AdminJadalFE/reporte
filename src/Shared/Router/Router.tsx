@@ -2,6 +2,7 @@ import React, { lazy } from "react"
 import { Routes, Route } from "react-router-dom";
 import Modals from "../../components/Elements/Modal/Modal";
 import { Loader } from "../Components/Loader/Loader"
+import PaymentRoutes from "../../components/payment/router";
 const App = lazy(() => import("../Layouts/App"));
 const Custompages = lazy(() => import("../Layouts/custompages"));
 const Switcherapp = lazy(() => import("../Layouts/Switcherapp"));
@@ -174,30 +175,37 @@ const Statistical = lazy(() => import("../../components/Reports/Statistical/Stat
 const Administrative = lazy(() => import("../../components/Reports/Administrative/Administrative"));
 const AccumulatedDay = lazy(() => import("../../components/Reports/AccumulatedDay/AccumulatedDay"));
 const Profitability = lazy(() => import("../../components/Reports/Profitability/Profitability"));
-const Sale = lazy(() => import("../../components/Reports/Sale/Sale")); 
-const Bank = lazy(() => import("../../components/Reports/Bank/Bank")); 
-const Collection = lazy(() => import("../../components/Reports/Collection/Collection")); 
-const PrettyCash = lazy(() => import("../../components/Reports/PrettyCash/PrettyCash")); 
-const SaleNote = lazy(() => import("../../components/Reports/SaleNote/SaleNote")); 
-const PeriodsSire = lazy(() => import("../../components/Sire/Periods/Periods")); 
-const PurchasesSire = lazy(() => import("../../components/Sire/Purchases/Purchases")); 
-const SalesSire = lazy(() => import("../../components/Sire/Sales/Sales")); 
+const Sale = lazy(() => import("../../components/Reports/Sale/Sale"));
+const Bank = lazy(() => import("../../components/Reports/Bank/Bank"));
+const Collection = lazy(() => import("../../components/Reports/Collection/Collection"));
+const PrettyCash = lazy(() => import("../../components/Reports/PrettyCash/PrettyCash"));
+const SaleNote = lazy(() => import("../../components/Reports/SaleNote/SaleNote"));
+const PeriodsSire = lazy(() => import("../../components/Sire/Periods/Periods"));
+const PurchasesSire = lazy(() => import("../../components/Sire/Purchases/Purchases"));
+const SalesSire = lazy(() => import("../../components/Sire/Sales/Sales"));
 
 export const Routing = () => {
 
   return (
     <React.Suspense fallback={<Loader />}>
       <Routes>
+
         <Route path={`${import.meta.env.BASE_URL}`} element={<Auth />}>
           <Route index element={<Login />} />
           <Route path={`${import.meta.env.BASE_URL}Auth/Login/Login`} element={<Login />} />
           <Route path={`${import.meta.env.BASE_URL}Auth/Signup/Signup`} element={<Sigup />} />
         </Route>
+
         <Route path={`${import.meta.env.BASE_URL}`} element={<App />}>
+          {/* PAGOS */}
+          <Route>
+            <Route path="pagos/*" element={<PaymentRoutes />} />
+          </Route>
+
           <Route>
             <Route index element={<Dashboard />} />
             <Route path={`${import.meta.env.BASE_URL}dashboard/dashboard01`} element={<Dashboard />} />
-            
+
             <Route path={`${import.meta.env.BASE_URL}dashboard/dashboard02`} element={<Dashboard2 />} />
             <Route path={`${import.meta.env.BASE_URL}dashboard/dashboard03`} element={<Dashboard3 />} />
             <Route path={`${import.meta.env.BASE_URL}dashboard/dashboard04`} element={<Dashboard4 />} />
@@ -288,7 +296,7 @@ export const Routing = () => {
             <Route path={`${import.meta.env.BASE_URL}elements/headers`} element={<Header />} />
             <Route path={`${import.meta.env.BASE_URL}elements/list`} element={<List />} />
             <Route path={`${import.meta.env.BASE_URL}elements/mediaobject`} element={<MediaObject />} />
-            <Route path={`${import.meta.env.BASE_URL}elements/modal`} element={<Modals/>} />
+            <Route path={`${import.meta.env.BASE_URL}elements/modal`} element={<Modals />} />
             <Route path={`${import.meta.env.BASE_URL}elements/navigation`} element={<Navigation />} />
             <Route path={`${import.meta.env.BASE_URL}elements/pagination`} element={<Pagination />} />
             <Route path={`${import.meta.env.BASE_URL}elements/panel`} element={<Panel />} />
@@ -408,16 +416,16 @@ export const Routing = () => {
           <Route>
             <Route path={`${import.meta.env.BASE_URL}users/services`} element={<Services />} />
           </Route>
-          
+
           <Route>
             <Route path={`${import.meta.env.BASE_URL}users/sales`} element={<Sales />} />
           </Route>
           <Route>
             <Route path={`${import.meta.env.BASE_URL}users/purchases`} element={<Purchases />} />
-          </Route>      
+          </Route>
           <Route>
             <Route path={`${import.meta.env.BASE_URL}users/select`} element={<SelectCompany />} />
-          </Route> 
+          </Route>
 
           <Route>
             <Route path={`${import.meta.env.BASE_URL}report/effective/control`} element={<EffectiveControl />} />
@@ -427,7 +435,7 @@ export const Routing = () => {
           </Route>
           <Route>
             <Route path={`${import.meta.env.BASE_URL}report/statistical`} element={<Statistical />} />
-          </Route>  
+          </Route>
           <Route>
             <Route path={`${import.meta.env.BASE_URL}report/administrative`} element={<Administrative />} />
           </Route>
@@ -445,7 +453,7 @@ export const Routing = () => {
           </Route>
           <Route>
             <Route path={`${import.meta.env.BASE_URL}report/collection`} element={<Collection />} />
-          </Route>    
+          </Route>
           <Route>
             <Route path={`${import.meta.env.BASE_URL}report/pretty/cash`} element={<PrettyCash />} />
           </Route>
@@ -459,11 +467,14 @@ export const Routing = () => {
           </Route>
           <Route>
             <Route path={`${import.meta.env.BASE_URL}sire/purchases`} element={<PurchasesSire />} />
-          </Route>      
+          </Route>
           <Route>
             <Route path={`${import.meta.env.BASE_URL}sire/sales`} element={<SalesSire />} />
-          </Route>                                      
+          </Route>
         </Route>
+
+
+
         <Route path={`${import.meta.env.BASE_URL}`} element={<Custompages />}>
 
           <Route path={`${import.meta.env.BASE_URL}errorpages/error400`} element={<Error400 />} />
@@ -521,14 +532,14 @@ export const Routing = () => {
           />
           <Route>
             <Route path={`${import.meta.env.BASE_URL}company/select`} element={<SelectCompany />} />
-          </Route> 
+          </Route>
         </Route>
         <Route>
           <Route path={`${import.meta.env.BASE_URL}pages/switcher`} element={<EffectiveControl />} />
-        </Route>     
+        </Route>
         <Route>
           <Route path="*" element={<Error404 />} />
-        </Route>        
+        </Route>
       </Routes>
     </React.Suspense>
   )

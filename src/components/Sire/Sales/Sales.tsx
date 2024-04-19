@@ -38,6 +38,8 @@ const Sales = () => {
   const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
   const [ticketsData, setTicketsData] = useState<Ticket[]>([]);
   const [ticketData, setTicketData] = useState<any[]>([]);
+  const [linksData, setLinksData] = useState<any[]>([]);
+
   const [loading, setLoading] = useState(false); 
 
   const toggle = () => {
@@ -144,11 +146,11 @@ const Sales = () => {
       });
       console.log("Data del ticket SIRE:", responseSire.data);
 
-      const mergedData = [...responseSire.data];
-      console.log("Merged and sorted data:", mergedData);
+      // const mergedData = [...responseSire.data];
+      // console.log("Merged and sorted data:", mergedData);
 
-      setTicketData(mergedData);
-      
+      setTicketData(responseSire.data.data);
+      setLinksData(responseSire.data.links);
       // Detener el estado de carga
       setLoading(false);
     } catch (error) {
@@ -165,6 +167,22 @@ const Sales = () => {
         return "#6a9eda";
       default:
         return "#ff6961";
+    }
+  };
+
+  const fetchData = async (url) => {
+    try {
+      console.log('padreee', url);
+      const responseSire = await sire.post(url, {
+        ticket: ticketValue ? ticketValue.numTicket : null,
+        fecha_jadal: selectedPeriod ? selectedPeriod.value : null,
+      });
+      console.log("Data del ticket SIRE:", responseSire.data);
+  
+      setTicketData(responseSire.data.data);
+      setLinksData(responseSire.data.links);
+    } catch (error) {
+      console.error("Error fetching data:", error);
     }
   };
 
@@ -434,7 +452,7 @@ const Sales = () => {
             <CardBody>
               <Row>
                 <Col lg="12">
-                  <BasicTable ticketData={ticketData} />
+                  {ticketData && ticketData.length > 0 && <BasicTable ticketData={ticketData} linksData={linksData} fetchDataSales={fetchData}/>}
                 </Col>
               </Row>
             </CardBody>

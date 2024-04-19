@@ -72,9 +72,11 @@ const conditionalRowStyles = [
   },
 ];
 
-export const BasicTable = ({ ticketData }) => {
+export const BasicTable = ({ ticketData, linksData, fetchDataSales }) => {
   const [pageSize, setPageSize] = useState(100); // Establece el tamaño de la página en 100 por defecto
 
+  console.log('ticketData Basictable', ticketData);
+  console.log('ticketData linksData', linksData);
   const tableInstance = useTable(
     {
       columns: COLUMNS,
@@ -104,6 +106,11 @@ export const BasicTable = ({ ticketData }) => {
   } = tableInstance;
 
   const { globalFilter, pageIndex } = state;
+
+  const fetchData = (data) => {
+    console.log('hijooooooooo',data)
+    fetchDataSales(data);
+  };
 
   return (
     <Col lg="12">
@@ -173,50 +180,29 @@ export const BasicTable = ({ ticketData }) => {
           <Button
             color=""
             className="btn-default tablebutton me-2 d-sm-inline d-block my-1"
-            onClick={() => gotoPage(0)}
-            disabled={!canPreviousPage}
+            onClick={() => fetchData(linksData[0].url)}
+            disabled={!linksData[0].active}
           >
-            {" Previous "}
+            {linksData[0].label}
           </Button>
-          <Button
-            color=""
-            className="btn-default tablebutton me-2 my-1"
-            onClick={() => previousPage()}
-            disabled={!canPreviousPage}
-          >
-            {" << "}
-          </Button>
-          <Button
-            color=""
-            className="btn-default tablebutton me-2 my-1"
-            onClick={() => previousPage()}
-            disabled={!canPreviousPage}
-          >
-            {" < "}
-          </Button>
-          <Button
-            color=""
-            className="btn-default tablebutton me-2 my-1"
-            onClick={() => nextPage()}
-            disabled={!canNextPage}
-          >
-            {" > "}
-          </Button>
-          <Button
-            color=""
-            className="btn-default tablebutton me-2 my-1"
-            onClick={() => nextPage()}
-            disabled={!canNextPage}
-          >
-            {" >> "}
-          </Button>
+          {linksData.slice(1, -1).map((link, index) => (
+            <Button
+              key={index}
+              color=""
+              className="btn-default tablebutton me-2 d-sm-inline d-block my-1"
+              onClick={() => fetchData(link.url)}
+              disabled={link.active}
+            >
+              {link.label}
+            </Button>
+          ))}
           <Button
             color=""
             className="btn-default tablebutton me-2 d-sm-inline d-block my-1"
-            onClick={() => gotoPage(pageCount - 1)}
-            disabled={!canNextPage}
+            onClick={() => fetchData(linksData[linksData.length - 1].url)}
+            disabled={!linksData[linksData.length - 1].active}
           >
-            {" Next "}
+            {linksData[linksData.length - 1].label}
           </Button>
         </span>
       </div>

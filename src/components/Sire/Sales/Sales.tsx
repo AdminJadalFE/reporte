@@ -20,21 +20,13 @@ import axios from "axios";
 import Select, { ActionMeta } from "react-select";
 import { ChangeEvent } from "react";
 import { sire } from "../../../Util/axios";
-import{Fixedheader} from "../Component/Fixedheader"
+import{BasicTable} from "../Component/Basictable"
 import Swal from 'sweetalert2';
 
 interface Period {
   value: string;
   label: string;
-  lisPeriodos: any[]; // Ajusta esto según la estructura real de tus datos
-}
-
-interface Ticket {
-  id: string;
-  perTributario: string;
-  numTicket: string;
-  fecInicioProceso: string;
-  // Añade otras propiedades según sea necesario
+  lisPeriodos: any[];
 }
 
 const Sales = () => {
@@ -47,6 +39,14 @@ const Sales = () => {
   const [ticketsData, setTicketsData] = useState<Ticket[]>([]);
   const [ticketData, setTicketData] = useState<any[]>([]);
   const [loading, setLoading] = useState(false); 
+
+  interface Ticket {
+    id: number;
+    numTicket: string;
+    perTributario: string;
+    fecInicioProceso: string;
+    // Otros campos de la interfaz Ticket, si los hay
+  }
 
   const toggle = () => {
     setModal(!modal);
@@ -442,7 +442,7 @@ const Sales = () => {
             <CardBody>
               <Row>
                 <Col lg="12">
-                  <Fixedheader ticketData={ticketData} />     
+                  <BasicTable ticketData={ticketData} />
                 </Col>
               </Row>
             </CardBody>

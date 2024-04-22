@@ -85,9 +85,9 @@ export const Fixedheader = ({ ticketData }: { ticketData: any[] }) => {
           type="text"
           placeholder="Search..."
           className="mb-4 form-control-sm form-control"
-          onChange={(ele) => {
-            myfunction(ele.target.value);
-          }}
+          // onChange={(ele) => {
+          //   myfunction(ele.target.value);
+          // }}
         />
       </Label>
       <DataTable

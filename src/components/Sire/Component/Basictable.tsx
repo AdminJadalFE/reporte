@@ -1,92 +1,93 @@
-import React, { useState } from "react";
+import React from "react";
 import { Button, Input, Col } from "reactstrap";
-import { useTable, useGlobalFilter, useSortBy, usePagination } from "react-table";
+import { useTable, useGlobalFilter, useSortBy, usePagination, Column, TableInstance, TableState } from "react-table";
 
-export const COLUMNS = [
+// Define el tipo de los datos de la tabla
+interface TicketData {
+  Car_sunat: string;
+  Fecha_de_emision: string;
+  Tipo_CP_Doc: string;
+  Serie_del_CDP: string;
+  Nro_CP_o_Doc_Nro_Inicial_Rango: string;
+  Total_CP: string;
+  FUENTE: string;
+  INDICADOR: string;
+}
+
+export const COLUMNS: Column<TicketData>[] = [
   {
     Header: "CAR_SUNAT",
     accessor: "Car_sunat",
-    className: "w-20 borderrigth",
   },
   {
     Header: "FECHA DE EMISIÓN",
     accessor: "Fecha_de_emision",
-    className: "w-25 borderrigth",
   },
   {
     Header: "TIPO CP DOC",
     accessor: "Tipo_CP_Doc",
-    className: "w-20 borderrigth",
   },
   {
     Header: "SERIE DEL CDP",
     accessor: "Serie_del_CDP",
-    className: "w-20 borderrigth",
   },
   {
     Header: "Nro_CP_o_Doc_Nro_Inicial_Rango",
     accessor: "Nro_CP_o_Doc_Nro_Inicial_Rango",
-    className: "w-20 borderrigth",
-  },  
+  },
   {
     Header: "TOTAL CP",
     accessor: "Total_CP",
-    className: "w-20 borderrigth",
-  },  
+  },
   {
     Header: "FUENTE",
     accessor: "FUENTE",
-    className: "w-20 borderrigth",
-  },    
+  },
   {
     Header: "INDICADOR",
     accessor: "INDICADOR",
-    className: "w-20 borderrigth",
-  },      
+  },
 ];
 
 const conditionalRowStyles = [
   {
-    when: (row) => row.INDICADOR === "0",
+    when: (row: TicketData) => row.INDICADOR === "0",
     style: {
       backgroundColor: "#ff6961", // rojo
     },
   },
   {
-    when: (row) => row.INDICADOR === "1",
+    when: (row: TicketData) => row.INDICADOR === "1",
     style: {
       backgroundColor: "#5dc460", // verde
     },
   },
   {
-    when: (row) => row.INDICADOR === "2",
+    when: (row: TicketData) => row.INDICADOR === "2",
     style: {
       backgroundColor: "#c8ca66", // amarillo
     },
   },
   {
-    when: (row) => row.INDICADOR === "3",
+    when: (row: TicketData) => row.INDICADOR === "3",
     style: {
       backgroundColor: "#6a9eda", // azul
     },
   },
 ];
 
-export const BasicTable = ({ ticketData, linksData, fetchDataSales }) => {
-  const [pageSize, setPageSize] = useState(100); // Establece el tamaño de la página en 100 por defecto
+export const BasicTable = ({ ticketData }: { ticketData: TicketData[] }) => {
 
-  console.log('ticketData Basictable', ticketData);
-  console.log('ticketData linksData', linksData);
-  const tableInstance = useTable(
+  // Usa el tipo de datos definido para la instancia de la tabla
+  const tableInstance:any = useTable(
     {
       columns: COLUMNS,
       data: ticketData,
-      initialState: { pageSize }, // Establece el tamaño de la página inicial
     },
     useGlobalFilter,
     useSortBy,
     usePagination
-  );
+  ); // Especifica el tipo de la instancia de la tabla
 
   const {
     getTableProps,
@@ -96,21 +97,17 @@ export const BasicTable = ({ ticketData, linksData, fetchDataSales }) => {
     state,
     setGlobalFilter,
     page,
+    gotoPage,
     nextPage,
     previousPage,
     canNextPage,
     canPreviousPage,
     pageOptions,
-    gotoPage,
     pageCount,
-  } = tableInstance;
+    setPageSize,
+  } = tableInstance; 
 
-  const { globalFilter, pageIndex } = state;
-
-  const fetchData = (data) => {
-    console.log('hijooooooooo',data)
-    fetchDataSales(data);
-  };
+  const { globalFilter, pageIndex, pageSize } = state;
 
   return (
     <Col lg="12">
@@ -120,22 +117,22 @@ export const BasicTable = ({ ticketData, linksData, fetchDataSales }) => {
           value={pageSize}
           onChange={(e) => setPageSize(Number(e.target.value))}
         >
-          {[100,500,1000].map((size) => (
-            <option key={size} value={size}>
-              Show {size}
+          {[10, 20, 50, 100].map((pageSize) => (
+            <option key={pageSize} value={pageSize}>
+              Show {pageSize}
             </option>
           ))}
         </select>
-        <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
+        <GlobalFilter filter={state.globalFilter} setFilter={setGlobalFilter} />
       </div>
       <table {...getTableProps()} className="table table-bordered table-hover mb-0">
         <thead>
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
+              {headerGroup.headers.map((column: any) => (
                 <th
                   {...column.getHeaderProps(column.getSortByToggleProps())}
-                  className={column.className}
+                  className={column.className || ""}
                 >
                   <span className="tabletitle">{column.render("Header")}</span>
                   <span className="d-flex ms-auto">
@@ -158,9 +155,16 @@ export const BasicTable = ({ ticketData, linksData, fetchDataSales }) => {
           {page.map((row) => {
             prepareRow(row);
             return (
-              <tr {...row.getRowProps()} style={row.original ? conditionalRowStyles.find((rule) => rule.when(row.original)).style : {}}>
+              <tr
+                {...row.getRowProps()}
+                style={
+                  row.original
+                    ? conditionalRowStyles.find((rule) => rule.when(row.original))?.style
+                    : {}
+                }
+              >
                 {row.cells.map((cell) => (
-                  <td className="borderrigth" {...cell.getCellProps()}>
+                  <td className="borderright" {...cell.getCellProps()}>
                     {cell.render("Cell")}
                   </td>
                 ))}
@@ -180,44 +184,40 @@ export const BasicTable = ({ ticketData, linksData, fetchDataSales }) => {
           <Button
             color=""
             className="btn-default tablebutton me-2 d-sm-inline d-block my-1"
-            onClick={() => fetchData(linksData[0].url)}
-            disabled={!linksData[0].active}
+            onClick={() => gotoPage(0)}
+            disabled={!canPreviousPage}
           >
-            {linksData[0].label}
+            {" Previous "}
           </Button>
-          {linksData.slice(1, -1).map((link, index) => (
-            <Button
-              key={index}
-              color=""
-              className="btn-default tablebutton me-2 d-sm-inline d-block my-1"
-              onClick={() => fetchData(link.url)}
-              disabled={link.active}
-            >
-              {link.label}
-            </Button>
-          ))}
           <Button
             color=""
-            className="btn-default tablebutton me-2 d-sm-inline d-block my-1"
-            onClick={() => fetchData(linksData[linksData.length - 1].url)}
-            disabled={!linksData[linksData.length - 1].active}
+            className="btn-default tablebutton me-2 my-1"
+            onClick={() => previousPage()}
+            disabled={!canPreviousPage}
           >
-            {linksData[linksData.length - 1].label}
+            {" << "}
+          </Button>
+          <Button
+            color=""
+            className="btn-default tablebutton me-2 my-1"
+            onClick={() => nextPage()}
+            disabled={!canNextPage}
+          >
+            {" >> "}
           </Button>
         </span>
       </div>
     </Col>
   );
 };
-
-const GlobalFilter = ({ filter, setFilter }) => {
+const GlobalFilter = ({ filter, setFilter }:any) => {
   return (
     <span className="d-flex ms-auto">
       <Input
         value={filter || ""}
         onChange={(e) => setFilter(e.target.value)}
         className="form-control mb-4"
-        placeholder="Search..."
+        placeholder="Buscar..."
       />
     </span>
   );

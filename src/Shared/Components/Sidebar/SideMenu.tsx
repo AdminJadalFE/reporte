@@ -1097,40 +1097,40 @@ export const MENUITEMS: menu[] = [
   //     },
   //   ],
   // },
-  // {
-  //   Items: [
-  //     {
-  //       title: "Usuarios",
-  //       icon: <svg className="side-menu__icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>,
-  //       type: "sub",
-  //       selected: false,
-  //       active: false,
-  //       children: [
-  //         {
-  //           path: `${import.meta.env.BASE_URL}users/users`,
-  //           type: "link",
-  //           active: false,
-  //           selected: false,
-  //           title: "Usuarios",
-  //         },
-  //         {
-  //           path: `${import.meta.env.BASE_URL}users/roles`,
-  //           type: "link",
-  //           active: false,
-  //           selected: false,
-  //           title: "Roles",
-  //         },
-  //         {
-  //           path: `${import.meta.env.BASE_URL}users/permissions`,
-  //           type: "link",
-  //           active: false,
-  //           selected: false,
-  //           title: "Permisos",
-  //         },                    
-  //       ],
-  //     },
-  //   ],
-  // },
+  {
+    Items: [
+      {
+        title: "Usuarios",
+        icon: <svg className="side-menu__icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>,
+        type: "sub",
+        selected: false,
+        active: false,
+        children: [
+          {
+            path: `${import.meta.env.BASE_URL}users/users`,
+            type: "link",
+            active: false,
+            selected: false,
+            title: "Usuarios",
+          },
+          {
+            path: `${import.meta.env.BASE_URL}users/roles`,
+            type: "link",
+            active: false,
+            selected: false,
+            title: "Roles",
+          },
+          {
+            path: `${import.meta.env.BASE_URL}users/permissions`,
+            type: "link",
+            active: false,
+            selected: false,
+            title: "Permisos",
+          },                    
+        ],
+      },
+    ],
+  },
   // {
   //   Items: [
   //     {
@@ -1247,116 +1247,116 @@ export const MENUITEMS: menu[] = [
   //     },
   //   ],
   // },
-  // {
-  //   Items: [
-  //     {
-  //       title: "Empresas",
-  //       icon: <svg className="side-menu__icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><g><path d="M0,0h24v24H0V0z" fill="none"/><path d="M12,7V3H2v18h20V7H12z M6,19H4v-2h2V19z M6,15H4v-2h2V15z M6,11H4V9h2V11z M6,7H4V5h2V7z M10,19H8v-2h2V19z M10,15H8v-2h2 V15z M10,11H8V9h2V11z M10,7H8V5h2V7z M20,19h-8v-2h2v-2h-2v-2h2v-2h-2V9h8V19z M18,11h-2v2h2V11z M18,15h-2v2h2V15z"/></g></svg>,
-  //       type: "sub",
-  //       selected: false,
-  //       active: false,
-  //       children: [
-  //         {
-  //           path: `${import.meta.env.BASE_URL}users/company`,
-  //           type: "link",
-  //           active: false,
-  //           selected: false,
-  //           title: "Empresas",
-  //         },                                                        
-  //       ],
-  //     },
-  //   ],
-  // },
-  // {
-  //   Items: [
-  //     {
-  //       title: "Reportes",
-  //       icon: <svg className="side-menu__icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>,
-  //       type: "sub",
-  //       selected: false,
-  //       active: false,
-  //       children: [
-  //         {
-  //           path: `${import.meta.env.BASE_URL}report/invoice`,
-  //           type: "link",
-  //           active: false,
-  //           selected: false,
-  //           title: "Reporte Factura",
-  //         },
-  //         {
-  //           path: `${import.meta.env.BASE_URL}report/administrative`,
-  //           type: "link",
-  //           active: false,
-  //           selected: false,
-  //           title: "Reporte Administrativo",
-  //         },
-  //         {
-  //           path: `${import.meta.env.BASE_URL}report/statistical`,
-  //           type: "link",
-  //           active: false,
-  //           selected: false,
-  //           title: "Reporte Estadístico",
-  //         },                                                  
-  //         {
-  //           path: `${import.meta.env.BASE_URL}report/accumulated/day`,
-  //           type: "link",
-  //           active: false,
-  //           selected: false,
-  //           title: "Reporte Acumulado por Día",
-  //         },
-  //         {
-  //           path: `${import.meta.env.BASE_URL}report/sale`,
-  //           type: "link",
-  //           active: false,
-  //           selected: false,
-  //           title: "Reporte de Venta",
-  //         },
-  //         {
-  //           path: `${import.meta.env.BASE_URL}report/effective/control`,
-  //           type: "link",
-  //           active: false,
-  //           selected: false,
-  //           title: "Reporte Control Efectivo",
-  //         },
-  //         {
-  //           path: `${import.meta.env.BASE_URL}report/bank`,
-  //           type: "link",
-  //           active: false,
-  //           selected: false,
-  //           title: "Reporte de Bancos",
-  //         },
-  //         {
-  //           path: `${import.meta.env.BASE_URL}report/pretty/cash`,
-  //           type: "link",
-  //           active: false,
-  //           selected: false,
-  //           title: "Reporte Caja Chica",
-  //         },  
-  //         {
-  //           path: `${import.meta.env.BASE_URL}report/collection`,
-  //           type: "link",
-  //           active: false,
-  //           selected: false,
-  //           title: "Reporte Cobranzas",
-  //         },
-  //         {
-  //           path: `${import.meta.env.BASE_URL}report/profitability`,
-  //           type: "link",
-  //           active: false,
-  //           selected: false,
-  //           title: "Reporte Rentabilidad",
-  //         },
-  //         {
-  //           path: `${import.meta.env.BASE_URL}report/sale/note`,
-  //           type: "link",
-  //           active: false,
-  //           selected: false,
-  //           title: "Reporte Nota de Venta",
-  //         },                                                                        
-  //       ],
-  //     },
-  //   ],
-  // },
+  {
+    Items: [
+      {
+        title: "Empresas",
+        icon: <svg className="side-menu__icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><g><path d="M0,0h24v24H0V0z" fill="none"/><path d="M12,7V3H2v18h20V7H12z M6,19H4v-2h2V19z M6,15H4v-2h2V15z M6,11H4V9h2V11z M6,7H4V5h2V7z M10,19H8v-2h2V19z M10,15H8v-2h2 V15z M10,11H8V9h2V11z M10,7H8V5h2V7z M20,19h-8v-2h2v-2h-2v-2h2v-2h-2V9h8V19z M18,11h-2v2h2V11z M18,15h-2v2h2V15z"/></g></svg>,
+        type: "sub",
+        selected: false,
+        active: false,
+        children: [
+          {
+            path: `${import.meta.env.BASE_URL}users/company`,
+            type: "link",
+            active: false,
+            selected: false,
+            title: "Empresas",
+          },                                                        
+        ],
+      },
+    ],
+  },
+  {
+    Items: [
+      {
+        title: "Reportes",
+        icon: <svg className="side-menu__icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>,
+        type: "sub",
+        selected: false,
+        active: false,
+        children: [
+          {
+            path: `${import.meta.env.BASE_URL}report/invoice`,
+            type: "link",
+            active: false,
+            selected: false,
+            title: "Reporte Factura",
+          },
+          {
+            path: `${import.meta.env.BASE_URL}report/administrative`,
+            type: "link",
+            active: false,
+            selected: false,
+            title: "Reporte Administrativo",
+          },
+          {
+            path: `${import.meta.env.BASE_URL}report/statistical`,
+            type: "link",
+            active: false,
+            selected: false,
+            title: "Reporte Estadístico",
+          },                                                  
+          {
+            path: `${import.meta.env.BASE_URL}report/accumulated/day`,
+            type: "link",
+            active: false,
+            selected: false,
+            title: "Reporte Acumulado por Día",
+          },
+          {
+            path: `${import.meta.env.BASE_URL}report/sale`,
+            type: "link",
+            active: false,
+            selected: false,
+            title: "Reporte de Venta",
+          },
+          {
+            path: `${import.meta.env.BASE_URL}report/effective/control`,
+            type: "link",
+            active: false,
+            selected: false,
+            title: "Reporte Control Efectivo",
+          },
+          {
+            path: `${import.meta.env.BASE_URL}report/bank`,
+            type: "link",
+            active: false,
+            selected: false,
+            title: "Reporte de Bancos",
+          },
+          {
+            path: `${import.meta.env.BASE_URL}report/pretty/cash`,
+            type: "link",
+            active: false,
+            selected: false,
+            title: "Reporte Caja Chica",
+          },  
+          {
+            path: `${import.meta.env.BASE_URL}report/collection`,
+            type: "link",
+            active: false,
+            selected: false,
+            title: "Reporte Cobranzas",
+          },
+          {
+            path: `${import.meta.env.BASE_URL}report/profitability`,
+            type: "link",
+            active: false,
+            selected: false,
+            title: "Reporte Rentabilidad",
+          },
+          {
+            path: `${import.meta.env.BASE_URL}report/sale/note`,
+            type: "link",
+            active: false,
+            selected: false,
+            title: "Reporte Nota de Venta",
+          },                                                                        
+        ],
+      },
+    ],
+  },
   {
     Items: [
       {

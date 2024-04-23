@@ -38,9 +38,15 @@ const Sales = () => {
   const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
   const [ticketsData, setTicketsData] = useState<Ticket[]>([]);
   const [ticketData, setTicketData] = useState<any[]>([]);
-  const [linksData, setLinksData] = useState<any[]>([]);
-
   const [loading, setLoading] = useState(false); 
+
+  interface Ticket {
+    id: number;
+    numTicket: string;
+    perTributario: string;
+    fecInicioProceso: string;
+    // Otros campos de la interfaz Ticket, si los hay
+  }
 
   const toggle = () => {
     setModal(!modal);
@@ -146,11 +152,11 @@ const Sales = () => {
       });
       console.log("Data del ticket SIRE:", responseSire.data);
 
-      // const mergedData = [...responseSire.data];
-      // console.log("Merged and sorted data:", mergedData);
+      const mergedData = [...responseSire.data];
+      console.log("Merged and sorted data:", mergedData);
 
-      setTicketData(responseSire.data.data);
-      setLinksData(responseSire.data.links);
+      setTicketData(mergedData);
+      
       // Detener el estado de carga
       setLoading(false);
     } catch (error) {
@@ -170,22 +176,6 @@ const Sales = () => {
     }
   };
 
-  const fetchData = async (url) => {
-    try {
-      console.log('padreee', url);
-      const responseSire = await sire.post(url, {
-        ticket: ticketValue ? ticketValue.numTicket : null,
-        fecha_jadal: selectedPeriod ? selectedPeriod.value : null,
-      });
-      console.log("Data del ticket SIRE:", responseSire.data);
-  
-      setTicketData(responseSire.data.data);
-      setLinksData(responseSire.data.links);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-
   const handleTicketSelection = (ticket: Ticket) => {
     setSelectedTicket(ticket);
     setTicketValue({
@@ -195,6 +185,47 @@ const Sales = () => {
       fecInicioProceso: ticket.fecInicioProceso ?? "",
     });
     toggle();
+  };
+
+  const handleDownloadTxt = async () => {
+    try {
+      const response = await sire.get("/compare/txt");
+      const blob = new Blob([response.data], { type: 'text/plain' });
+      
+      const currentDate = new Date();
+      const formattedDate = currentDate.toISOString().slice(0, 19).replace(/[-T]/g, '_').replace(/:/g, '-');
+      const fileName = `sire_jadal_data_${formattedDate}.txt`;
+  
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', fileName);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Error fetching text data:", error);
+    }
+  }; 
+
+  const handleConfirmProposal = () => {
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: '¿Deseas aceptar la propuesta?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#5dc460',
+      cancelButtonColor: '#ff6961',
+      confirmButtonText: 'Sí, aceptar',
+      cancelButtonText: 'No, cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        console.log('Propuesta aceptada');
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        console.log('Propuesta cancelada');
+      }
+    });
   };
 
   useEffect(() => {
@@ -447,12 +478,13 @@ const Sales = () => {
         <Col md="12">
           <Card>
             <CardHeader>
-              <CardTitle>Data SIRE JADAL</CardTitle>
-            </CardHeader>
-            <CardBody>
+              <CardTitle>DATA SIRE JADAL <Button type="button" className="btn btn-primary" onClick={handleDownloadTxt} style={{ backgroundColor: "#6a9eda" }}>Descargar Data</Button></CardTitle>
+              </CardHeader>
+              <CardBody>
+              <Button type="button" className="btn btn-primary btn-svgs btn-svg-white mt-1 mx-1" onClick={handleConfirmProposal} style={{ backgroundColor: "#5dc460" }}>Aceptar Propuesta</Button>
               <Row>
                 <Col lg="12">
-                  {ticketData && ticketData.length > 0 && <BasicTable ticketData={ticketData} linksData={linksData} fetchDataSales={fetchData}/>}
+                  <BasicTable ticketData={ticketData} />
                 </Col>
               </Row>
             </CardBody>

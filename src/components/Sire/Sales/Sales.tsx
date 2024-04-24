@@ -209,24 +209,49 @@ const Sales = () => {
     }
   }; 
 
-  const handleConfirmProposal = () => {
+  const handleConfirmProposal = async () => {
+    if (!selectedPeriod) {
+      console.error("No se ha seleccionado un período");
+      return;
+    }
+  
+    let diferencias = 0;
+    ticketData.forEach((item) => {
+      if (item.INDICADOR === '0' || item.INDICADOR === '2' || item.INDICADOR === '3') {
+        diferencias += 1;
+      }
+    });
+  
     Swal.fire({
       title: '¿Estás seguro?',
-      text: '¿Deseas aceptar la propuesta?',
+      text: `¿Deseas aceptar la propuesta tiene ${diferencias} diferencias entre JADAL y SIRE?`, // Corrección aquí
       icon: 'question',
       showCancelButton: true,
       confirmButtonColor: '#5dc460',
       cancelButtonColor: '#ff6961',
       confirmButtonText: 'Sí, aceptar',
       cancelButtonText: 'No, cancelar'
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
         console.log('Propuesta aceptada');
+        try {
+          const response = await sire.post("/accept/proposel", {
+            fecha: selectedPeriod.value
+          });
+          console.log(response.data);
+        } catch (error) {
+          console.error("Error al aceptar la propuesta:", error);
+        }
       } else if (result.dismiss === Swal.DismissReason.cancel) {
         console.log('Propuesta cancelada');
       }
     });
+  
+    // Muestra la variable diferencias en la consola
+    console.log('Diferencias:', diferencias);
   };
+  
+  
 
   useEffect(() => {
     fetchTickets();
@@ -478,10 +503,15 @@ const Sales = () => {
         <Col md="12">
           <Card>
             <CardHeader>
-              <CardTitle>DATA SIRE JADAL <Button type="button" className="btn btn-primary" onClick={handleDownloadTxt} style={{ backgroundColor: "#6a9eda" }}>Descargar Data</Button></CardTitle>
+              <CardTitle>DATA SIRE JADAL</CardTitle>
+              {ticketData.length > 0 && (
+                <CardTitle><Button type="button" className="btn btn-primary" onClick={handleDownloadTxt} style={{ backgroundColor: "#6a9eda" }}>Descargar Data</Button></CardTitle>
+              )}  
               </CardHeader>
               <CardBody>
-              <Button type="button" className="btn btn-primary btn-svgs btn-svg-white mt-1 mx-1" onClick={handleConfirmProposal} style={{ backgroundColor: "#5dc460" }}>Aceptar Propuesta</Button>
+              {ticketData.length > 0 && (
+                <Button type="button" className="btn btn-primary btn-svgs btn-svg-white mt-1 mx-1" onClick={handleConfirmProposal} style={{ backgroundColor: "#5dc460" }}>Aceptar Propuesta</Button>
+              )}                  
               <Row>
                 <Col lg="12">
                   <BasicTable ticketData={ticketData} />

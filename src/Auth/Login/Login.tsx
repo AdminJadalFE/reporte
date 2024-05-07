@@ -64,7 +64,7 @@ const Login = () => {
     e.preventDefault(); // Move this line to the beginning if you want to prevent the default form submission
     const username = email;
     try {
-      const resp = await sire.post("/login", {
+      const resp = await sire.post("/auth", {
         username,
         password,
       });

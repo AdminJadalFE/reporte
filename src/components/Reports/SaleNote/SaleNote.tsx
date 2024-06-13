@@ -80,7 +80,7 @@ const SaleNote = () => {
       errorAlert("Seleccione las fechas desde y hasta.");
       return;
     }
-    await openPdf(startDate, endDate, company, "api/report/pdf/sale", "reporte-venta");
+    await openPdf(startDate, endDate, company, "api/report/pdf/sale/note", "reporte-nota-venta");
   };
 
   const { openExcel } = useOpenExcel();
@@ -94,8 +94,8 @@ const SaleNote = () => {
       startDate,
       endDate,
       company,
-      "api/report/excel/invoice",
-      "reporte-venta"
+      "api/report/excel/sale/note",
+      "reporte-nota-venta"
     );
   };
 

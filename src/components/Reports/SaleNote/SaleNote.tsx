@@ -9,6 +9,7 @@ import {
   Label,
   Button,
   Input,
+  Spinner,
 } from "reactstrap";
 import { PageHeaders } from "../../../Shared/Prism/Prism";
 
@@ -33,6 +34,9 @@ const SaleNote = () => {
 
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
+  const [loadingTable, setLoadingTable] = useState(false);
+  const [loadingPdf, setLoadingPdf] = useState(false);
+  const [loadingExcel, setLoadingExcel] = useState(false);
 
   const Countryoptions = [
     { value: "Principal", label: "Principal" },
@@ -43,7 +47,7 @@ const SaleNote = () => {
 
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
 
-  const company = localStorage.getItem('company');
+  const company = localStorage.getItem("company");
 
   const errorAlert = (errorMessage) => {
     Swal.fire({
@@ -60,7 +64,7 @@ const SaleNote = () => {
   const { openTable, reportData, loading, error } = useOpenTable(
     startDate,
     endDate,
-    company,    
+    company,
     report,
     "api/report/table/sale/note"
   );
@@ -70,7 +74,9 @@ const SaleNote = () => {
       errorAlert("Seleccione las fechas desde y hasta.");
       return;
     }
+    setLoadingTable(true);
     await openTable();
+    setLoadingTable(false);
   };
 
   const { openPdf } = useOpenPdf();
@@ -80,7 +86,15 @@ const SaleNote = () => {
       errorAlert("Seleccione las fechas desde y hasta.");
       return;
     }
-    await openPdf(startDate, endDate, company, "api/report/pdf/sale/note", "reporte-nota-venta");
+    setLoadingPdf(true);
+    await openPdf(
+      startDate,
+      endDate,
+      company,
+      "api/report/pdf/sale/note",
+      "reporte-nota-venta"
+    );
+    setLoadingPdf(false);
   };
 
   const { openExcel } = useOpenExcel();
@@ -90,6 +104,7 @@ const SaleNote = () => {
       errorAlert("Seleccione las fechas desde y hasta.");
       return;
     }
+    setLoadingExcel(true);
     await openExcel(
       startDate,
       endDate,
@@ -97,9 +112,10 @@ const SaleNote = () => {
       "api/report/excel/sale/note",
       "reporte-nota-venta"
     );
+    setLoadingExcel(false);
   };
 
-  console.log('reportData',reportData);
+  console.log("reportData", reportData);
   const columns: any = React.useMemo(
     () => [
       {
@@ -259,7 +275,7 @@ const SaleNote = () => {
               <Row>
                 <Col lg="12">
                   <div className="mb-3 mt-3 d-flex flex-row">
-                  <div className="custom-controls-stacked m-3">
+                    <div className="custom-controls-stacked m-3">
                       <Label className="custom-control custom-radio custom-control-md">
                         <Input
                           type="radio"
@@ -274,19 +290,19 @@ const SaleNote = () => {
                       </Label>
                     </div>
                     <div className="custom-controls-stacked m-3">
-                    <Label className="custom-control custom-radio custom-control-md">
-                      <Input
-                        type="radio"
-                        className="custom-control-input"
-                        name="example-radios1"
-                        value="option1"
-                        defaultChecked
-                      />
-                      <span className="custom-control-label custom-control-label-md">
-                        Por Facturar
-                      </span>
-                    </Label>
-                  </div>                    
+                      <Label className="custom-control custom-radio custom-control-md">
+                        <Input
+                          type="radio"
+                          className="custom-control-input"
+                          name="example-radios1"
+                          value="option1"
+                          defaultChecked
+                        />
+                        <span className="custom-control-label custom-control-label-md">
+                          Por Facturar
+                        </span>
+                      </Label>
+                    </div>
                     <div className="custom-controls-stacked m-3">
                       <Label className="custom-control custom-radio custom-control-md">
                         <Input
@@ -342,23 +358,30 @@ const SaleNote = () => {
                           color=""
                           type="button"
                           className="btn btn-primary btn-svgs btn-svg-white mt-4 ml-4 mr-4"
-                          onClick={() => handleOpenTable()}
+                          onClick={handleOpenTable}
+                          disabled={loadingTable}
                         >
-                          <svg
-                            className="svg-icon"
-                            xmlns="http://www.w3.org/2000/svg"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            width="24"
-                          >
-                            <path d="M0 0h24v24H0V0z" fill="none"></path>
-                            <path
-                              d="M13 4H6v16h12V9h-5V4zm3 14H8v-2h8v2zm0-6v2H8v-2h8z"
-                              opacity=".3"
-                            ></path>
-                            <path d="M8 16h8v2H8zm0-4h8v2H8zm6-10H6c-1.1 0-2 .9-2 2v16c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"></path>
-                          </svg>
-                          <span className="btn-svg-text">FILTRAR</span>
+                          {loadingTable ? (
+                            <Spinner size="md" />
+                          ) : (
+                            <>
+                              <svg
+                                className="svg-icon"
+                                xmlns="http://www.w3.org/2000/svg"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                width="24"
+                              >
+                                <path d="M0 0h24v24H0V0z" fill="none"></path>
+                                <path
+                                  d="M13 4H6v16h12V9h-5V4zm3 14H8v-2h8v2zm0-6v2H8v-2h8z"
+                                  opacity=".3"
+                                ></path>
+                                <path d="M8 16h8v2H8zm0-4h8v2H8zm6-10H6c-1.1 0-2 .9-2 2v16c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"></path>
+                              </svg>
+                              <span className="btn-svg-text">FILTRAR</span>
+                            </>
+                          )}
                         </Button>
                       </Col>
                     </Row>
@@ -368,46 +391,60 @@ const SaleNote = () => {
                         <Button
                           color=""
                           type="button"
-                          className="btn btn-primary btn-svgs btn-svg-white mt-4 ml-4 mr-4 "
-                          onClick={() => handleOpenPdf()}
+                          className="btn btn-primary btn-svgs btn-svg-white mt-4 ml-4 mr-4"
+                          onClick={handleOpenPdf}
+                          disabled={loadingPdf}
                         >
-                          <svg
-                            className="svg-icon"
-                            xmlns="http://www.w3.org/2000/svg"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            width="24"
-                          >
-                            <path d="M0 0h24v24H0V0z" fill="none"></path>
-                            <path
-                              d="M13 4H6v16h12V9h-5V4zm3 14H8v-2h8v2zm0-6v2H8v-2h8z"
-                              opacity=".3"
-                            ></path>
-                            <path d="M8 16h8v2H8zm0-4h8v2H8zm6-10H6c-1.1 0-2 .9-2 2v16c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"></path>
-                          </svg>
-                          <span className="btn-svg-text">PDF</span>
+                          {loadingPdf ? (
+                            <Spinner size="md" />
+                          ) : (
+                            <>
+                              <svg
+                                className="svg-icon"
+                                xmlns="http://www.w3.org/2000/svg"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                width="24"
+                              >
+                                <path d="M0 0h24v24H0V0z" fill="none"></path>
+                                <path
+                                  d="M13 4H6v16h12V9h-5V4zm3 14H8v-2h8v2zm0-6v2H8v-2h8z"
+                                  opacity=".3"
+                                ></path>
+                                <path d="M8 16h8v2H8zm0-4h8v2H8zm6-10H6c-1.1 0-2 .9-2 2v16c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"></path>
+                              </svg>
+                              <span className="btn-svg-text">PDF</span>
+                            </>
+                          )}
                         </Button>
                         <Button
                           color=""
                           type="button"
-                          className="btn btn-primary btn-svgs btn-svg-white mt-4 ml-4 mr-4 "
-                          onClick={() => handleOpenExcel()}
+                          className="btn btn-primary btn-svgs btn-svg-white mt-4 ml-4 mr-4"
+                          onClick={handleOpenExcel}
+                          disabled={loadingExcel}
                         >
-                          <svg
-                            className="svg-icon"
-                            xmlns="http://www.w3.org/2000/svg"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            width="24"
-                          >
-                            <path d="M0 0h24v24H0V0z" fill="none"></path>
-                            <path
-                              d="M13 4H6v16h12V9h-5V4zm3 14H8v-2h8v2zm0-6v2H8v-2h8z"
-                              opacity=".3"
-                            ></path>
-                            <path d="M8 16h8v2H8zm0-4h8v2H8zm6-10H6c-1.1 0-2 .9-2 2v16c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"></path>
-                          </svg>
-                          <span className="btn-svg-text">EXCEL</span>
+                          {loadingExcel ? (
+                            <Spinner size="md" />
+                          ) : (
+                            <>
+                              <svg
+                                className="svg-icon"
+                                xmlns="http://www.w3.org/2000/svg"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                width="24"
+                              >
+                                <path d="M0 0h24v24H0V0z" fill="none"></path>
+                                <path
+                                  d="M13 4H6v16h12V9h-5V4zm3 14H8v-2h8v2zm0-6v2H8v-2h8z"
+                                  opacity=".3"
+                                ></path>
+                                <path d="M8 16h8v2H8zm0-4h8v2H8zm6-10H6c-1.1 0-2 .9-2 2v16c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"></path>
+                              </svg>
+                              <span className="btn-svg-text">EXCEL</span>
+                            </>
+                          )}
                         </Button>
                       </Col>
                     </Row>

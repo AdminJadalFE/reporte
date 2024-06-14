@@ -8,6 +8,7 @@ import {
   Row,
   Label,
   Button,
+  Spinner,
 } from "reactstrap";
 import { PageHeaders } from "../../../Shared/Prism/Prism";
 
@@ -33,6 +34,10 @@ const Invoice = () => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
 
+  const [loadingTable, setLoadingTable] = useState(false);
+  const [loadingPdf, setLoadingPdf] = useState(false);
+  const [loadingExcel, setLoadingExcel] = useState(false);
+
   const Countryoptions = [
     { value: "Todos", label: "Todos" },
     { value: "Facturado", label: "Facturado" },
@@ -41,7 +46,7 @@ const Invoice = () => {
 
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
 
-  const company = localStorage.getItem('company');
+  const company = localStorage.getItem("company");
 
   const errorAlert = (errorMessage) => {
     Swal.fire({
@@ -58,7 +63,7 @@ const Invoice = () => {
   const { openTable, reportData, loading, error } = useOpenTable(
     startDate,
     endDate,
-    company,    
+    company,
     report,
     "api/report/table/invoice"
   );
@@ -68,7 +73,9 @@ const Invoice = () => {
       errorAlert("Seleccione las fechas desde y hasta.");
       return;
     }
+    setLoadingTable(true);
     await openTable();
+    setLoadingTable(false);
   };
 
   const { openPdf } = useOpenPdf();
@@ -78,6 +85,7 @@ const Invoice = () => {
       errorAlert("Seleccione las fechas desde y hasta.");
       return;
     }
+    setLoadingPdf(true);
     await openPdf(
       startDate,
       endDate,
@@ -85,6 +93,7 @@ const Invoice = () => {
       "api/report/pdf/invoice",
       "reporte-facturas"
     );
+    setLoadingPdf(false);
   };
 
   const { openExcel } = useOpenExcel();
@@ -94,13 +103,15 @@ const Invoice = () => {
       errorAlert("Seleccione las fechas desde y hasta.");
       return;
     }
+    setLoadingExcel(true);
     await openExcel(
       startDate,
       endDate,
-      company,      
+      company,
       "api/report/excel/invoice",
       "reporte-facturas"
     );
+    setLoadingExcel(false);
   };
 
   const columns: any = React.useMemo(
@@ -275,23 +286,30 @@ const Invoice = () => {
                           color=""
                           type="button"
                           className="btn btn-primary btn-svgs btn-svg-white mt-4 ml-4 mr-4"
-                          onClick={() => handleOpenTable()}
+                          onClick={handleOpenTable}
+                          disabled={loadingTable}
                         >
-                          <svg
-                            className="svg-icon"
-                            xmlns="http://www.w3.org/2000/svg"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            width="24"
-                          >
-                            <path d="M0 0h24v24H0V0z" fill="none"></path>
-                            <path
-                              d="M13 4H6v16h12V9h-5V4zm3 14H8v-2h8v2zm0-6v2H8v-2h8z"
-                              opacity=".3"
-                            ></path>
-                            <path d="M8 16h8v2H8zm0-4h8v2H8zm6-10H6c-1.1 0-2 .9-2 2v16c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"></path>
-                          </svg>
-                          <span className="btn-svg-text">FILTRAR</span>
+                          {loadingTable ? (
+                            <Spinner size="md" />
+                          ) : (
+                            <>
+                              <svg
+                                className="svg-icon"
+                                xmlns="http://www.w3.org/2000/svg"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                width="24"
+                              >
+                                <path d="M0 0h24v24H0V0z" fill="none"></path>
+                                <path
+                                  d="M13 4H6v16h12V9h-5V4zm3 14H8v-2h8v2zm0-6v2H8v-2h8z"
+                                  opacity=".3"
+                                ></path>
+                                <path d="M8 16h8v2H8zm0-4h8v2H8zm6-10H6c-1.1 0-2 .9-2 2v16c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"></path>
+                              </svg>
+                              <span className="btn-svg-text">FILTRAR</span>
+                            </>
+                          )}
                         </Button>
                       </Col>
                     </Row>
@@ -301,46 +319,60 @@ const Invoice = () => {
                         <Button
                           color=""
                           type="button"
-                          className="btn btn-primary btn-svgs btn-svg-white mt-4 ml-4 mr-4 "
-                          onClick={() => handleOpenPdf()}
+                          className="btn btn-primary btn-svgs btn-svg-white mt-4 ml-4 mr-4"
+                          onClick={handleOpenPdf}
+                          disabled={loadingPdf}
                         >
-                          <svg
-                            className="svg-icon"
-                            xmlns="http://www.w3.org/2000/svg"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            width="24"
-                          >
-                            <path d="M0 0h24v24H0V0z" fill="none"></path>
-                            <path
-                              d="M13 4H6v16h12V9h-5V4zm3 14H8v-2h8v2zm0-6v2H8v-2h8z"
-                              opacity=".3"
-                            ></path>
-                            <path d="M8 16h8v2H8zm0-4h8v2H8zm6-10H6c-1.1 0-2 .9-2 2v16c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"></path>
-                          </svg>
-                          <span className="btn-svg-text">PDF</span>
+                          {loadingPdf ? (
+                            <Spinner size="md" />
+                          ) : (
+                            <>
+                              <svg
+                                className="svg-icon"
+                                xmlns="http://www.w3.org/2000/svg"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                width="24"
+                              >
+                                <path d="M0 0h24v24H0V0z" fill="none"></path>
+                                <path
+                                  d="M13 4H6v16h12V9h-5V4zm3 14H8v-2h8v2zm0-6v2H8v-2h8z"
+                                  opacity=".3"
+                                ></path>
+                                <path d="M8 16h8v2H8zm0-4h8v2H8zm6-10H6c-1.1 0-2 .9-2 2v16c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"></path>
+                              </svg>
+                              <span className="btn-svg-text">PDF</span>
+                            </>
+                          )}
                         </Button>
                         <Button
                           color=""
                           type="button"
-                          className="btn btn-primary btn-svgs btn-svg-white mt-4 ml-4 mr-4 "
-                          onClick={() => handleOpenExcel()}
+                          className="btn btn-primary btn-svgs btn-svg-white mt-4 ml-4 mr-4"
+                          onClick={handleOpenExcel}
+                          disabled={loadingExcel}
                         >
-                          <svg
-                            className="svg-icon"
-                            xmlns="http://www.w3.org/2000/svg"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            width="24"
-                          >
-                            <path d="M0 0h24v24H0V0z" fill="none"></path>
-                            <path
-                              d="M13 4H6v16h12V9h-5V4zm3 14H8v-2h8v2zm0-6v2H8v-2h8z"
-                              opacity=".3"
-                            ></path>
-                            <path d="M8 16h8v2H8zm0-4h8v2H8zm6-10H6c-1.1 0-2 .9-2 2v16c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"></path>
-                          </svg>
-                          <span className="btn-svg-text">EXCEL</span>
+                          {loadingExcel ? (
+                            <Spinner size="md" />
+                          ) : (
+                            <>
+                              <svg
+                                className="svg-icon"
+                                xmlns="http://www.w3.org/2000/svg"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                width="24"
+                              >
+                                <path d="M0 0h24v24H0V0z" fill="none"></path>
+                                <path
+                                  d="M13 4H6v16h12V9h-5V4zm3 14H8v-2h8v2zm0-6v2H8v-2h8z"
+                                  opacity=".3"
+                                ></path>
+                                <path d="M8 16h8v2H8zm0-4h8v2H8zm6-10H6c-1.1 0-2 .9-2 2v16c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"></path>
+                              </svg>
+                              <span className="btn-svg-text">EXCEL</span>
+                            </>
+                          )}
                         </Button>
                       </Col>
                     </Row>

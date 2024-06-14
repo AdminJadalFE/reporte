@@ -52,10 +52,22 @@ const Dashboard01 = () => {
     setPageSize,
   } = tableInstance;
 
+  interface StartData {
+    client_count: number;
+    detail_order_sale_count: number;
+    document_report_count: number;
+    sales_accumulate_count: number;
+    sales_report_count: number;
+  }
 
   const { globalFilter, pageIndex, pageSize } = state;
-  const [startData, setStartData] = useState({});
-
+  const [startData, setStartData] = useState<StartData>({
+    client_count: 0,
+    detail_order_sale_count: 0,
+    document_report_count: 0,
+    sales_accumulate_count: 0,
+    sales_report_count: 0,
+  });
   const company = localStorage.getItem("company");
 
   useEffect(() => {

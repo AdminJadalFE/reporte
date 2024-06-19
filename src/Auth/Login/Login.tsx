@@ -176,7 +176,7 @@ const Login = () => {
                         <h1 className="mb-2">Inicio de Sesión</h1>
                         <p className="text-muted">Ingrese sus credenciales</p>
                       </div>
-                      <hr className="divider my-6" />
+                      <hr className="my-6" />
                       <InputGroup className="input-group mb-3">
                         <span className="input-group-addon">
                           <svg

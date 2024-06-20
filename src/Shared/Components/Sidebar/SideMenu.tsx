@@ -30,7 +30,7 @@ export const MENUITEMS: menu[] = [
             type: "link",
             active: false,
             selected: false,
-            title: "Dashboard 01",
+            title: "Dashboard",
           }
         ],
       },
@@ -1302,7 +1302,7 @@ export const MENUITEMS: menu[] = [
             type: "link",
             active: false,
             selected: false,
-            title: "Reporte Acumulado por Día",
+            title: "Reporte Acumulado por Dia",
           },
           {
             path: `${import.meta.env.BASE_URL}report/sale`,

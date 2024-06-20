@@ -26,11 +26,34 @@ const Sidebar = () => {
   const storedUsername = localStorage.getItem("username");
   const storedRol = localStorage.getItem("rol");
 
+  //debe coindicir el nombre del Pemiso con el boton
   const storedPermissionsString = localStorage.getItem("permissions");
   const storedPermissions = storedPermissionsString ? storedPermissionsString.split(',') : [];
-  let PermisoAccount = "";
+
+  let Permiso_Usuarios;
+  let Permiso_Usuarios_Usuarios;
+  let Permiso_Usuarios_Roles;
+  let Permiso_Usuarios_Permisos;
+
   if (storedPermissions.includes("users.view")) {
-    PermisoAccount = "Usuarios";
+    Permiso_Usuarios = "Usuarios";
+    Permiso_Usuarios_Usuarios = "Usuarios";
+    Permiso_Usuarios_Roles = "Roles";
+    Permiso_Usuarios_Permisos = "Permisos";
+  }
+
+  let Permiso_Reportes;
+  let Permiso_ReporteFactura;
+  let Permiso_ReporteAcumuladoPorDia;
+  let Permiso_ReporteDeVentas;
+  let Permiso_ReporteNotaDeVentas;
+  
+  if (storedPermissions.includes("reports.view")) {
+    Permiso_Reportes = "Reportes";
+    Permiso_ReporteFactura = "Reporte Factura";
+    Permiso_ReporteAcumuladoPorDia = "Reporte Acumulado por Dia";
+    Permiso_ReporteDeVentas = "Reporte de Ventas";
+    Permiso_ReporteNotaDeVentas = "Reporte Nota de Venta";
   }
 
   let location = useLocation();
@@ -281,8 +304,8 @@ const Sidebar = () => {
             {menuitems.map((Item, itemi) => (
               <Fragment key={itemi + Math.random() * 100}>
                 {Item.Items?.map((menuItem, i) => (
-                  // permisos
-                  //  ( menuItem.title !== "Dashboards" && menuItem.title !== PermisoAccount && menuItem.title !== "Inventario") || (
+                  //permisos menu
+                   ( menuItem.title !== "Dashboards" && menuItem.title !== Permiso_Usuarios && menuItem.title !== Permiso_Reportes) || (
                     (
                     (
                     <li className={`slide ${menuItem.selected ? "is-expanded" : ""}  ${menuItem.active ? "is-expanded" : ""}`} key={i}>
@@ -323,7 +346,11 @@ const Sidebar = () => {
                               ? { display: "block" }
                               : { display: "none" }
                           }>
+                          //permisos submenu
                           {menuItem.children.map((childrenItem, index) => (
+                            (childrenItem.title !== "Dashboard" &&
+                             childrenItem.title !== Permiso_Usuarios_Usuarios && childrenItem.title !== Permiso_Usuarios_Roles && childrenItem.title !== Permiso_Usuarios_Permisos &&
+                             childrenItem.title !== Permiso_ReporteFactura && childrenItem.title !== Permiso_ReporteAcumuladoPorDia && childrenItem.title !== Permiso_ReporteDeVentas && childrenItem.title !== Permiso_ReporteNotaDeVentas) || (
                             <li key={index} className={`sub-slide ${childrenItem.selected ? "is-expanded" : ""} ${childrenItem.active ? "is-expanded" : ""}`}>
                               {childrenItem.type === "sub" ? (
                                 <a href="javascript"
@@ -410,6 +437,7 @@ const Sidebar = () => {
                                 ""
                               )}
                             </li>
+                          )
                           ))}
                         </ul>
                       ) : (
@@ -418,7 +446,8 @@ const Sidebar = () => {
                     </li>
                   )
                  )
-                ))}
+                 )
+              ))}
               </Fragment>
             ))}
           </ul>

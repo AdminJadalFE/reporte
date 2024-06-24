@@ -48,7 +48,7 @@ export default function rolReducer(state = initialState, action: Action) {
     case "UPDATE_ROL_SUCCESS":
       return {
         ...state,
-        roles: state.roles.map((rol) =>
+        roles: state.roles.map((rol: any) =>
           rol.id === action.payload.id ? action.payload : rol
         ),
         message: "Rol updated successfully",
@@ -56,7 +56,7 @@ export default function rolReducer(state = initialState, action: Action) {
       case "DELETE_ROL_SUCCESS":
         return {
           ...state,
-          roles: state.roles.filter((rol) => rol.id !== action.payload),
+          roles: state.roles.filter((rol: any) => rol.id !== action.payload),
           message: "Rol deleted successfully",
         };     
     default:

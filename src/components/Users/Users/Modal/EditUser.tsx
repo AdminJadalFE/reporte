@@ -14,7 +14,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { showUserById } from "../../../../Redux/User/Action/Action";
 import Select from "react-select";
-
+import Swal from "sweetalert2";
 import { updateUser } from "../../../../Redux/User/Action/Action"; 
 import { number } from "echarts";
 
@@ -37,6 +37,17 @@ const EditUser = ({ userId, toggle, onClose, ...props }: { userId: any, toggle: 
     value: company.id,
     label: company.name,
   }));
+
+  function updatedAlert() {
+    Swal.fire({
+      title: "Actualizado",
+      icon: "success",
+      allowOutsideClick: false,
+      confirmButtonText: "ok",
+      cancelButtonColor: "#4454c3",
+      text: "Se actualizó al usuario correctamente.",
+    });
+  }
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -144,11 +155,10 @@ const EditUser = ({ userId, toggle, onClose, ...props }: { userId: any, toggle: 
     // Dispatch the update action
     try {
       await dispatch(updateUser(userId,updatedUser));
-      // Optionally, you can handle success, close the modal, or show a notification
-      onClose(); // Close the modal after successful update
+      onClose();
+      updatedAlert();
     } catch (error) {
       console.error("Error updating user:", error);
-      // Optionally, you can handle errors, show a notification, etc.
     }
   };  
 

@@ -52,15 +52,11 @@ export const fetchUsers = () => async (dispatch: Dispatch) => {
   
   export const deleteUser = (userId) => async (dispatch) => {
     try {
-      const confirmDelete = window.confirm("¿Estás seguro de que quieres eliminar este usuario?");
-      if (confirmDelete) {
-        await auth.delete(`api/users/${userId}`);
-
-        dispatch({
-          type: 'DELETE_USER_SUCCESS',
-          payload: userId,
-        });
-      }
+      await auth.delete(`api/users/${userId}`);
+      dispatch({
+        type: 'DELETE_USER_SUCCESS',
+        payload: userId,
+      });
     } catch (error) {
       console.error('Error al eliminar el usuario:', error);
     }

@@ -21,17 +21,6 @@ const UserList02 = () => {
 
   const [alert, setAlert] = useState("Congratulations!");
 
-  function eliminarAlert() {
-    Swal.fire({
-      title: "Registrado",
-      icon: "success",
-      allowOutsideClick: false,
-      confirmButtonText: "ok",
-      cancelButtonColor: "#4454c3",
-      text: "Se registro al usuario correctamente.",
-    });
-  }
-
   const [filteredData, setFilteredData] = useState<User[]>([]);
 
   const handleSearch = (inputData: string) => {
@@ -44,7 +33,25 @@ const UserList02 = () => {
   const displayData = filteredData.length > 0 ? filteredData : userData;
 
   const handleDelete = (userId) => {
-    deleteUser(userId)(dispatch);
+    Swal.fire({
+      title: "¿Estás seguro?",
+      text: "No podrás revertir esto!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Sí, eliminarlo!",
+      cancelButtonText: "Cancelar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteUser(userId)(dispatch);
+        Swal.fire(
+          "Eliminado!",
+          "El usuario ha sido eliminado.",
+          "success"
+        );
+      }
+    });
   };
 
   const [modal, setModal] = useState(false);

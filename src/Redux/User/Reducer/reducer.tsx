@@ -65,13 +65,13 @@ const reducer = (state: UserState = initialState, action: any): UserState => {
       };
 
     case "SHOW_USER_BY_ID_SUCCESS":
-      console.log("Received user details:", action.payload);
+    
       return {
         ...state,
         userDetail: action.payload,
         message: "User details fetched successfully",
       };
-
+            
     default:
       return state;
   }

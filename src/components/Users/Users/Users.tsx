@@ -50,7 +50,7 @@ const UserList02 = () => {
   const [modal, setModal] = useState(false);
   const toggle = () => setModal(!modal);
 
-  const [selectedUserId, setSelectedUserId] = useState(null);
+  const [selectedUserId, setSelectedUserId] = useState<number | null>(null);
 
   const handleEdit = (userId) => {
     setSelectedUserId(userId);
@@ -137,7 +137,7 @@ const UserList02 = () => {
       </Row>
 
       <Modal isOpen={modal} toggle={toggle} size="lg">
-        //EditUser 
+        <EditUser userId={selectedUserId || 0} toggle={toggle} onClose={toggle} /> {/* Pasando userId */}
       </Modal>
     </div>
   );

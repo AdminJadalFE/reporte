@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { Dispatch } from 'redux';
 import { auth } from "../../../Util/axios";
+import { User } from '../Reducer/reducer';
 
 export const initializeState = () => async (dispatch: Dispatch) => {
   try {
@@ -65,19 +66,25 @@ export const fetchUsers = () => async (dispatch: Dispatch) => {
     }
   };
 
-export const showUserById = (userId) => async (dispatch) => {
-  try {
-    const response = await auth.get(`api/users/${userId.userId}`);
-    const userDetails = response.data.message;
-    
-    dispatch({
-      type: "SHOW_USER_BY_ID_SUCCESS",
-      payload: userDetails,
-    });
-  } catch (error) {
-    console.error('Error al obtener detalles del usuario:', error);
+  interface ShowUserByIdAction {
+    type: string;
+    payload: User;
   }
-};
+  
+  // Definir el tipo de la acción de showUserById
+  export const showUserById = (userId: number) => async (dispatch: Dispatch<ShowUserByIdAction>) => {
+    try {
+      const response = await auth.get(`api/users/${userId}`);
+      const userDetails = response.data.message;
+  
+      dispatch({
+        type: "SHOW_USER_BY_ID_SUCCESS",
+        payload: userDetails,
+      });
+    } catch (error) {
+      console.error('Error al obtener detalles del usuario:', error);
+    }
+  };
 
 export const updateUser = (userId, updatedUserData) => async (dispatch) => {
   try {

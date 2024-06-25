@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect} from "react";
 import {
   Card,
   CardBody,
@@ -27,10 +27,19 @@ import useOpenTable from "../../../Hook/Report/useOpenTable";
 import useOpenPdf from "../../../Hook/Report/useOpenPdf";
 import useOpenExcel from "../../../Hook/Report/useOpenExcel";
 import Swal from "sweetalert2";
+import { useDispatch, useSelector } from "react-redux";
+import { ClientState } from "../../../Redux/Client/Reducer/reducer";
+import { fetchClients } from "../../../Redux/Client/Action/Action";
 
 const SaleNote = () => {
+  const dispatch = useDispatch();
+  const clientData = useSelector((state: { client: ClientState }) => state.client);
+  
+  const [clientSearchInput, setClientSearchInput] = useState<string>("");
+
   const [dates, setDates] = useState<any>();
   const [countryOption, setCountryOption] = useState<any>(null);
+  const [clientOption, setClientOption] = useState<any>(null);
 
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
@@ -166,6 +175,20 @@ const SaleNote = () => {
     []
   );
 
+  useEffect(() => {
+    fetchClients(company)(dispatch);
+  }, [dispatch]);
+
+  const filteredClientOptions = clientData.clients
+    .filter(client =>
+      client.fist_name_v.toLowerCase().includes(clientSearchInput.toLowerCase())
+    )
+    .map(client => ({
+      value: client.id_client_v,
+      label: client.fist_name_v,
+    }));
+
+
   console.log("dataAcumulateDAyay", reportData);
   return (
     <div>
@@ -255,18 +278,22 @@ const SaleNote = () => {
                 </Col>
               </Row>
               <Row>
-                <Col lg="4">
+                <Col lg="6">
                   <div className="mb-3 mt-3">
-                    <Label className="form-label">
-                      Selecciona un Cliente:{" "}
-                    </Label>
+                    <div className="mb-3">
+                      <label className="form-label">Cliente</label>
+                    </div>
                   </div>
                   <div className="wd-200 mg-b-30">
                     <Select
-                      defaultValue={countryOption}
-                      onChange={setCountryOption}
-                      options={Countryoptions}
-                      placeholder="Cliente"
+                      value={clientOption}
+                      onChange={setClientOption}
+                      options={filteredClientOptions}
+                      placeholder="Seleccione un cliente"
+                      onInputChange={(inputValue) =>
+                        setClientSearchInput(inputValue)
+                      }
+                      filterOption={() => true}
                       classNamePrefix="Search"
                     />
                   </div>

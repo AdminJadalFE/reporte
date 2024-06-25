@@ -6,6 +6,7 @@ import reducerRol from "../Rol/Reducer/reducer";
 import reducerPermission from "../Permission/Reducer/reducer";
 import reducerCompany from "../Company/Reducer/reducer";
 import reducerProduct from "../Product/Reducer/reducer";
+import reducerClient from "../Client/Reducer/reducer";
 
 import { composeWithDevTools } from "redux-devtools-extension";
 import thunk from "redux-thunk";
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
   rol: reducerRol,  
   user: reducerUser,
   auth: reducerAuth,
+  client: reducerClient,  
 });
 
 const store = createStore(

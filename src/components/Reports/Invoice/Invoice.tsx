@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect} from "react";
 import {
   Card,
   CardBody,
@@ -26,10 +26,17 @@ import useOpenTable from "../../../Hook/Report/useOpenTable";
 import useOpenPdf from "../../../Hook/Report/useOpenPdf";
 import useOpenExcel from "../../../Hook/Report/useOpenExcel";
 import Swal from "sweetalert2";
+import { useDispatch, useSelector } from "react-redux";
+import { ClientState } from "../../../Redux/Client/Reducer/reducer";
+import { fetchClients } from "../../../Redux/Client/Action/Action";
 
 const Invoice = () => {
+  const dispatch = useDispatch();
+  const clientData = useSelector((state: { client: ClientState }) => state.client);
+
   const [dates, setDates] = useState<any>();
   const [countryOption, setCountryOption] = useState<any>(null);
+  const [clientOption, setClientOption] = useState<any>(null);
 
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
@@ -43,6 +50,8 @@ const Invoice = () => {
     { value: "Facturado", label: "Facturado" },
     { value: "No Facturado", label: "No Facturado" },
   ];
+
+  const [documentNumber, setDocumentNumber] = useState<string>("");
 
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
 
@@ -59,6 +68,7 @@ const Invoice = () => {
   };
 
   //const [reportData, setReportData] = useState<any[]>([]);
+  const [clientSearchInput, setClientSearchInput] = useState<string>("");
 
   const { openTable, reportData, loading, error } = useOpenTable(
     startDate,
@@ -98,6 +108,17 @@ const Invoice = () => {
 
   const { openExcel } = useOpenExcel();
 
+  const handleDocumentNumberChange = (e) => {
+    const input = e.target.value.toUpperCase();
+    const formattedInput = input.replace(/[^A-Z0-9-]/g, "");
+
+    if (/^[A-Z0-9]{4}-[0-9]{7}$/.test(formattedInput)) {
+      setDocumentNumber(formattedInput);
+    } else if (/^[A-Z0-9]{0,4}-?[0-9]{0,7}$/.test(formattedInput)) {
+      setDocumentNumber(formattedInput);
+    }
+  };
+
   const handleOpenExcel = async () => {
     if (startDate == null || endDate == null) {
       errorAlert("Seleccione las fechas desde y hasta.");
@@ -113,6 +134,19 @@ const Invoice = () => {
     );
     setLoadingExcel(false);
   };
+
+  useEffect(() => {
+    fetchClients(company)(dispatch);
+  }, [dispatch]);
+
+  const filteredClientOptions = clientData.clients
+    .filter(client =>
+      client.fist_name_v.toLowerCase().includes(clientSearchInput.toLowerCase())
+    )
+    .map(client => ({
+      value: client.id_client_v,
+      label: client.fist_name_v,
+    }));
 
   const columns: any = React.useMemo(
     () => [
@@ -165,17 +199,23 @@ const Invoice = () => {
             </CardHeader>
             <CardBody>
               <Row>
-                <Col lg="6">
+                <Col lg="8">
                   <div className="mb-3">
                     <label className="form-label">Cliente</label>
                   </div>
-                  <input
-                    type="text"
-                    className="form-control required mb-3"
-                    placeholder="cliente"
-                  />
+                  <div className="wd-200 mg-b-30">
+                    <Select
+                      value={clientOption}
+                      onChange={setClientOption}
+                      options={filteredClientOptions}
+                      placeholder="Seleccione un cliente"
+                      onInputChange={(inputValue) => setClientSearchInput(inputValue)}
+                      filterOption={() => true} 
+                     classNamePrefix="Search"
+                    />
+                  </div>
                 </Col>
-                <Col lg="6">
+                <Col lg="4">
                   <div className="mb-3">
                     <label className="form-label">
                       N° Documento (F002-0000123)
@@ -185,6 +225,8 @@ const Invoice = () => {
                     type="text"
                     className="form-control required mb-3"
                     placeholder="F002-0000123"
+                    value={documentNumber}
+                    onChange={handleDocumentNumberChange}
                   />
                 </Col>
                 <Col lg="6">

@@ -75,7 +75,9 @@ const Invoice = () => {
     endDate,
     company,
     report,
-    "api/report/table/invoice"
+    "api/report/table/invoice",
+    clientOption ? clientOption.label : '',
+    documentNumber ? documentNumber : '',
   );
 
   const handleOpenTable = async () => {
@@ -206,7 +208,10 @@ const Invoice = () => {
                   <div className="wd-200 mg-b-30">
                     <Select
                       value={clientOption}
-                      onChange={setClientOption}
+                      onChange={(option) => {
+                        setClientOption(option);
+                        setClientSearchInput(option.label);
+                      }}
                       options={filteredClientOptions}
                       placeholder="Seleccione un cliente"
                       onInputChange={(inputValue) => setClientSearchInput(inputValue)}
@@ -218,13 +223,13 @@ const Invoice = () => {
                 <Col lg="4">
                   <div className="mb-3">
                     <label className="form-label">
-                      N° Documento (F002-0000123)
+                      N° Documento (0020000123)
                     </label>
                   </div>
                   <input
                     type="text"
                     className="form-control required mb-3"
-                    placeholder="F002-0000123"
+                    placeholder="0020000123"
                     value={documentNumber}
                     onChange={handleDocumentNumberChange}
                   />

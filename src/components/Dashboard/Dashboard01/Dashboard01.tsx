@@ -85,7 +85,7 @@ const Dashboard01 = () => {
 
   return (
     <div>
-      <PageHeader title="Sales Dashboard"/>
+      <PageHeader title="Dashboard"/>
 
       <Row>
         <Col xl={9} md={12} lg={12}>
